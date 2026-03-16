@@ -1,4 +1,57 @@
 
+#main {
+    
+}
+
+#main_sheet {
+    width: calc(100% - 200px);
+}
+
+#main_chat {
+
+    width: 200px;
+
+    border: 3px solid black;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#chat {
+    
+}
+
+#chat_chatlog {
+
+    height: calc(100% - 125px);
+
+}
+
+#chat_chatbox {
+    position: absolute;
+    bottom: 5;
+    left: 5;
+    right: 5;
+
+    height: 120px;
+    border: 3px solid black;
+
+    padding: 5;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#chat_chatbox > textarea {
+    width: 100%;
+    flex-grow: 1;
+    resize: none;
+    box-sizing: border-box;
+}
+
+
 .flex {
     display: flex;
     flex-wrap: nowrap;

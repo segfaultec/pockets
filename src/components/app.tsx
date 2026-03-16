@@ -21,6 +21,8 @@ import PkMapListTest from './testing/PkMapListTest';
 import { CharsheetApp } from './charsheet_app';
 import PkLayout from './text/PkLayout';
 
+import * as css from "./pk.module.css";
+import Chat from './chat/Chat';
 
 function createCharsheet(): Charsheet {
     let attributes = new UnparsedAttrContainer;
@@ -36,7 +38,7 @@ function createCharsheet(): Charsheet {
         ["hit_dice_size", "6"],
 
         ["gen_stat", "4d6d1"],
-        ["roll", "5d20kh2"],
+        ["roll", "d20"],
         ["pb", "3"],
         ["stat_mod", "([input]-10)//2"],
 
@@ -129,28 +131,29 @@ class App extends Component<{}, {}> {
         return (
             <CssVarsProvider theme={pocketsTheme}>
             <CS.Provider value={{sheet}}>
-                <Tabs defaultValue={0}>
-                    <TabList>
-                        <Tab variant='plain' color='neutral'>Layout</Tab>
-                        <Tab variant='plain' color='neutral'>Attributes</Tab>
-                        <Tab variant='plain' color="neutral">Signal Test</Tab>
-                        <Tab variant='plain' color="neutral">Map list Test</Tab>
-                    </TabList>
-                    <TabPanel value={0}>
-                        <PkEditModeToggle />
-                        <PkLayout />
-                    </TabPanel>
-                    <TabPanel value={1}>
-                    <EvalContainer eval_result={sheet.last_ran_expr} show_tree={false}/>
-                        <AttributeMenu attributes={sheet.attributes} />
-                    </TabPanel>
-                    <TabPanel value={2}>
-                        <PkSignalTest />
-                    </TabPanel>
-                    <TabPanel value={3}>
-                        <PkMapListTest />
-                    </TabPanel>
-                </Tabs>
+            <div id={css.main}>
+                <div id={css.main_sheet}>
+                    <Tabs defaultValue={0}>
+                        <TabList>
+                            <Tab variant='plain' color='neutral'>Layout</Tab>
+                            <Tab variant='plain' color='neutral'>Attributes</Tab>
+                        </TabList>
+                        <TabPanel value={0}>
+                            <PkEditModeToggle />
+                            <PkLayout />
+                        </TabPanel>
+                        <TabPanel value={1}>
+                        <EvalContainer eval_result={sheet.last_ran_expr} show_tree={false}/>
+                            <AttributeMenu attributes={sheet.attributes} />
+                        </TabPanel>
+                    </Tabs>
+                </div>
+               
+                <div id={css.main_chat}>
+                    <Chat />
+                </div>
+            </div>
+            
             </CS.Provider>
             </CssVarsProvider>
         );

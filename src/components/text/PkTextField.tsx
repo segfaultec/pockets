@@ -2,7 +2,6 @@ import { Component, JSX } from "preact";
 import { useContext } from "preact/hooks";
 import { CS } from "../app";
 
-import "../pk.module.css"
 import * as css from "../pk.module.css";
 import { CharsheetApp } from "components/charsheet_app";
 import * as Helpers from "./PkFieldHelpers";
