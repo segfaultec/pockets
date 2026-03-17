@@ -17,7 +17,7 @@ import PkLayout from './text/PkLayout';
 
 import * as css from "./pk.module.css";
 import Chat from './chat/Chat';
-import { PkTab, PkTabs } from './PkTabs';
+import { PkTab, PkTabs } from './library/PkTabs';
 
 function createCharsheet(): Charsheet {
     let attributes = new UnparsedAttrContainer;

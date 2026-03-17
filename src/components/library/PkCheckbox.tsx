@@ -1,12 +1,14 @@
 import { Signal } from "@preact/signals";
-import { Component, createRef } from "preact"
+import { Component } from "preact"
 
 import * as css from "./pkcheckbox.module.css";
+import { ClsCombine } from "components/utils/ClassHelpers";
 
 
 type PkCheckboxProps = {
     label: string,
-    signal: Signal<boolean>
+    signal: Signal<boolean>,
+    className?: string
 }
 
 export default class PkCheckbox extends Component<PkCheckboxProps> {
@@ -26,7 +28,7 @@ export default class PkCheckbox extends Component<PkCheckboxProps> {
                 }}
             />
 
-        return <div className={css.pkcheckbox}>
+        return <div className={ClsCombine(css.pkcheckbox, this.props.className)}>
             {label}
             {checkbox}
         </div>

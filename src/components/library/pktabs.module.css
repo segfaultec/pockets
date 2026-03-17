@@ -1,0 +1,64 @@
+.pktabs {
+    [role="tablist"] {
+        border-bottom: 1px solid grey;
+
+        margin-bottom: 3px;
+    }
+
+    [role="tab"] {
+        box-sizing: border-box;
+        display: inline-block;
+
+        padding: 5px;
+        margin: 3px 0 0 0;
+
+        background-color: rgb(199, 223, 247);
+
+        border: 0px;
+        
+        background-color: transparent;
+
+        font-size: large;
+
+        position: relative;
+    }
+
+    [role="tab"]:hover {
+        background-color: #F0F4F8;
+    }
+
+    [role="tab"]::after {
+        content: "";
+        display: block;
+        position: absolute;
+        margin: auto;
+
+        right: 0px;
+        bottom: -2px;
+        left: 0px;
+        height: 2px;
+    }
+
+    [role="tab"][aria-selected="true"] {
+        background-color: #C7DFF7;
+    }
+
+    [role="tab"][aria-selected="true"]::after {
+        background-color: #0B6BCB;
+    }
+
+    
+    [role="tabpanel"] {
+        margin-top: 5px;
+
+        display: flex;
+
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    [role="tabpanel"][aria-hidden="true"] {
+        display: none;
+    }
+}
