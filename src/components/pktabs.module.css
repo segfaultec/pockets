@@ -1,0 +1,18 @@
+.pktabs {
+    [role="tablist"] {
+        color: white;
+    }
+
+    [role="tab"] {
+        display: inline-block;
+    }
+
+    [role="tabpanel"] {
+
+        
+    }
+
+    [role="tabpanel"][aria-hidden="true"] {
+        display: none;
+    }
+}

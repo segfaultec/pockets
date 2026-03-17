@@ -10,19 +10,14 @@ import { Charsheet, CharsheetSkillsBox } from 'lib/charsheet';
 import AttributeMenu from './AttributeMenu';
 import EvalContainer from "./eval/EvalContainer";
 
-import { Tab, TabList, TabPanel, Tabs } from '@mui/joy';
-import { CssVarsProvider } from '@mui/joy/styles';
-import PkTextField from './text/PkTextField';
-import { pocketsTheme } from './themes';
 import PkEditModeToggle from './PkEditModeToggle';
 import { TextFieldContainer } from 'lib/TextFieldContainer';
-import PkSignalTest from './testing/PkSignalTest';
-import PkMapListTest from './testing/PkMapListTest';
 import { CharsheetApp } from './charsheet_app';
 import PkLayout from './text/PkLayout';
 
 import * as css from "./pk.module.css";
 import Chat from './chat/Chat';
+import { PkTab, PkTabs } from './PkTabs';
 
 function createCharsheet(): Charsheet {
     let attributes = new UnparsedAttrContainer;
@@ -129,24 +124,19 @@ class App extends Component<{}, {}> {
         const sheet = new CharsheetApp(createCharsheet());
 
         return (
-            <CssVarsProvider theme={pocketsTheme}>
             <CS.Provider value={{sheet}}>
             <div id={css.main}>
                 <div id={css.main_sheet}>
-                    <Tabs defaultValue={0}>
-                        <TabList>
-                            <Tab variant='plain' color='neutral'>Layout</Tab>
-                            <Tab variant='plain' color='neutral'>Attributes</Tab>
-                        </TabList>
-                        <TabPanel value={0}>
+                    <PkTabs>
+                        <PkTab title='Layout'>
                             <PkEditModeToggle />
                             <PkLayout />
-                        </TabPanel>
-                        <TabPanel value={1}>
-                        <EvalContainer eval_result={sheet.last_ran_expr} show_tree={false}/>
+                        </PkTab>
+                        <PkTab title='Attributes'>
+                            <EvalContainer eval_result={sheet.last_ran_expr} show_tree={false}/>
                             <AttributeMenu attributes={sheet.attributes} />
-                        </TabPanel>
-                    </Tabs>
+                        </PkTab>
+                    </PkTabs>
                 </div>
                
                 <div id={css.main_chat}>
@@ -155,7 +145,6 @@ class App extends Component<{}, {}> {
             </div>
             
             </CS.Provider>
-            </CssVarsProvider>
         );
     }
 
