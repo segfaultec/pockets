@@ -1,47 +1,54 @@
 
 #main {
-    
+    display: grid;
+
+    grid-template-columns: auto 200px;
 }
 
 #main_sheet {
-    width: calc(100% - 200px);
+    
 }
 
 #main_chat {
-
-    width: 200px;
-
     border: 3px solid black;
-
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
 }
 
 #chat {
-    
+    height: 100%;
+    display: grid;
+
+    grid-template-rows: 1fr 100px;
 }
 
 #chat_chatlog {
 
-    height: calc(100% - 125px);
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    
+    > h1 {
+        margin: 5px;
+        font-family: "MS Shell Dlg";
 
+        justify-self: center;
+    }
+
+    > div {
+        overflow-y: scroll;
+        
+        justify-self: stretch;
+
+        padding: 5px;
+    }
 }
 
 #chat_chatbox {
-    position: absolute;
-    bottom: 5;
-    left: 5;
-    right: 5;
-
-    height: 120px;
     border: 3px solid black;
 
     padding: 5;
 
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    gap: 5px;
 }
 
 #chat_chatbox > textarea {

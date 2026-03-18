@@ -5,7 +5,10 @@ import * as css from "../pk.module.css";
 class Chatlog extends Component {
     render() {
         return <div id={css.chat_chatlog}>
-            <p>Chatlog</p>
+            <h1>Chatlog</h1>
+            <div>
+                <p>Wow</p>
+            </div>
         </div>
     }
 }
