@@ -1,8 +1,18 @@
 
+body {
+    margin: 0;
+}
+
 #main {
+
+    box-sizing: border-box;
+
+    height: calc(100vh);
+    padding: 8px;
+
     display: grid;
 
-    grid-template-columns: auto 200px;
+    grid-template-columns: auto 300px;
 }
 
 #main_sheet {
@@ -34,10 +44,30 @@
 
     > div {
         overflow-y: scroll;
-        
         justify-self: stretch;
+    }
+}
 
-        padding: 5px;
+.chat_message_container {
+
+    margin: 5px;
+    padding: 6px 3px 6px 3px;
+    border: 1px solid black;
+
+    font-family: "MS Shell Dlg";
+
+    display: grid;
+
+    grid-auto-rows: auto;
+
+    .chat_header {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .chat_message {
+        font-size: 14px;
+        font-weight: normal;
     }
 }
 
