@@ -34,6 +34,10 @@ export class CharsheetSkillsBox {
             starting_proficiency: value
         })
     }
+
+    ImportSkillFromJson(skill: string[]) {
+        this.AddSkill(skill[0], skill[1], skill[2] as Ability, skill[3] as Proficiency | undefined);
+    }
 }
 
 export class Charsheet {

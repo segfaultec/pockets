@@ -19,43 +19,10 @@ import * as css from "./pk.module.css";
 import Chat from './chat/Chat';
 import { PkTab, PkTabs } from './library/PkTabs';
 
+import data from "./charsheet_data.json"
+
 function createCharsheet(): Charsheet {
     let attributes = new UnparsedAttrContainer;
-
-    let unparsed = [
-        ["hp", "83"],
-        ["max_hp", "87"],
-        ["ac", "15"],
-        ["initiative_mod", "[dex_mod]"],
-        ["speed", "30"],
-        ["level", "11"],
-        ["hit_dice_count", "11"],
-        ["hit_dice_size", "6"],
-
-        ["gen_stat", "4d6d1"],
-        ["roll", "d20"],
-        ["pb", "3"],
-        ["stat_mod", "([input]-10)//2"],
-
-        ["str", "8"],
-        ["str_mod", "[stat_mod([str])]"],
-        ["str_check", "[roll]+[str_mod]"],
-        ["dex", "15"],
-        ["dex_mod", "[stat_mod([dex])]"],
-        ["dex_check", "[roll]+[dex_mod]"],
-        ["con", "18"],
-        ["con_mod", "[stat_mod([con])]"],
-        ["con_check", "[roll]+[con_mod]"],
-        ["int", "9"],
-        ["int_mod", "[stat_mod([int])]"],
-        ["int_check", "[roll]+[int_mod]"],
-        ["wis", "11"],
-        ["wis_mod", "[stat_mod([wis])]"],
-        ["wis_check", "[roll]+[wis_mod]"],
-        ["cha", "20"],
-        ["cha_mod", "[stat_mod([cha])]"],
-        ["cha_check", "[roll]+[cha_mod]"],
-    ];
 
     type Override = {
         key: string
@@ -65,44 +32,23 @@ function createCharsheet(): Charsheet {
     type Overrides = [string, Override[]][];
 
     let skills = new CharsheetSkillsBox("Skills");
+    for (const skill of data.skills) {        
+        skills.ImportSkillFromJson(skill);
+    }
 
-    skills.AddSkill("acrobatics", "Acrobatics", "dex");
-    skills.AddSkill("animal_handling", "Animal Handling", "wis");
-    skills.AddSkill("arcana", "Arcana", "int", "1");
-    skills.AddSkill("athletics", "Athletics", "str");
-    skills.AddSkill("deception", "Deception", "cha");
-    skills.AddSkill("endurance", "Endurance", "con");
-    skills.AddSkill("history", "History", "int");
-    skills.AddSkill("insight", "Insight", "wis", "2");
-    skills.AddSkill("intimidation", "Intimidation", "cha");
-    skills.AddSkill("investigation", "Investigation", "int");
-    skills.AddSkill("medicine", "Medicine", "wis");
-    skills.AddSkill("nature", "Nature", "int");
-    skills.AddSkill("preception", "Perception", "wis");
-    skills.AddSkill("performance", "Performance", "cha");
-    skills.AddSkill("persuasion", "Persuasion", "cha", "2");
-    skills.AddSkill("religion", "Religion", "int");
-    skills.AddSkill("slight_of_hand", "Slight of Hand", "dex");
-    skills.AddSkill("stealth", "Stealth", "dex");
-    skills.AddSkill("streetwise", "Streetwise", "wis");
-    skills.AddSkill("survival", "Survival", "wis");
-    skills.AddSkill("technology", "Technology", "int", "1");
-    
-    let overrides: Overrides = [
-        ["advantage", [{key: "attack_roll", value: "(2[input]kh1)"}]]
-    ]
+    let overrides: Overrides = [];
+    for (const override of data.overrides) {
+        overrides.push([override[0], [{key: override[1], value: override[2]}]]);
+    }
 
-    for (const kvp of unparsed) {
+    for (const kvp of data.attributes) {
         attributes.add_attribute(kvp[0], kvp[1]);
     }
 
     let text_fields = new TextFieldContainer;
-    text_fields.set("name", "Mixolydian");
-    text_fields.set("class", "Sorcerer 11");
-    text_fields.set("race", "Reborn")
-    text_fields.set("background", "Hermit");
-    text_fields.set("size", "Medium");
-    text_fields.set("alignment", "Lawful Good");
+    for (const text_field of data.text_fields) {
+        text_fields.set(text_field[0], text_field[1]);
+    }
 
     return new Charsheet(new AttrContainer(attributes), text_fields, skills);
 }
