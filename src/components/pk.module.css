@@ -16,7 +16,7 @@ body {
 }
 
 #main_sheet {
-    
+    overflow-y: auto;
 }
 
 #main_chat {
