@@ -7,6 +7,7 @@ import { Signal } from "@preact/signals";
 import { TextFieldContainer } from "lib/TextFieldContainer";
 import { Maybe } from "true-myth";
 import { nothing } from "true-myth/dist/es/maybe";
+import Chat from "lib/chat";
 
 export class CharsheetApp {
     
@@ -18,12 +19,15 @@ export class CharsheetApp {
 
     public skills: CharsheetSkillsBox;
 
+    chat: SignalWrapper<Chat>;
+
     constructor(sheet: Charsheet) {
         this.attributes = new SignalWrapper(sheet.attributes);
         this.text_fields = new SignalWrapper(sheet.text_fields);
         this.edit_mode = new Signal(false);
         this.last_ran_expr = new SignalWrapper(nothing());
         this.skills = sheet.skills;
+        this.chat = new SignalWrapper(new Chat());
     }
 
     to_charsheet(): Charsheet {

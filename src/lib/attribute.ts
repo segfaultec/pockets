@@ -4,7 +4,6 @@ import { MyResult, add_context } from "./errors";
 import * as Error from './errors';
 import { ok, err } from "true-myth/dist/es/result";
 import { ContainerBase } from "./ContainerBase";
-import { AttributeLiteral } from "./diceroll/parser/expression";
 
 type AttrKey = string;
 type Attribute = UnparsedExpression;
