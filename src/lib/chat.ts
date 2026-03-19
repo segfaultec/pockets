@@ -9,7 +9,7 @@ export default class Chat {
     private messages: ChatlogMessage[] = [];
 
     constructor() {
-        this.add_message("Mix", "test message again");
+
     }
 
     add_message(sender: string, message: string): Object {

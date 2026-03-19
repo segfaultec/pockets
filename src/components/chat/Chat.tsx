@@ -26,7 +26,30 @@ class ChatlogEntry extends Component<ChatlogEntryProps> {
 
 class Chatlog extends Component {
 
+    scrollboxRef: RefObject<HTMLElement> = createRef();
     entry_components: JSX.Element[] = []
+
+    scrollToBottom() {
+        console.log("scrollToBottom")
+        if (this.scrollboxRef.current)
+        {
+            this.scrollboxRef.current.scroll({
+                "behavior": "instant",
+                "top": this.scrollboxRef.current.scrollHeight
+            })
+        }
+    }
+
+    componentDidMount(): void {
+        this.scrollToBottom();
+    }
+
+    componentDidUpdate(previousProps: Readonly<{}>, previousState: Readonly<{}>, snapshot: any): void {
+
+        // Todo - use props instead so we can figure out when we need to scroll to the bottom
+        // (atm since we're using a signal, previousProps and previousState are empty)
+        this.scrollToBottom();
+    }
 
     render() {
 
@@ -52,11 +75,8 @@ class Chatlog extends Component {
             this.entry_components.pop();
         }
 
-        return <div id={css.chat_chatlog}>
-            <h1>Chatlog</h1>
-            <div>
-                {this.entry_components}
-            </div>
+        return <div ref={this.scrollboxRef as RefObject<HTMLDivElement>} id={css.chat_chatlog}>
+            {this.entry_components}
         </div>
     }
 }
@@ -110,6 +130,7 @@ class Chatbox extends Component {
 export default class Chat extends Component {
     render() {
         return <div id={css.chat}>
+            <span class={css.chat_header}>Chatlog</span>
             <Chatlog />
             <Chatbox />
             </div>;

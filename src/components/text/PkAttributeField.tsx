@@ -84,7 +84,10 @@ export class PkAttributeViewerField extends Component<PkAttributeViewerFieldProp
             <div className={css.pktextfield_container}>
             <button
                 onClick={ () => {
-                    console.log(field_value);
+
+                    sheet.chat.mutate((chat) => {
+                        chat.add_message("Roll", `${this.props.my_key} = ${field_value}`)
+                    });
                 }}>
                 <span>{field_value.replaceAll(' ', '\u00a0')}</span>
             </button>

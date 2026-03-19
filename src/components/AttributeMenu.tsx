@@ -57,8 +57,16 @@ class AttributeMenuElement extends Component<AttributeMenuElementProps, {}> {
                 }
             }}/>
             <button onClick={() => {
-                
-                sheet.last_ran_expr.set_inner(just(sheet.attributes.get_inner().get_parsed().evaluate(key)));
+
+                const this_eval = sheet.attributes.get_inner().get_parsed().evaluate(key);
+
+                const chat_message: string = this_eval.mapOr("Error!",
+                    (exp) => `${key}: ${exp.total.toString()}`);
+
+                sheet.chat.mutate((chat) => {
+                    chat.add_message("Eval", chat_message);
+                })
+                sheet.last_ran_expr.set_inner(just(this_eval));
 
             }}>Eval</button>
             <button onClick={() => {
