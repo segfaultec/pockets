@@ -43,9 +43,9 @@ export default class PkLayout extends Component {
                 <div id="col3-attacks" className={css.flexchild_grow}>
                     <div className={css.pkattrbox_container}>
                     <div className={css.flex}>
-                    <PkAttributeViewerBoxField my_key="ac" label={"Armour\nClass"} />
-                    <PkAttributeViewerBoxField my_key="initiative_mod" label="Initiative" modifier />
-                    <PkAttributeViewerBoxField my_key="speed" label="Speed" suffix="ft" />
+                    <PkAttributeViewerBoxField my_key="ac" label={"Armour\nClass"} run_header="Armour Class"/>
+                    <PkAttributeViewerBoxField my_key="initiative_mod" label="Initiative" modifier run_func="roll" run_header="Initiative Check"/>
+                    <PkAttributeViewerBoxField my_key="speed" label="Speed" suffix="ft" run_header="Speed" />
                     </div>
                     <div className={css.flex}>
                     <PkHealthViewerBoxField current_key="hp" max_key="max_hp" label="HP" />

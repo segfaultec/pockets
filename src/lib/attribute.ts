@@ -1,4 +1,4 @@
-import { Parse, Evaluate, UnparsedExpression, ParsedExpression, EvaluatedExpression } from "lib/diceroll/mod";
+import { Parse, Evaluate, UnparsedExpression, ParsedExpression, EvaluatedExpression, EvaluateFunction } from "lib/diceroll/mod";
 
 import { MyResult, add_context } from "./errors";
 import * as Error from './errors';
@@ -22,7 +22,7 @@ export class ParsedAttributeContainer {
         return Evaluate(expr, this.attributes);
     }
 
-    public evaluate_attribute(attrkey: AttrKey): MyResult<EvaluatedExpression> {
+    public evaluate_attribute(attrkey: AttrKey, funckey?: AttrKey): MyResult<EvaluatedExpression> {
         let attr = this.attributes.get(attrkey);
         if (attr == undefined)
         {
@@ -31,6 +31,27 @@ export class ParsedAttributeContainer {
         if (attr.isErr)
         {
             return err(attr.error);
+        }
+
+        if (funckey)
+        {
+            let func = this.attributes.get(funckey);
+            if (func == undefined)
+            {
+                return err(new Error.UnknownVariable(funckey));
+            }
+            if (func.isErr)
+            {
+                return err(func.error);
+            }
+
+            const input_eval = Evaluate(attr.value, this.attributes);
+            if (input_eval.isErr)
+            {
+                return err(input_eval.error);
+            }
+
+            return EvaluateFunction(func.value, input_eval.value, this.attributes);
         }
 
         return Evaluate(attr.value, this.attributes);

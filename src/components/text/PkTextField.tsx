@@ -9,7 +9,8 @@ import { PkTextLabel } from "./PkTextLabel";
 
 type PkTextFieldProps = {
     my_key: string,
-    className?: string
+    className?: string,
+    run_header: string
 }
 
 export default class PkTextField extends Component<PkTextFieldProps> {
@@ -37,7 +38,7 @@ export default class PkTextField extends Component<PkTextFieldProps> {
 
                     // Todo send error on error
                     sheet.chat.mutate((chat) => {
-                        chat.add_message_print_field("Mix", this.props.my_key, field_value);
+                        chat.add_message_print_field("Mix", this.props.run_header, field_value);
                     });
                 }}>
                 <span>{field_value.replaceAll(' ', '\u00a0')}</span>
@@ -62,7 +63,7 @@ export class PkHeadingTextField extends Component<PkHeadingTextFieldProps> {
 
     render() {
         return <div className={Helpers.zip_classes(css.pktextfield_heading, this.props.className)}>
-            <PkTextField my_key={this.props.my_key} />
+            <PkTextField my_key={this.props.my_key} run_header={this.props.label} />
             <PkTextLabel label={this.props.label} />
         </div>;
     }

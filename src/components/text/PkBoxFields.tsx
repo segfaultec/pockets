@@ -19,7 +19,10 @@ export class PkStatsBoxField extends Component<PkStatsBoxFieldProps> {
             <PkAttributeViewerField 
                 my_key={this.props.mod_key}
                 className={css.bignumber}
-                modifier/>
+                modifier
+                run_func="roll"
+                run_header={`${this.props.label} Check`}
+                />
             </div>
             <PkAttributeEditorField
                 my_key={this.props.base_key}/>
@@ -31,7 +34,9 @@ type PkAttributeViewerFieldProps = {
     my_key: string,
     label: string,
     modifier?: boolean,
-    suffix?: string
+    suffix?: string,
+    run_func?: string
+    run_header: string
 }
 
 export class PkAttributeViewerBoxField extends Component<PkAttributeViewerFieldProps> {
@@ -41,7 +46,9 @@ export class PkAttributeViewerBoxField extends Component<PkAttributeViewerFieldP
                 my_key={this.props.my_key}
                 modifier={this.props.modifier}
                 suffix={this.props.suffix}
-                className={css.bignumber}/>
+                className={css.bignumber}
+                run_func={this.props.run_func}
+                run_header={this.props.run_header}/>
             <PkTextLabel label={this.props.label} />
         </div>;
     }

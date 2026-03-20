@@ -50,7 +50,9 @@ type PkAttributeViewerFieldProps = {
     my_key: string,
     className?: string,
     modifier?: boolean,
-    suffix?: string
+    suffix?: string,
+    run_func?: string,
+    run_header: string
 } 
 
 export class PkAttributeViewerField extends Component<PkAttributeViewerFieldProps> {
@@ -58,10 +60,9 @@ export class PkAttributeViewerField extends Component<PkAttributeViewerFieldProp
     render() {
         let { sheet } = useContext(CS);
 
-        const attr_value = Helpers.get_attr_value(sheet, this.props.my_key);
-        const eval_result = sheet.attributes.get_inner().get_parsed().evaluate_attribute(this.props.my_key);
+        const eval_result_display = sheet.attributes.get_inner().get_parsed().evaluate_attribute(this.props.my_key);
 
-        const eval_display_result = eval_result.andThen((expr) => {
+        const eval_display_result = eval_result_display.andThen((expr) => {
             const total = expr.total;
 
             let out_str = total.toString();
@@ -79,15 +80,33 @@ export class PkAttributeViewerField extends Component<PkAttributeViewerFieldProp
 
         const eval_display_value = eval_display_result.unwrapOr("Err!");
 
+        let onClick: () => void;
+
+        if (this.props.run_func) {
+
+            // Run func = evaluation
+            onClick = () => {
+                const eval_result_display = sheet.attributes.get_inner().get_parsed().evaluate_attribute(this.props.my_key, this.props.run_func);
+
+                sheet.chat.mutate((chat) => {
+                    chat.add_message_eval_result("Mix", this.props.run_header, eval_result_display);
+                });
+            }
+
+        } else {
+
+            // No run func = printout
+            onClick = () => {
+                sheet.chat.mutate((chat) => {
+                    chat.add_message_print_field("Mix", this.props.run_header, eval_display_value);
+                });
+            }
+        }
+
         return <div className={this.props.className}>
             <div className={css.pktextfield_container}>
             <button
-                onClick={ () => {
-
-                    sheet.chat.mutate((chat) => {
-                        chat.add_message_print_field("Mix", `${this.props.my_key}`, eval_display_value);
-                    });
-                }}>
+                onClick={onClick}>
                 <span>{eval_display_value.replaceAll(' ', '\u00a0')}</span>
             </button>
         </div></div>;

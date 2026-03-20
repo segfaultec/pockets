@@ -7,7 +7,6 @@ import { MyResult } from "./errors";
 type CharsheetSkillsBoxEntry = {
     key_prof: string,
     key_mod: string,
-    key_check: string,
     ability: string,
     label: string,
     starting_proficiency: string
@@ -28,7 +27,6 @@ export class CharsheetSkillsBox {
         this.skills.push({
             key_prof: prefix + "_prof",
             key_mod: prefix + "_mod",
-            key_check: prefix + "_check",
             ability,
             label,
             starting_proficiency: value
@@ -54,7 +52,6 @@ export class Charsheet {
             const attrs = this.attributes.get_unparsed(true);
             attrs.add_attribute(skill.key_prof, skill.starting_proficiency);
             attrs.add_attribute(skill.key_mod, `[${skill.ability}_mod]+[${skill.key_prof}]*[pb]`)
-            attrs.add_attribute(skill.key_check, `[roll]+[${skill.key_mod}]`);
         }
     }
 }

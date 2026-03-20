@@ -138,3 +138,10 @@ export function Evaluate(expr: ParsedExpression, attributes: ContainerBase<strin
 
     return expr.parsed_expression.evaluate(context);
 }
+
+export function EvaluateFunction(funcexpr: ParsedExpression, inputexpr: EvaluatedExpression, attributes: ContainerBase<string, MyResult<ParsedExpression>>): MyResult<EvaluatedExpression> {
+
+    const context: EvaluationContext = { attributes, functioninputstack: [[inputexpr]] };
+
+    return funcexpr.parsed_expression.evaluate(context);
+}
