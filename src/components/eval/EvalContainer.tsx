@@ -7,6 +7,8 @@ import { EvalError } from "./EvalError";
 import SignalWrapper from "components/utils/SignalWrapper";
 import { Maybe } from "true-myth";
 
+import * as css from "./eval.module.css"
+
 type EvalContainerProps ={
     eval_result: SignalWrapper<Maybe<MyResult<EvaluatedExpression>>>
     show_tree: boolean

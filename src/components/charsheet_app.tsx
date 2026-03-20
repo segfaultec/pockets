@@ -7,7 +7,7 @@ import { Signal } from "@preact/signals";
 import { TextFieldContainer } from "lib/TextFieldContainer";
 import { Maybe } from "true-myth";
 import { nothing } from "true-myth/dist/es/maybe";
-import Chat, { ChatlogCommand } from "lib/chat";
+import Chat, { ChatlogCommand, ChatlogFromEvalResult, ChatlogMessage } from "lib/chat";
 import { err } from "true-myth/dist/es/result";
 
 export class CharsheetApp {
@@ -35,23 +35,20 @@ export class CharsheetApp {
         return new Charsheet(this.attributes.unpack(), this.text_fields.unpack(), this.skills);
     }
 
-    // Todo - return varient of chat message objects
-    run_command(command: ChatlogCommand): string {
+    run_command(sender: string, command: ChatlogCommand): ChatlogMessage {
 
         switch (command.commandType) {
             case "Roll":
                 const result = this.run_command_roll(command.args);
 
-                if (result.isOk) {
-                    // Todo: Should return data for annexes and stuff
-                    return result.value.total.toString();
-                } else {
-                    // Todo: SHould return data for context stack
-                    return result.error.Display();
-                }
-
-                break;
+                return ChatlogFromEvalResult(sender, `Rolling ${command.args}`, result);
         }
+
+        return {
+            sender,
+            type: "genericerror",
+            error_message: "Unknown command"
+        };
     }
 
     run_command_roll(expr: UnparsedExpression): MyResult<EvaluatedExpression> {

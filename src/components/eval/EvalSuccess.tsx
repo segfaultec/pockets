@@ -2,6 +2,8 @@
 import { Component } from "preact";
 import { EvaluatedExpression, EvaluatedExpressionToken, EvaluatedAttribute } from "lib/diceroll/mod";
 
+import * as css from "./eval.module.css"
+
 type EvalSuccessProps = {
     eval_result: EvaluatedExpression
 };

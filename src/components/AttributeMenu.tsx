@@ -60,11 +60,8 @@ class AttributeMenuElement extends Component<AttributeMenuElementProps, {}> {
 
                 const this_eval = sheet.attributes.get_inner().get_parsed().evaluate_attribute(key);
 
-                const chat_message: string = this_eval.mapOr("Error!",
-                    (exp) => `${key}: ${exp.total.toString()}`);
-
                 sheet.chat.mutate((chat) => {
-                    chat.add_message("Eval", chat_message);
+                    chat.add_message_eval_result("Mix", `Attribute "${key}"`, this_eval);
                 })
                 sheet.last_ran_expr.set_inner(just(this_eval));
 

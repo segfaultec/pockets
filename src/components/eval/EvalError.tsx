@@ -2,6 +2,8 @@
 import { Error } from "lib/errors";
 import { Component } from "preact";
 
+import * as css from "./eval.module.css"
+
 type EvalErrorProps = {
     eval_error: Error
 };

@@ -34,7 +34,11 @@ export default class PkTextField extends Component<PkTextFieldProps> {
             />
             <button className={edit_mode ? css.invisible : ""}
                 onClick={ () => {
-                    console.log(field_value);
+
+                    // Todo send error on error
+                    sheet.chat.mutate((chat) => {
+                        chat.add_message_print_field("Mix", this.props.my_key, field_value);
+                    });
                 }}>
                 <span>{field_value.replaceAll(' ', '\u00a0')}</span>
             </button>

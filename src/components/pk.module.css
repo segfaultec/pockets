@@ -85,6 +85,10 @@ body {
 
     grid-auto-rows: auto;
 
+    &.chat_error {
+        background-color: #fdc0c0;
+    }
+
     .chat_header {
         font-size: 14px;
         font-weight: bold;

@@ -35,7 +35,10 @@ export class PkAttributeEditorField extends Component<PkAttributeEditorFieldProp
             />
             <button className={edit_mode ? css.invisible : ""}
                 onClick={ () => {
-                    console.log(field_value);
+                    // Todo send error on error
+                    sheet.chat.mutate((chat) => {
+                        chat.add_message_print_field("Mix", this.props.my_key, field_value);
+                    });
                 }}>
                 <span>{field_value.replaceAll(' ', '\u00a0')}</span>
             </button>
@@ -55,30 +58,26 @@ export class PkAttributeViewerField extends Component<PkAttributeViewerFieldProp
     render() {
         let { sheet } = useContext(CS);
 
-        const field_result = Helpers.get_attr_value(sheet, this.props.my_key)
-            .andThen((key): MyResult<string> => {
-                const result = sheet.attributes.get_inner()
-                    .get_parsed().evaluate_attribute(this.props.my_key);
+        const attr_value = Helpers.get_attr_value(sheet, this.props.my_key);
+        const eval_result = sheet.attributes.get_inner().get_parsed().evaluate_attribute(this.props.my_key);
 
-                if (result.isErr) {
-                    return err(result.error);
-                }
+        const eval_display_result = eval_result.andThen((expr) => {
+            const total = expr.total;
 
-                const total = result.value.total;
+            let out_str = total.toString();
 
-                let out_str = total.toString();
+            if (total >= 0 && this.props.modifier) {
+                out_str = '+' + out_str;
+            }
+            if (this.props.suffix !== undefined) {
+                out_str = out_str + this.props.suffix;
+            }
 
-                if (total >= 0 && this.props.modifier) {
-                    out_str = '+' + out_str;
-                }
-                if (this.props.suffix !== undefined) {
-                    out_str = out_str + this.props.suffix;
-                }
+            return ok(out_str);
 
-                return ok(out_str);
-            });
+        });
 
-        const field_value = field_result.unwrapOr("Err!");
+        const eval_display_value = eval_display_result.unwrapOr("Err!");
 
         return <div className={this.props.className}>
             <div className={css.pktextfield_container}>
@@ -86,10 +85,10 @@ export class PkAttributeViewerField extends Component<PkAttributeViewerFieldProp
                 onClick={ () => {
 
                     sheet.chat.mutate((chat) => {
-                        chat.add_message("Roll", `${this.props.my_key} = ${field_value}`)
+                        chat.add_message_print_field("Mix", `${this.props.my_key}`, eval_display_value);
                     });
                 }}>
-                <span>{field_value.replaceAll(' ', '\u00a0')}</span>
+                <span>{eval_display_value.replaceAll(' ', '\u00a0')}</span>
             </button>
         </div></div>;
     }

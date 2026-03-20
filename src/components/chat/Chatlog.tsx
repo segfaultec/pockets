@@ -1,10 +1,9 @@
 import { Component, createRef, JSX, RefObject } from "preact"
 import { useMemo } from "preact/hooks"
 
-import ChatlogEntry from "./ChatlogEntry";
-
 import * as css from "../pk.module.css";
 import { ChatlogMessage } from "lib/chat";
+import { MakeChatlogEntry } from "./ChatlogEntry";
 
 type ChatlogProps = {
     messages: ChatlogMessage[]
@@ -14,9 +13,9 @@ export default class Chatlog extends Component<ChatlogProps> {
 
     scrollboxRef: RefObject<HTMLElement> = createRef();
     entry_components: JSX.Element[] = []
+    renderedMessageCount = 0;
 
     scrollToBottom() {
-        console.log("scrollToBottom")
         if (this.scrollboxRef.current)
         {
             this.scrollboxRef.current.scroll({
@@ -31,10 +30,13 @@ export default class Chatlog extends Component<ChatlogProps> {
     }
 
     componentDidUpdate(previousProps: Readonly<ChatlogProps>, previousState: Readonly<{}>, snapshot: any): void {
+
         // Only scroll to the bottom if we have new messages
-        if (previousProps.messages.length < this.props.messages.length) {
+        if (this.renderedMessageCount < this.props.messages.length) {
             this.scrollToBottom();
         }
+
+        this.renderedMessageCount = this.props.messages.length;
     }
 
     render() {
@@ -47,7 +49,7 @@ export default class Chatlog extends Component<ChatlogProps> {
 
             // Don't rerender old messages
             const component = useMemo(
-                () => <ChatlogEntry message={message}/>,
+                () => MakeChatlogEntry(message),
                 [message]
             );
 
