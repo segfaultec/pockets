@@ -12,13 +12,17 @@ type LinkedAttributesDependencies = ContainerBase<AttrKey, MyResult<ParsedExpres
 
 export class ParsedAttributeContainer {
 
-    attributes: LinkedAttributesDependencies
+    private attributes: LinkedAttributesDependencies
 
     constructor(attributes: LinkedAttributesDependencies) {
         this.attributes = attributes;
     }
 
-    public evaluate(attrkey: AttrKey): MyResult<EvaluatedExpression> {
+    public evaluate_expression(expr: ParsedExpression): MyResult<EvaluatedExpression> {
+        return Evaluate(expr, this.attributes);
+    }
+
+    public evaluate_attribute(attrkey: AttrKey): MyResult<EvaluatedExpression> {
         let attr = this.attributes.get(attrkey);
         if (attr == undefined)
         {

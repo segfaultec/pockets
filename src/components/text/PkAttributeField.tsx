@@ -58,7 +58,7 @@ export class PkAttributeViewerField extends Component<PkAttributeViewerFieldProp
         const field_result = Helpers.get_attr_value(sheet, this.props.my_key)
             .andThen((key): MyResult<string> => {
                 const result = sheet.attributes.get_inner()
-                    .get_parsed().evaluate(this.props.my_key);
+                    .get_parsed().evaluate_attribute(this.props.my_key);
 
                 if (result.isErr) {
                     return err(result.error);

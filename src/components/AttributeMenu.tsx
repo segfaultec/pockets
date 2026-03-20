@@ -58,7 +58,7 @@ class AttributeMenuElement extends Component<AttributeMenuElementProps, {}> {
             }}/>
             <button onClick={() => {
 
-                const this_eval = sheet.attributes.get_inner().get_parsed().evaluate(key);
+                const this_eval = sheet.attributes.get_inner().get_parsed().evaluate_attribute(key);
 
                 const chat_message: string = this_eval.mapOr("Error!",
                     (exp) => `${key}: ${exp.total.toString()}`);
