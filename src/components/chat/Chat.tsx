@@ -106,7 +106,7 @@ class Chatbox extends Component {
         if (textbox && textbox.value) {
             
             sheet.chat.mutate((chat) => {
-                chat.add_message("Mix", textbox.value);
+                chat.add_message_with_commands("Mix", textbox.value);
             });
 
             textbox.value = "";

@@ -12,7 +12,7 @@ type LinkedAttributesDependencies = ContainerBase<AttrKey, MyResult<ParsedExpres
 
 export class ParsedAttributeContainer {
 
-    private attributes: LinkedAttributesDependencies
+    attributes: LinkedAttributesDependencies
 
     constructor(attributes: LinkedAttributesDependencies) {
         this.attributes = attributes;
