@@ -1,7 +1,7 @@
 import { Maybe } from "true-myth";
 import { just, nothing } from "true-myth/dist/es/maybe";
 
-type ChatlogMessage = {
+export type ChatlogMessage = {
     sender: string,
     message: string
 }
