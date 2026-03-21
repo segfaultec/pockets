@@ -86,7 +86,7 @@ export class PkHitDiceBoxField extends Component<PkHitDiceBoxFieldProps> {
                 <PkAttributeEditorField
                     my_key={this.props.current_key}
                     always_edit number />
-                <button>/</button>
+                <button className={css.pkhitidcebox_divider} >/</button>
                 <PkAttributeEditorField
                     my_key={this.props.max_key}/>
                 <button>d</button>

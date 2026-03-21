@@ -163,9 +163,15 @@ input[type="number"] {
 }
 
 .pkhitdicebox_inner {
-    display: flex;
+    display: grid;
+
+    grid-template-columns: repeat(5, min-content);
+
     justify-content: center;
+
+    /* justify-content: center; */
     height: 30px;
+    width: 100%;
 }
 
 .pkhitdicebox_inner * {
@@ -182,6 +188,10 @@ input[type="number"] {
     box-shadow: none;
     text-align: left;
     text-shadow: initial;
+}
+
+.pkhitdicebox_inner .pkhitidcebox_divider {
+    margin: 2px;
 }
 
 .pkhitdicebox_inner .pktextfield_container {
@@ -241,6 +251,14 @@ input[type="number"] {
 
 .pkskillfield button, .pkskillfield input {
     text-align: center !important;
+}
+
+.pkskillfield .pktextfield_container {
+    width: 25px;
+}
+
+.pkskillfield .pktextfield_label {
+    margin-left: 2px;
 }
 
 .pkswitch {
@@ -305,32 +323,36 @@ button.tri_inner {
 }
 
 .pktextfield_container {
+    position: relative;
     display: grid;
-    
+    grid-template-rows: auto;
+    grid-template-columns: auto;
+    grid-template-areas: button;
+
     padding: 0;
     margin: 0;
+
+    width: 100%;
+    min-height: 18px;
 
     font-size: 14px;
     font-family: "MS Shell Dlg";
-
-    min-width: 25px;
 }
 
 .pktextfield_container > * {
-
     padding: 0;
     margin: 0;
-
-    grid-column: 1;
-    grid-row: 1;
-
     border-bottom: 1px solid #ccc !important;
-
-    width: 100%;
 }
 
 .pktextfield_container > input {
     background-color: rgba(0, 225, 255, 0.3);
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 
     border: 0;
     border-radius: 0;
@@ -342,6 +364,9 @@ button.tri_inner {
     padding: 0;
     border: 0;
 
+    width: 100%;
+    
+
     background-color: transparent;
     background-image: none;
     box-shadow: none;
@@ -350,7 +375,7 @@ button.tri_inner {
 }
 
 .pktextfield_container > button:hover {
-    color: var(--joy-palette-primary-500)
+    color: blue;
 }
 
 .invisible {
