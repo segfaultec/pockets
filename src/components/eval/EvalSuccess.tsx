@@ -1,12 +1,37 @@
 
 import { Component } from "preact";
-import { EvaluatedExpression, EvaluatedExpressionToken, EvaluatedAttribute } from "lib/diceroll/mod";
+import { EvaluatedExpression, EvaluatedExpressionToken, EvaluatedAttribute, EvaluatedDiceroll, EvaluatedFixed } from "lib/diceroll/mod";
 
 import * as css from "./eval.module.css"
+import { DicerollResult } from "lib/diceroll";
+import { ClsCombine } from "components/utils/ClassHelpers";
 
-type EvalSuccessProps = {
-    eval_result: EvaluatedExpression
-};
+type EvalSuccessDicerollProps = {
+    results: DicerollResult[]
+}
+
+class EvalDiceroll extends Component<EvalSuccessDicerollProps> {
+    render() {
+        return <span className={css.diceroll_container}>
+            {
+                this.props.results.map((result) => {
+                    let classes = css.diceroll
+                    if (result.ignored) {
+                        classes += " " + css.ignored
+                    }
+                    if (result.crit_success) {
+                        classes += " " + css.crit_success
+                    }
+                    if (result.crit_fail) {
+                        classes += " " + css.crit_failure
+                    }
+
+                    return <span class={classes}>{result.result}</span>;
+                })
+            }
+        </span>
+    }
+}
 
 type EvalSuccessAnnexProps = {
     annex: EvaluatedExpressionToken[]
@@ -16,22 +41,31 @@ class EvalSuccessAnnex extends Component<EvalSuccessAnnexProps> {
     render() {
         return this.props.annex.map((token) => {
             if (typeof token === "string") {
-                return <span>{token}</span>;
+                return <span className={css.annex_string}>{token}</span>;
             }
             else if (token instanceof EvaluatedAttribute) {
-                return <EvalSuccessAnnex annex={token.annex} />;
+                return <span>
+                    <EvalSuccessAnnex annex={token.annex} />
+                    </span>;
             }
-            else {
-                return <span>{token.ToString()}</span>;
+            else if (token instanceof EvaluatedDiceroll) {
+                return <EvalDiceroll results={token.results} />;
+            }
+            else if (token instanceof EvaluatedFixed) {
+                return <span className={css.annex_literal_fixed}>{token.ToString()}</span>;
             }
         })
     }
 }
 
+type EvalSuccessProps = {
+    eval_result: EvaluatedExpression
+};
+
 export class EvalSuccess extends Component<EvalSuccessProps> {
 
     render() {
-        return <div>
+        return <div className={css.eval_container}>
             <span>{this.props.eval_result.total} = </span><EvalSuccessAnnex annex={this.props.eval_result.annex} />
         </div>
     }

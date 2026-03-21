@@ -28,7 +28,11 @@ export class CharsheetApp {
         this.edit_mode = new Signal(false);
         this.last_ran_expr = new SignalWrapper(nothing());
         this.skills = sheet.skills;
-        this.chat = new SignalWrapper(new Chat(this.run_command.bind(this)));
+
+        let chat = new Chat(this.run_command.bind(this));
+        chat.add_message_with_commands("debug", "/roll 2d20kh1+[str_mod]");
+
+        this.chat = new SignalWrapper(chat);
     }
 
     to_charsheet(): Charsheet {

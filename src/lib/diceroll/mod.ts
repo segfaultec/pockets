@@ -42,23 +42,28 @@ export class EvaluatedFixed extends EvaluatedLiteral {
 
 
 export class EvaluatedDiceroll extends EvaluatedLiteral {
-    result: DicerollResult;
+    results: DicerollResult[];
 
-    constructor(result: DicerollResult) {
+    constructor(results: DicerollResult[]) {
         super();
-        this.result = result;
+        this.results = results;
     }
 
     ToString(): string {
-        if (this.result.ignored) {
-            return `:${this.result.result}:`
-        } else if (this.result.crit_success) {
-            return `[${this.result.result} CS]`;
-        } else if (this.result.crit_fail) {
-            return `[${this.result.result} CF]`;
-        } else {
-            return `[${this.result.result}]`;
+        let outstr = "";
+        for (const result of this.results)
+        {
+            if (result.ignored) {
+                outstr += `:${result.result}:`
+            } else if (result.crit_success) {
+                outstr += `[${result.result} CS]`;
+            } else if (result.crit_fail) {
+                outstr += `[${result.result} CF]`;
+            } else {
+                outstr += `[${result.result}]`;
+            }
         }
+        return outstr;
     }
 }
 
@@ -81,10 +86,10 @@ export class EvaluatedExpression {
     static RollLiteral(rolls: DicerollSet) {
 
         const eval_result = rolls.evaluate();
-        return new EvaluatedExpression(eval_result.total, eval_result.rolls.map((result) => {
-            
-            return new EvaluatedDiceroll(result);
-        }))
+
+        let results = eval_result.rolls;
+
+        return new EvaluatedExpression(eval_result.total, [new EvaluatedDiceroll(results)]);
     }
 
     static AttributeLiteral(value: number, attribute_name: string, attribute_inner: EvaluatedExpressionToken[]) {

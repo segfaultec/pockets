@@ -194,9 +194,9 @@ input[type="number"] {
     margin: 2px;
 }
 
-.pkhitdicebox_inner .pktextfield_container {
+/* .pkhitdicebox_inner .pktextfield_container {
     min-width: 0;
-}
+} */
 
 .pkattrbox {
     width: 75px;
@@ -334,6 +334,7 @@ button.tri_inner {
 
     width: 100%;
     min-height: 18px;
+    min-width: 8px;
 
     font-size: 14px;
     font-family: "MS Shell Dlg";

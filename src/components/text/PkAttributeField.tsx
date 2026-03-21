@@ -1,5 +1,5 @@
 import { CharsheetApp } from "components/charsheet_app";
-import { Component } from "preact";
+import { Component, TargetedInputEvent } from "preact";
 import { CS } from "components/app";
 import { useContext } from "preact/hooks";
 import * as Helpers from "./PkFieldHelpers"
@@ -29,7 +29,13 @@ export class PkAttributeEditorField extends Component<PkAttributeEditorFieldProp
             <input className={edit_mode ? "" : css.invisible}
                 value={field_value}
                 type={this.props.number ? "number" : "text"} 
-                onInput={(event: any) => {
+                onInput={(event: any): void => {
+                    let value: string = event.target.value;
+                    // event.preventDefault();
+                    // if (this.props.number && value.) {
+
+                    // }
+
                     Helpers.set_attr_value(sheet, this.props.my_key, event.target.value);
                 }}
             />

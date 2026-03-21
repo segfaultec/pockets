@@ -1,1 +1,42 @@
 
+.eval_container {
+
+    .annex_string {
+        color: black;     
+    }
+
+    .annex_literal_fixed {
+        color: black;
+    }
+}
+
+.diceroll_container {
+
+    .diceroll {
+
+        display: inline-block;
+
+        border: 2px solid black;
+
+        margin: 2px;
+        padding: 1px;
+
+        height: 20px;
+        min-width: 20px;
+
+        text-align: center;
+
+        &.ignored {
+            color: grey
+        }
+
+        &.crit_success {
+            color: green;
+        }
+
+        &.crit_failure {
+            color: red;
+        }
+    }
+
+}
