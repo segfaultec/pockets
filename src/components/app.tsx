@@ -10,7 +10,6 @@ import { Charsheet, CharsheetSkillsBox } from 'lib/charsheet';
 import AttributeMenu from './AttributeMenu';
 import EvalContainer from "./eval/EvalContainer";
 
-import PkEditModeToggle from './PkEditModeToggle';
 import { TextFieldContainer } from 'lib/TextFieldContainer';
 import { CharsheetApp } from './charsheet_app';
 import PkLayout from './text/PkLayout';
@@ -20,6 +19,7 @@ import Chat from './chat/Chat';
 import { PkTab, PkTabs } from './library/PkTabs';
 
 import data from "./charsheet_data.json"
+import PkCheckbox from './library/PkCheckbox';
 
 function createCharsheet(): Charsheet {
     let attributes = new UnparsedAttrContainer;
@@ -75,11 +75,22 @@ class App extends Component<{}, {}> {
                 <div id={css.main_sheet}>
                     <PkTabs>
                         <PkTab title='Layout'>
-                            <PkEditModeToggle />
+                            <span className={css.pkcharsheet_checkboxes_container}>
+                                <PkCheckbox
+                                    label="Edit Mode"
+                                    signal={sheet.edit_mode}
+                                    className={css.pkeditmodetoggle}
+                                    />
+                                <PkCheckbox
+                                    label="Advanced Display"
+                                    signal={sheet.advanced_display}
+                                    className={css.pkeditmodetoggle}
+                                    />
+                            </span>
                             <PkLayout />
                         </PkTab>
                         <PkTab title='Attributes'>
-                            <EvalContainer eval_result={sheet.last_ran_expr} show_tree={false}/>
+                            <EvalContainer eval_result={sheet.last_ran_expr} show_tree={false} advanced_display={sheet.advanced_display.value}/>
                             <AttributeMenu attributes={sheet.attributes} />
                         </PkTab>
                     </PkTabs>

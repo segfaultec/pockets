@@ -5,6 +5,8 @@ import * as css from "../pk.module.css";
 import { EvalSuccess } from "components/eval/EvalSuccess";
 import { EvalError } from "components/eval/EvalError";
 import { ClsCombine } from "components/utils/ClassHelpers";
+import { useContext } from "preact/hooks";
+import { CS } from "components/app";
 
 abstract class ChatlogEntryBase<T extends ChatlogMessage_Base> extends Component<{message: T}> {}
 
@@ -35,13 +37,15 @@ class BasicChatlogEntry extends Component<{header: string, message: string, clas
 class ChatlogEntry_EvalSuccess extends ChatlogEntryBase<ChatlogMessage_EvalSuccess> {
     render() {
 
+        let { sheet } = useContext(CS);
+
         const header1 = this.props.message.sender + ":";
         const header2 = this.props.message.action;
 
         return <div className={css.chat_message_container}>
             <span className={css.chat_header}>{header1}</span>
             <span className={css.chat_header}>{header2}</span>
-            <EvalSuccess eval_result={this.props.message.expr} advanced_display={false} />
+            <EvalSuccess eval_result={this.props.message.expr} advanced_display={sheet.advanced_display.value} />
         </div>
     }
 }

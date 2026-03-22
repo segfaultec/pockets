@@ -43,7 +43,6 @@ body {
         justify-self: stretch;
         text-align: center;
     }
-
     > :not(:last-child) {
         border-bottom: 3px solid black;
     }
@@ -381,4 +380,39 @@ button.tri_inner {
 
 .invisible {
     visibility: hidden;
+}
+
+.pkcharsheet_checkboxes_container {
+    display: flex;
+    flex-direction: row;
+    > *:not(:last-child) {
+        margin-right: 5px;
+    }
+}
+
+.pkeditmodetoggle {
+
+    display: flex;
+
+    align-items: center;
+
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+
+    border: 1px solid black;
+    border-radius: 5px;
+
+    padding: 5px;
+
+    label {
+        font-family: sans-serif;
+        font-size: 16px;
+    }
+
+    input {
+        height: 20px;
+        width: 20px;
+
+        margin: 0 4px 0 0;
+    }
 }

@@ -130,7 +130,7 @@ class EvalSuccessAnnex extends Component<EvalSuccessAnnexProps> {
 
 type EvalSuccessProps = {
     eval_result: EvaluatedExpression,
-    advanced_display: Boolean
+    advanced_display: boolean
 };
 
 export class EvalSuccess extends Component<EvalSuccessProps> {

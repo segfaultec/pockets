@@ -16,6 +16,7 @@ export class CharsheetApp {
     text_fields: SignalWrapper<TextFieldContainer>;
 
     edit_mode: Signal<boolean>;
+    advanced_display: Signal<boolean>;
     last_ran_expr: SignalWrapper<Maybe<MyResult<EvaluatedExpression>>>;
 
     public skills: CharsheetSkillsBox;
@@ -26,6 +27,7 @@ export class CharsheetApp {
         this.attributes = new SignalWrapper(sheet.attributes);
         this.text_fields = new SignalWrapper(sheet.text_fields);
         this.edit_mode = new Signal(false);
+        this.advanced_display = new Signal(false);
         this.last_ran_expr = new SignalWrapper(nothing());
         this.skills = sheet.skills;
 

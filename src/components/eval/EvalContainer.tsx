@@ -11,7 +11,8 @@ import * as css from "./eval.module.css"
 
 type EvalContainerProps ={
     eval_result: SignalWrapper<Maybe<MyResult<EvaluatedExpression>>>
-    show_tree: boolean
+    show_tree: boolean,
+    advanced_display: boolean
 };
 
 export class EvalContainer extends Component<EvalContainerProps,{}> {
@@ -28,9 +29,9 @@ export class EvalContainer extends Component<EvalContainerProps,{}> {
 
             if (eval_result.value.isOk) {
                 if (this.props.show_tree) {
-                    return <EvalSuccessTree eval_result={eval_result.value.value} advanced_display={true} />;   
+                    return <EvalSuccessTree eval_result={eval_result.value.value} advanced_display={this.props.advanced_display} />;   
                 } else {
-                    return <EvalSuccess eval_result={eval_result.value.value} advanced_display={true} />;
+                    return <EvalSuccess eval_result={eval_result.value.value} advanced_display={this.props.advanced_display} />;
                 }
             } else {
                 return <EvalError eval_error={eval_result.value.error} />;
