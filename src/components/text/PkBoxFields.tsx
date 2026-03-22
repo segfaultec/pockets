@@ -20,7 +20,7 @@ export class PkStatsBoxField extends Component<PkStatsBoxFieldProps> {
                 my_key={this.props.mod_key}
                 className={css.bignumber}
                 modifier
-                run_func="roll"
+                run_func="roll_adv"
                 run_header={`${this.props.label} Check`}
                 />
             </div>

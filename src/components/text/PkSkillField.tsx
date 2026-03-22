@@ -16,7 +16,7 @@ export default class PkSkillField extends Component<PkSkillFieldProps> {
     render() {
         return <div className={css.pkskillfield}>
             <PkTriSwitch my_key={this.props.prof_key} />
-            <PkAttributeViewerField my_key={this.props.mod_key} modifier run_func="roll" run_header={`${this.props.label} Check`}/>
+            <PkAttributeViewerField my_key={this.props.mod_key} modifier run_func="roll_adv" run_header={`${this.props.label} Check`}/>
             <PkTextLabel label={this.props.label} />
             </div>
     }

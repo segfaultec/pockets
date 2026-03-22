@@ -68,14 +68,14 @@ Diceroll {
         | Literal
 
     AttributeInner
-        = variable_ident "(" ListOf<Expr,","> ")" --Function
-        | variable_ident --Single
-        // todo multiple function inputs
-        
+        = "input" digit --Input
+        | "input" --InputSingle
+        | variable_ident "(" ListOf<Expr,","> ")" --NamedFunction // todo multiple function inputs
+        | variable_ident --NamedAttribute
+    
     Literal
-        = "[input" digit "]" --FunctionInput
-        | "[input]" --FunctionInputSingle
-    	| "[" AttributeInner "]" --Attribute
+        = "[[" AttributeInner "]]" --AdvancedAttribute
+        | "[" AttributeInner "]" --AttributeBasic
         | number --number
 
     variable_ident

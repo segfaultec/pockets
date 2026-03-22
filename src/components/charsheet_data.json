@@ -11,21 +11,22 @@
 
         ["gen_stat", "4d6d1"],
         ["roll", "d20+[input]"],
+        ["roll_adv", "d20+[[input]]"],
         ["pb", "3"],
         ["stat_mod", "([input]-10)//2"],
 
         ["str", "8"],
-        ["str_mod", "[stat_mod([str])]"],
+        ["str_mod", "[[stat_mod([str])]]"],
         ["dex", "15"],
-        ["dex_mod", "[stat_mod([dex])]"],
+        ["dex_mod", "[[stat_mod([dex])]]"],
         ["con", "18"],
-        ["con_mod", "[stat_mod([con])]"],
+        ["con_mod", "[[stat_mod([con])]]"],
         ["int", "9"],
-        ["int_mod", "[stat_mod([int])]"],
+        ["int_mod", "[[stat_mod([int])]]"],
         ["wis", "11"],
-        ["wis_mod", "[stat_mod([wis])]"],
+        ["wis_mod", "[[stat_mod([wis])]]"],
         ["cha", "20"],
-        ["cha_mod", "[stat_mod([cha])]"]
+        ["cha_mod", "[[stat_mod([cha])]]"]
     ],
     "skills": [
         ["acrobatics", "Acrobatics", "dex"],

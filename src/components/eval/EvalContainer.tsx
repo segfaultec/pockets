@@ -28,9 +28,9 @@ export class EvalContainer extends Component<EvalContainerProps,{}> {
 
             if (eval_result.value.isOk) {
                 if (this.props.show_tree) {
-                    return <EvalSuccessTree eval_result={eval_result.value.value} />;   
+                    return <EvalSuccessTree eval_result={eval_result.value.value} advanced_display={true} />;   
                 } else {
-                    return <EvalSuccess eval_result={eval_result.value.value} />;
+                    return <EvalSuccess eval_result={eval_result.value.value} advanced_display={true} />;
                 }
             } else {
                 return <EvalError eval_error={eval_result.value.error} />;

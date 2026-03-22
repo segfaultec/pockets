@@ -86,7 +86,14 @@ diceroll_semantics.addOperation<expression.Expr>('tree(context)', {
     ExprPriority_NegPrefix(arg0, arg1) {
         return new expression.PrefixExpression(new operation.SubtractOperation, arg1.tree(this.args.context));
     },
-    AttributeInner_Function(arg0, arg1, arg2, arg3) {
+
+    AttributeInner_Input(arg0, arg1) {
+        return new expression.FunctionInputInnerExpr(parseInt(arg1.sourceString));
+    },
+    AttributeInner_InputSingle(arg0) {
+        return new expression.FunctionInputInnerExpr(0);
+    },
+    AttributeInner_NamedFunction(arg0, arg1, arg2, arg3) {
 
         this.args.context.unresolved_variables.add(arg0.sourceString);
 
@@ -94,21 +101,33 @@ diceroll_semantics.addOperation<expression.Expr>('tree(context)', {
             c => {return c.tree(this.args.context)}
         );
 
-        return new expression.FunctionLiteral(arg0.sourceString, funcargs);
+        return new expression.FunctionInnerExpr(arg0.sourceString, funcargs);
     },
-    AttributeInner_Single(arg0) {
+    AttributeInner_NamedAttribute(arg0) {
         this.args.context.unresolved_variables.add(arg0.sourceString);
-        return new expression.FunctionLiteral(arg0.sourceString, []);
+
+        return new expression.FunctionInnerExpr(arg0.sourceString, []);
     },
-    Literal_FunctionInput(arg0, arg1, arg2) {
-        let index = parseInt(arg1.sourceString);
-        return new expression.FunctionInputLiteral(index);
+
+    Literal_AdvancedAttribute(arg0, arg1, arg2) {
+        let inner = arg1.tree(this.args.context);
+
+        // Todo is this needed? Could just be Expr if we don't need attribute_name
+        if (!(inner instanceof expression.AttributeInnerExpr)) {
+            console.error("Attribute inner is not an AttributeInnerExpr!")
+        }
+
+        return new expression.AttributeLiteral(inner, true);
     },
-    Literal_FunctionInputSingle(arg0) {
-        return new expression.FunctionInputLiteral(0);
-    },
-    Literal_Attribute(arg0, arg1, arg2) {
-        return arg1.tree(this.args.context);
+    Literal_AttributeBasic(arg0, arg1, arg2) {
+        let inner = arg1.tree(this.args.context);
+
+        // Todo is this needed? Could just be Expr if we don't need attribute_name
+        if (!(inner instanceof expression.AttributeInnerExpr)) {
+            console.error("Attribute inner is not an AttributeInnerExpr!")
+        }
+
+        return new expression.AttributeLiteral(inner, false);
     },
     Literal_number(arg0) {
         return new expression.NumberLiteral(parseFloat(this.sourceString));

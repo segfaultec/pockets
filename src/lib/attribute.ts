@@ -123,7 +123,7 @@ export class UnparsedAttrContainer {
                 return err(attr_result.error);
             }
 
-            const parse_result = Parse(attr_result.value);
+            const parse_result = add_context(Parse(attr_result.value), `Parsing "${attr_result.value}"`);
             if (parse_result.isErr) {
                 return err(parse_result.error);
             }

@@ -14,12 +14,14 @@ export class EvaluatedAttribute extends EvaluatedLiteral {
     name: string;
     annex: EvaluatedExpressionToken[];
     total: number;
+    advanced: Boolean;
 
-    constructor(total: number, name: string, annex: EvaluatedExpressionToken[]) {
+    constructor(total: number, name: string, annex: EvaluatedExpressionToken[], advanced: Boolean) {
         super();
         this.name = name;
         this.annex = annex;
         this.total = total;
+        this.advanced = advanced;
     }
 
     ToString(): string {
@@ -92,8 +94,8 @@ export class EvaluatedExpression {
         return new EvaluatedExpression(eval_result.total, [new EvaluatedDiceroll(results)]);
     }
 
-    static AttributeLiteral(value: number, attribute_name: string, attribute_inner: EvaluatedExpressionToken[]) {
-        return new EvaluatedExpression(value, [new EvaluatedAttribute(value, attribute_name, attribute_inner)]);
+    static AttributeLiteral(value: number, attribute_name: string, attribute_inner: EvaluatedExpressionToken[], advanced: Boolean) {
+        return new EvaluatedExpression(value, [new EvaluatedAttribute(value, attribute_name, attribute_inner, advanced)]);
     }
 
     static Infix(new_total: number, lhs: EvaluatedExpression, sep: string, rhs: EvaluatedExpression) {
@@ -141,12 +143,18 @@ export { Parse, UnparsedExpression, ParsedExpression } from "./parser/mod";
 export function Evaluate(expr: ParsedExpression, attributes: ContainerBase<string, MyResult<ParsedExpression>>): MyResult<EvaluatedExpression> {
     const context: EvaluationContext = { attributes, functioninputstack: [] };
 
+    console.log(`Evaluating!`)
+    console.log(expr);
+
     return expr.parsed_expression.evaluate(context);
 }
 
 export function EvaluateFunction(funcexpr: ParsedExpression, inputexpr: EvaluatedExpression, attributes: ContainerBase<string, MyResult<ParsedExpression>>): MyResult<EvaluatedExpression> {
 
     const context: EvaluationContext = { attributes, functioninputstack: [[inputexpr]] };
+
+    console.log(`Evaluating function!`)
+    console.log(funcexpr);
 
     return funcexpr.parsed_expression.evaluate(context);
 }

@@ -34,7 +34,8 @@ class EvalDiceroll extends Component<EvalSuccessDicerollProps> {
 }
 
 type EvalSuccessAnnexProps = {
-    annex: EvaluatedExpressionToken[]
+    annex: EvaluatedExpressionToken[],
+    advanced_display: Boolean
 }
 
 class EvalSuccessAnnex extends Component<EvalSuccessAnnexProps> {
@@ -44,9 +45,14 @@ class EvalSuccessAnnex extends Component<EvalSuccessAnnexProps> {
                 return <span className={css.annex_string}>{token}</span>;
             }
             else if (token instanceof EvaluatedAttribute) {
-                return <span>
-                    <EvalSuccessAnnex annex={token.annex} />
-                    </span>;
+
+                if (this.props.advanced_display || !token.advanced) {
+                    return <span>
+                        <EvalSuccessAnnex annex={token.annex} advanced_display={this.props.advanced_display} />
+                        </span>;
+                } else {
+                    return <span className={css.annex_literal_fixed}>{token.total}</span>;
+                }
             }
             else if (token instanceof EvaluatedDiceroll) {
                 return <EvalDiceroll results={token.results} />;
@@ -59,14 +65,15 @@ class EvalSuccessAnnex extends Component<EvalSuccessAnnexProps> {
 }
 
 type EvalSuccessProps = {
-    eval_result: EvaluatedExpression
+    eval_result: EvaluatedExpression,
+    advanced_display: Boolean
 };
 
 export class EvalSuccess extends Component<EvalSuccessProps> {
 
     render() {
         return <div className={css.eval_container}>
-            <span>{this.props.eval_result.total} = </span><EvalSuccessAnnex annex={this.props.eval_result.annex} />
+            <span>{this.props.eval_result.total} = </span><EvalSuccessAnnex annex={this.props.eval_result.annex} advanced_display={this.props.advanced_display} />
         </div>
     }
 }
@@ -80,7 +87,7 @@ class EvalSuccessTreeAnnex extends Component<EvalSuccessAnnexProps> {
             else if (token instanceof EvaluatedAttribute) {
                 return <details>
                     <summary>{token.name}</summary>
-                    <EvalSuccessTreeAnnex annex={token.annex} />
+                    <EvalSuccessTreeAnnex annex={token.annex} advanced_display={this.props.advanced_display} />
                 </details>
             }
             else {
@@ -94,7 +101,7 @@ export class EvalSuccessTree extends Component<EvalSuccessProps> {
     render() {
         return <details>
             <summary>Eval Success</summary>
-            <EvalSuccessTreeAnnex annex={this.props.eval_result.annex} />
+            <EvalSuccessTreeAnnex annex={this.props.eval_result.annex} advanced_display={this.props.advanced_display}/>
             </details>;
     }
 }

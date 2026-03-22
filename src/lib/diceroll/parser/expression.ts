@@ -4,7 +4,7 @@ import { ok, err } from 'true-myth/dist/es/result';
 
 import { MyResult } from "lib/errors";
 import * as Error from "lib/errors";
-import { EvaluatedAttribute, EvaluatedExpression, EvaluationContext } from '../mod'; 
+import { EvaluatedExpression, EvaluationContext } from '../mod'; 
 import { RollMod } from './rollmods';
 
 export type ParseContext = {
@@ -31,12 +31,45 @@ export class NumberLiteral extends Literal {
     }
 }
 
-export class FunctionLiteral extends Literal {
+// Todo is this needed? Could just be Expr if we don't need attribute_name
+export abstract class AttributeInnerExpr extends Expr {
+
+    attribute_name: string;
+
+    constructor(attribute_name: string) {
+        super();
+
+        this.attribute_name = attribute_name;
+    }
+}
+
+export class AttributeLiteral extends Literal {
+    inner: AttributeInnerExpr
+    advanced: Boolean
+
+    constructor(inner: AttributeInnerExpr, advanced: Boolean) {
+        super();
+
+        this.inner = inner;
+        this.advanced = advanced;
+    }
+
+    evaluate(context: EvaluationContext): MyResult<EvaluatedExpression> {
+
+        return this.inner.evaluate(context).map((result) => (
+            // todo pass advanced here
+            EvaluatedExpression.AttributeLiteral(result.total, this.inner.attribute_name, result.annex, this.advanced)
+        ));
+    }
+}
+
+export class FunctionInnerExpr extends AttributeInnerExpr {
     key: string;
     params: Expr[];
 
     constructor(key: string, params: Expr[]) {
-        super();
+        super(key);
+
         this.key = key;
         this.params = params;
     }
@@ -74,21 +107,17 @@ export class FunctionLiteral extends Literal {
             context.functioninputstack.pop();
         }
 
-        if (result.isErr)
-        {
-            return result;
-        }
-
-        return ok(EvaluatedExpression.AttributeLiteral(result.value.total, this.key, result.value.annex));
+        return result;
     }
 }
 
-export class FunctionInputLiteral extends Literal {
+export class FunctionInputInnerExpr extends AttributeInnerExpr {
     index: number;
     constructor(index: number) {
-        super();
+        super(`input${index}`);
         this.index = index;
     }
+
     evaluate(context: EvaluationContext): MyResult<EvaluatedExpression> {
         
         const inputstack = context.functioninputstack;

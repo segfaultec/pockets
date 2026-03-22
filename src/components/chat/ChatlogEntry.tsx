@@ -41,7 +41,7 @@ class ChatlogEntry_EvalSuccess extends ChatlogEntryBase<ChatlogMessage_EvalSucce
         return <div className={css.chat_message_container}>
             <span className={css.chat_header}>{header1}</span>
             <span className={css.chat_header}>{header2}</span>
-            <EvalSuccess eval_result={this.props.message.expr} />
+            <EvalSuccess eval_result={this.props.message.expr} advanced_display={false} />
         </div>
     }
 }
