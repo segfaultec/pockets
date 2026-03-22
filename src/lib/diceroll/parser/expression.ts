@@ -153,9 +153,11 @@ export class InfixExpression extends Expr {
         const rightEval = this.right.evaluate(context);
         if (rightEval.isErr) { return rightEval; }
 
+        const collapse_instructions = this.op.CollapseInfix ? this.op.CollapseInfix(leftEval.value.total, rightEval.value.total) : null;
+
         const result = this.op.RunInfix(leftEval.value.total, rightEval.value.total);
         return result.map((total) => {
-            return EvaluatedExpression.Infix(total, leftEval.value, this.op.GetInfixStr(), rightEval.value);
+            return EvaluatedExpression.Infix(total, leftEval.value, this.op.GetInfixStr(), rightEval.value, collapse_instructions);
         });
     }
 }
@@ -172,9 +174,11 @@ export class PrefixExpression extends Expr {
         const rightEval = this.right.evaluate(context);
         if (rightEval.isErr) { return rightEval; }
 
+        const collapse_instructions = this.op.CollapsePrefix ? this.op.CollapsePrefix(rightEval.value.total) : null;
+
         const result = this.op.RunPrefix(rightEval.value.total);
         return result.map((total) => {
-            return EvaluatedExpression.Prefix(total, this.op.GetPrefixStr(), rightEval.value);
+            return EvaluatedExpression.Prefix(total, this.op.GetPrefixStr(), rightEval.value, collapse_instructions);
         });
     }
 }

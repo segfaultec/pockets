@@ -2,14 +2,25 @@ import { ok, err } from "true-myth/dist/es/result"
 import { MyResult, DivisionByZero } from "lib/errors"
 import { DicerollSet, Diceroll } from "lib/diceroll";
 
+export type CollapsePrefixInfo = {
+    new_rhs: number,
+    new_str: string
+};
+
 export interface InfixOperation {
     RunInfix(left: number, right: number): MyResult<number>;
     GetInfixStr(): string;
+
+    CollapseInfix?(lhs: number, rhs: number): CollapsePrefixInfo | null;
 }
 export interface PrefixOperation {
     RunPrefix(right: number): MyResult<number>;
     GetPrefixStr(): string;
+
+    CollapsePrefix?(rhs: number): CollapsePrefixInfo | null;
 }
+
+
 export class AddOperation implements PrefixOperation, InfixOperation {
     RunInfix(left: number, right: number): MyResult<number> {
         return ok(left + right);
@@ -17,6 +28,34 @@ export class AddOperation implements PrefixOperation, InfixOperation {
 
     GetInfixStr(): string {
         return " + "
+    }
+
+    CollapseInfix(lhs: number, rhs: number): CollapsePrefixInfo | null {
+        if (rhs < 0.0) {
+            return {
+                new_rhs: -rhs,
+                new_str: " - "
+            }
+        } else {
+            return {
+                new_rhs: rhs,
+                new_str: this.GetInfixStr()
+            }
+        }
+    }
+
+    CollapsePrefix(rhs: number): CollapsePrefixInfo | null {
+        if (rhs < 0.0) {
+            return {
+                new_rhs: -rhs,
+                new_str: "-"
+            }
+        } else {
+            return {
+                new_rhs: rhs,
+                new_str: this.GetPrefixStr()
+            }
+        }
     }
 
     RunPrefix(right: number): MyResult<number> {
@@ -42,6 +81,20 @@ export class SubtractOperation implements PrefixOperation, InfixOperation {
 
     GetPrefixStr(): string {
         return "-"
+    }
+
+    CollapseInfix(lhs: number, rhs: number): CollapsePrefixInfo | null {
+        return {
+            new_rhs: rhs,
+            new_str: this.GetInfixStr()
+        }
+    }
+
+    CollapsePrefix(rhs: number): CollapsePrefixInfo | null {
+        return {
+            new_rhs: rhs,
+            new_str: this.GetPrefixStr()
+        }
     }
 }
 export class FloorDivideOperation implements InfixOperation {

@@ -3,6 +3,7 @@ import { MyResult } from "lib/errors";
 import { ParsedExpression } from "./parser/mod";
 import { Diceroll, DicerollResult, DicerollResultSet, DicerollSet } from "lib/diceroll";
 import { ContainerBase } from "lib/ContainerBase";
+import { CollapsePrefixInfo } from "./parser/operation";
 
 abstract class EvaluatedLiteral {
 
@@ -12,11 +13,11 @@ abstract class EvaluatedLiteral {
 
 export class EvaluatedAttribute extends EvaluatedLiteral {
     name: string;
-    annex: EvaluatedExpressionToken[];
+    annex: EvaluatedExpressionToken;
     total: number;
     advanced: Boolean;
 
-    constructor(total: number, name: string, annex: EvaluatedExpressionToken[], advanced: Boolean) {
+    constructor(total: number, name: string, annex: EvaluatedExpressionToken, advanced: Boolean) {
         super();
         this.name = name;
         this.annex = annex;
@@ -42,6 +43,63 @@ export class EvaluatedFixed extends EvaluatedLiteral {
     }
 }
 
+export class EvaluatedPrefix extends EvaluatedLiteral {
+    rhs: EvaluatedExpressionToken;
+    seperator: string;
+    total: number;
+    rhs_total: number;
+
+    collapse_instructions: CollapsePrefixInfo | null;
+
+    constructor(total: number, rhs_total: number, seperator: string, rhs: EvaluatedExpressionToken, collapse_instructions: CollapsePrefixInfo | null) {
+        super();
+
+        this.rhs = rhs;
+        this.seperator = seperator;
+        this.total = total;
+        this.rhs_total = rhs_total;
+        this.collapse_instructions = collapse_instructions;
+    }
+
+    ToString(): string {
+        return `${this.seperator}${this.rhs.toString()}`;
+    }
+}
+
+export class EvaluatedInfix extends EvaluatedLiteral {
+    lhs: EvaluatedExpressionToken;
+    rhs: EvaluatedExpressionToken;
+    seperator: string;
+    total: number;
+    lhs_total: number;
+    rhs_total: number;
+
+    collapse_instructions: CollapsePrefixInfo | null;
+
+    constructor(total: number, lhs_total: number, rhs_total: number, lhs: EvaluatedExpressionToken, sep: string, rhs: EvaluatedExpressionToken, collapse_instructions: CollapsePrefixInfo | null)
+    {
+        super();
+
+        this.total = total;
+        this.lhs = lhs;
+        this.rhs = rhs;
+        this.seperator = sep;
+        this.lhs_total = lhs_total;
+        this.rhs_total = rhs_total;
+
+        this.collapse_instructions = collapse_instructions;
+    }
+
+    ToString(): string {
+        let outstr = "";
+        if (this.lhs) {
+            outstr += this.lhs.toString();
+        }
+        outstr += this.seperator;
+        outstr += this.rhs.toString();
+        return outstr;
+    }
+}
 
 export class EvaluatedDiceroll extends EvaluatedLiteral {
     results: DicerollResult[];
@@ -69,20 +127,20 @@ export class EvaluatedDiceroll extends EvaluatedLiteral {
     }
 }
 
-export type EvaluatedExpressionToken = string | EvaluatedLiteral;
+export type EvaluatedExpressionToken = (string | EvaluatedLiteral);
 
 export class EvaluatedExpression {
 
     total: number = 0;
-    annex: EvaluatedExpressionToken[];
+    annex: EvaluatedExpressionToken;
 
-    private constructor(total: number, annex: EvaluatedExpressionToken[]) {
+    private constructor(total: number, annex: EvaluatedExpressionToken) {
         this.total = total;
         this.annex = annex;
     }
 
     static FixedLiteral(value: number) {
-        return new EvaluatedExpression(value, [new EvaluatedFixed(value)]);
+        return new EvaluatedExpression(value, new EvaluatedFixed(value));
     }
 
     static RollLiteral(rolls: DicerollSet) {
@@ -91,38 +149,38 @@ export class EvaluatedExpression {
 
         let results = eval_result.rolls;
 
-        return new EvaluatedExpression(eval_result.total, [new EvaluatedDiceroll(results)]);
+        return new EvaluatedExpression(eval_result.total, new EvaluatedDiceroll(results));
     }
 
-    static AttributeLiteral(value: number, attribute_name: string, attribute_inner: EvaluatedExpressionToken[], advanced: Boolean) {
-        return new EvaluatedExpression(value, [new EvaluatedAttribute(value, attribute_name, attribute_inner, advanced)]);
+    static AttributeLiteral(value: number, attribute_name: string, attribute_inner: EvaluatedExpressionToken, advanced: Boolean) {
+        return new EvaluatedExpression(value, new EvaluatedAttribute(value, attribute_name, attribute_inner, advanced));
     }
 
-    static Infix(new_total: number, lhs: EvaluatedExpression, sep: string, rhs: EvaluatedExpression) {
-        let new_annex = lhs.annex;
-        new_annex.push(sep);
-        new_annex = new_annex.concat(rhs.annex);
-        return new EvaluatedExpression(new_total, new_annex);
+    static Infix(new_total: number, lhs: EvaluatedExpression, sep: string, rhs: EvaluatedExpression, collapse_instructions: CollapsePrefixInfo | null) {
+
+        let annex = new EvaluatedInfix(new_total, lhs.total, rhs.total, lhs.annex, sep, rhs.annex, collapse_instructions);
+
+        return new EvaluatedExpression(new_total, annex);
     }
 
-    static Prefix(new_total: number, sep: string, rhs: EvaluatedExpression) {
-        let new_annex: EvaluatedExpressionToken[] = [sep];
-        new_annex = new_annex.concat(rhs.annex);
-        return new EvaluatedExpression(new_total, new_annex);
+    static Prefix(new_total: number, sep: string, rhs: EvaluatedExpression, collapse_instructions: CollapsePrefixInfo | null) {
+
+        let annex = new EvaluatedPrefix(new_total, rhs.total, sep, rhs.annex, collapse_instructions);
+        
+        return new EvaluatedExpression(new_total, annex);
     }
 
-    private static print_annex_inner(annex: EvaluatedExpressionToken[]): string {
+    private static print_annex_inner(annex: EvaluatedExpressionToken): string {
         let outstr = "";
-        for (const token of annex) {
-            if (typeof token === "string") {
-                outstr += token;
-            }
-            else if (token instanceof EvaluatedAttribute) {
-                outstr += this.print_annex_inner(token.annex);
-            }
-            else {
-                outstr += token.ToString();
-            }
+        const token = annex;
+        if (typeof token === "string") {
+            outstr += token;
+        }
+        else if (token instanceof EvaluatedAttribute) {
+            outstr += this.print_annex_inner(token.annex);
+        }
+        else {
+            outstr += token.ToString();
         }
 
         return outstr;
