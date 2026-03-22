@@ -92,7 +92,6 @@ class App extends Component<{}, AppState> {
                         <PkLayout />
                     </PkTab>
                     <PkTab title='Attributes'>
-                        <EvalContainer eval_result={sheet.last_ran_expr} show_tree={false} advanced_display={sheet.advanced_display.value}/>
                         <AttributeMenu attributes={sheet.attributes} />
                     </PkTab>
                 </PkTabs>
