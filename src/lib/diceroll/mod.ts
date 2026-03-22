@@ -201,18 +201,12 @@ export { Parse, UnparsedExpression, ParsedExpression } from "./parser/mod";
 export function Evaluate(expr: ParsedExpression, attributes: ContainerBase<string, MyResult<ParsedExpression>>): MyResult<EvaluatedExpression> {
     const context: EvaluationContext = { attributes, functioninputstack: [] };
 
-    console.log(`Evaluating!`)
-    console.log(expr);
-
     return expr.parsed_expression.evaluate(context);
 }
 
 export function EvaluateFunction(funcexpr: ParsedExpression, inputexpr: EvaluatedExpression, attributes: ContainerBase<string, MyResult<ParsedExpression>>): MyResult<EvaluatedExpression> {
 
     const context: EvaluationContext = { attributes, functioninputstack: [[inputexpr]] };
-
-    console.log(`Evaluating function!`)
-    console.log(funcexpr);
 
     return funcexpr.parsed_expression.evaluate(context);
 }

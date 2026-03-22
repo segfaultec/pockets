@@ -1,6 +1,3 @@
-var obj:any = {};
-obj = window;
-
 import 'preact/debug'
 
 import { render, createContext, Context, Component } from 'preact';
@@ -59,50 +56,54 @@ export type CharsheetContext = {
 
 export let CS: Context<CharsheetContext> = createContext({} as CharsheetContext);
 
-class App extends Component<{}, {}> {
+type AppState = {
+    sheet: CharsheetApp
+}
+
+class App extends Component<{}, AppState> {
 
     constructor() {
         super();
+
+        this.setState({sheet: new CharsheetApp(createCharsheet())})
     }
 
     render() {
-    
-        const sheet = new CharsheetApp(createCharsheet());
 
-        return (
-            <CS.Provider value={{sheet}}>
-            <div id={css.main}>
-                <div id={css.main_sheet}>
-                    <PkTabs>
-                        <PkTab title='Layout'>
-                            <span className={css.pkcharsheet_checkboxes_container}>
-                                <PkCheckbox
-                                    label="Edit Mode"
-                                    signal={sheet.edit_mode}
-                                    className={css.pkeditmodetoggle}
-                                    />
-                                <PkCheckbox
-                                    label="Advanced Display"
-                                    signal={sheet.advanced_display}
-                                    className={css.pkeditmodetoggle}
-                                    />
-                            </span>
-                            <PkLayout />
-                        </PkTab>
-                        <PkTab title='Attributes'>
-                            <EvalContainer eval_result={sheet.last_ran_expr} show_tree={false} advanced_display={sheet.advanced_display.value}/>
-                            <AttributeMenu attributes={sheet.attributes} />
-                        </PkTab>
-                    </PkTabs>
-                </div>
-               
-                <div id={css.main_chat}>
-                    <Chat />
-                </div>
+        const sheet = this.state.sheet;
+
+        return <CS.Provider value={{sheet}}>
+        <div id={css.main}>
+            <div id={css.main_sheet}>
+                <PkTabs>
+                    <PkTab title='Layout'>
+                        <span className={css.pkcharsheet_checkboxes_container}>
+                            <PkCheckbox
+                                label="Edit Mode"
+                                signal={sheet.edit_mode}
+                                className={css.pkeditmodetoggle}
+                                />
+                            <PkCheckbox
+                                label="Advanced Display"
+                                signal={sheet.advanced_display}
+                                className={css.pkeditmodetoggle}
+                                />
+                        </span>
+                        <PkLayout />
+                    </PkTab>
+                    <PkTab title='Attributes'>
+                        <EvalContainer eval_result={sheet.last_ran_expr} show_tree={false} advanced_display={sheet.advanced_display.value}/>
+                        <AttributeMenu attributes={sheet.attributes} />
+                    </PkTab>
+                </PkTabs>
             </div>
             
-            </CS.Provider>
-        );
+            <div id={css.main_chat}>
+                <Chat />
+            </div>
+        </div>
+        
+        </CS.Provider>
     }
 
 }
