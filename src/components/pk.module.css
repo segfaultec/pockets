@@ -258,6 +258,10 @@ input[type="number"] {
 
 .pkskillfield .pktextfield_label {
     margin-left: 2px;
+
+    &.clickable:hover {
+        color: blue;
+    }
 }
 
 .pkswitch {
