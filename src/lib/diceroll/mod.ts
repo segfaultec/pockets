@@ -127,7 +127,7 @@ export class EvaluatedDiceroll extends EvaluatedLiteral {
     }
 }
 
-export type EvaluatedExpressionToken = (string | EvaluatedLiteral);
+export type EvaluatedExpressionToken = EvaluatedLiteral;
 
 export class EvaluatedExpression {
 
@@ -173,10 +173,7 @@ export class EvaluatedExpression {
     private static print_annex_inner(annex: EvaluatedExpressionToken): string {
         let outstr = "";
         const token = annex;
-        if (typeof token === "string") {
-            outstr += token;
-        }
-        else if (token instanceof EvaluatedAttribute) {
+        if (token instanceof EvaluatedAttribute) {
             outstr += this.print_annex_inner(token.annex);
         }
         else {

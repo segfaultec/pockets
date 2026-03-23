@@ -55,29 +55,23 @@ type EvalSuccessAnnexProps = {
 
 class EvalSuccessAnnex extends Component<EvalSuccessAnnexProps> {
 
-    // Todo this is messy
-    // In advanced_display=false, is this expr being displayed as a single value
+    // Todo this is messy, should be on EvaluatedExpressionToken instead
     is_collapsable(token: EvaluatedExpressionToken): boolean {
         if (token instanceof EvaluatedFixed) {
             return true;
         } else if (token instanceof EvaluatedAttribute) {
-            if (token.advanced) {
-                return true;
-            } else {
-                return this.is_collapsable(token.annex);
-            }
+            return this.is_collapsable(token.annex);
         } else if (token instanceof EvaluatedPrefix) {
             return this.is_collapsable(token.rhs);
+        } else if (token instanceof EvaluatedInfix) {
+            return this.is_collapsable(token.lhs) && this.is_collapsable(token.rhs);
         }
         return false;
     }
 
     render() {
         const token = this.props.annex;
-        if (typeof token === "string") {
-            return <span className={css.annex_string}>{token}</span>;
-        }
-        else if (token instanceof EvaluatedAttribute) {
+        if (token instanceof EvaluatedAttribute) {
 
             if (this.props.advanced_display || !token.advanced) {
                 return <span>
