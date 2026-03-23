@@ -311,6 +311,10 @@ button.tri_inner {
     text-transform: uppercase;
     font-family: Arial, Helvetica, sans-serif;
     white-space: pre-line;
+
+    &.clickable:hover {
+        color: blue;
+    }
 }
 
 .pktextfield_heading > .pktextfield_label {

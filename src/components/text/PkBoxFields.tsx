@@ -1,9 +1,11 @@
 import { Component } from "preact";
-import { PkTextLabel } from "./PkTextLabel";
+import { PkAttributeTextLabel, PkTextLabel } from "./PkTextLabel";
 import { PkAttributeEditorField, PkAttributeViewerField } from "./PkAttributeField";
 import { zip_classes } from "./PkFieldHelpers";
 
 import * as css from "../pk.module.css";
+import { useCallback, useContext } from "preact/hooks";
+import { CS } from "components/app";
 
 type PkStatsBoxFieldProps = {
     base_key: string,
@@ -14,7 +16,7 @@ type PkStatsBoxFieldProps = {
 export class PkStatsBoxField extends Component<PkStatsBoxFieldProps> {
     render() {
         return <div className={css.pkstatsbox}>
-            <PkTextLabel label={this.props.label} />
+            <PkAttributeTextLabel label={this.props.label} attr_on_click={this.props.base_key}/>
             <div>
             <PkAttributeViewerField 
                 my_key={this.props.mod_key}
@@ -41,6 +43,7 @@ type PkAttributeViewerFieldProps = {
 
 export class PkAttributeViewerBoxField extends Component<PkAttributeViewerFieldProps> {
     render() {
+
         return <div className={css.pkattrbox}>
             <PkAttributeViewerField
                 my_key={this.props.my_key}
@@ -49,7 +52,7 @@ export class PkAttributeViewerBoxField extends Component<PkAttributeViewerFieldP
                 className={css.bignumber}
                 run_func={this.props.run_func}
                 run_header={this.props.run_header}/>
-            <PkTextLabel label={this.props.label} />
+            <PkAttributeTextLabel label={this.props.label} attr_on_click={this.props.my_key} />
         </div>;
     }
 }

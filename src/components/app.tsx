@@ -64,7 +64,9 @@ class App extends Component<{}, AppState> {
 
     constructor() {
         super();
+    }
 
+    componentWillMount(): void {
         this.setState({sheet: new CharsheetApp(createCharsheet())})
     }
 

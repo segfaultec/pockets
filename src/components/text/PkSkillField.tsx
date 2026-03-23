@@ -1,7 +1,7 @@
 import { Component } from "preact"
 import { PkTriSwitch } from "./PkSwitch"
 import { PkAttributeViewerField } from "./PkAttributeField"
-import { PkTextLabel } from "./PkTextLabel"
+import { PkAttributeTextLabel, PkTextLabel } from "./PkTextLabel"
 import * as css from "../pk.module.css"
 import { CS } from "components/app"
 import { useContext } from "preact/hooks"
@@ -17,7 +17,7 @@ export default class PkSkillField extends Component<PkSkillFieldProps> {
         return <div className={css.pkskillfield}>
             <PkTriSwitch my_key={this.props.prof_key} />
             <PkAttributeViewerField my_key={this.props.mod_key} modifier run_func="roll_adv" run_header={`${this.props.label} Check`}/>
-            <PkTextLabel label={this.props.label} />
+            <PkAttributeTextLabel label={this.props.label} attr_on_click={this.props.mod_key} />
             </div>
     }
 }
