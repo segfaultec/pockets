@@ -7,21 +7,25 @@ import { CollapsePrefixInfo } from "./parser/operation";
 
 abstract class EvaluatedLiteral {
 
+    total: number;
+
     abstract ToString(): string;
+
+    constructor(total: number) {
+        this.total = total;
+    }
 
 }
 
 export class EvaluatedAttribute extends EvaluatedLiteral {
     name: string;
     annex: EvaluatedExpressionToken;
-    total: number;
     advanced: Boolean;
 
     constructor(total: number, name: string, annex: EvaluatedExpressionToken, advanced: Boolean) {
-        super();
+        super(total);
         this.name = name;
         this.annex = annex;
-        this.total = total;
         this.advanced = advanced;
     }
 
@@ -31,15 +35,13 @@ export class EvaluatedAttribute extends EvaluatedLiteral {
 }
 
 export class EvaluatedFixed extends EvaluatedLiteral {
-    value: number;
 
     constructor(value: number) {
-        super();
-        this.value = value;
+        super(value);
     }
 
     ToString(): string {
-        return this.value.toString();
+        return this.total.toString();
     }
 }
 
@@ -49,16 +51,13 @@ export class EvaluatedPrefix extends EvaluatedLiteral {
     total: number;
     rhs_total: number;
 
-    collapse_instructions: CollapsePrefixInfo | null;
-
-    constructor(total: number, rhs_total: number, seperator: string, rhs: EvaluatedExpressionToken, collapse_instructions: CollapsePrefixInfo | null) {
-        super();
+    constructor(total: number, rhs_total: number, seperator: string, rhs: EvaluatedExpressionToken) {
+        super(total);
 
         this.rhs = rhs;
         this.seperator = seperator;
         this.total = total;
         this.rhs_total = rhs_total;
-        this.collapse_instructions = collapse_instructions;
     }
 
     ToString(): string {
@@ -70,7 +69,6 @@ export class EvaluatedInfix extends EvaluatedLiteral {
     lhs: EvaluatedExpressionToken;
     rhs: EvaluatedExpressionToken;
     seperator: string;
-    total: number;
     lhs_total: number;
     rhs_total: number;
 
@@ -78,7 +76,7 @@ export class EvaluatedInfix extends EvaluatedLiteral {
 
     constructor(total: number, lhs_total: number, rhs_total: number, lhs: EvaluatedExpressionToken, sep: string, rhs: EvaluatedExpressionToken, collapse_instructions: CollapsePrefixInfo | null)
     {
-        super();
+        super(total);
 
         this.total = total;
         this.lhs = lhs;
@@ -104,9 +102,9 @@ export class EvaluatedInfix extends EvaluatedLiteral {
 export class EvaluatedDiceroll extends EvaluatedLiteral {
     results: DicerollResult[];
 
-    constructor(results: DicerollResult[]) {
-        super();
-        this.results = results;
+    constructor(results: DicerollResultSet) {
+        super(results.total);
+        this.results = results.rolls;
     }
 
     ToString(): string {
@@ -147,9 +145,7 @@ export class EvaluatedExpression {
 
         const eval_result = rolls.evaluate();
 
-        let results = eval_result.rolls;
-
-        return new EvaluatedExpression(eval_result.total, new EvaluatedDiceroll(results));
+        return new EvaluatedExpression(eval_result.total, new EvaluatedDiceroll(eval_result));
     }
 
     static AttributeLiteral(value: number, attribute_name: string, attribute_inner: EvaluatedExpressionToken, advanced: Boolean) {
@@ -163,9 +159,9 @@ export class EvaluatedExpression {
         return new EvaluatedExpression(new_total, annex);
     }
 
-    static Prefix(new_total: number, sep: string, rhs: EvaluatedExpression, collapse_instructions: CollapsePrefixInfo | null) {
+    static Prefix(new_total: number, sep: string, rhs: EvaluatedExpression) {
 
-        let annex = new EvaluatedPrefix(new_total, rhs.total, sep, rhs.annex, collapse_instructions);
+        let annex = new EvaluatedPrefix(new_total, rhs.total, sep, rhs.annex);
         
         return new EvaluatedExpression(new_total, annex);
     }

@@ -174,11 +174,9 @@ export class PrefixExpression extends Expr {
         const rightEval = this.right.evaluate(context);
         if (rightEval.isErr) { return rightEval; }
 
-        const collapse_instructions = this.op.CollapsePrefix ? this.op.CollapsePrefix(rightEval.value.total) : null;
-
         const result = this.op.RunPrefix(rightEval.value.total);
         return result.map((total) => {
-            return EvaluatedExpression.Prefix(total, this.op.GetPrefixStr(), rightEval.value, collapse_instructions);
+            return EvaluatedExpression.Prefix(total, this.op.GetPrefixStr(), rightEval.value);
         });
     }
 }

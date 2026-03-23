@@ -34,20 +34,6 @@ class EvalDiceroll extends Component<EvalSuccessDicerollProps> {
     }
 }
 
-type EvalSuccessAnnexCollapsedProps = {
-    seperator: string,
-    rhs_value: number
-}
-
-class EvalSuccessAnnexCollapsed extends Component<EvalSuccessAnnexCollapsedProps> {
-    render() {
-        return <span>
-            <span className={css.annex_string}>{this.props.seperator}</span>
-            <span className={css.annex_literal_fixed}>{this.props.rhs_value}</span>
-        </span>
-    }
-}
-
 type EvalSuccessAnnexProps = {
     annex: EvaluatedExpressionToken,
     advanced_display: Boolean
@@ -56,21 +42,31 @@ type EvalSuccessAnnexProps = {
 class EvalSuccessAnnex extends Component<EvalSuccessAnnexProps> {
 
     // Todo this is messy, should be on EvaluatedExpressionToken instead
-    is_collapsable(token: EvaluatedExpressionToken): boolean {
+    collapse_token(token: EvaluatedExpressionToken): number | false {
         if (token instanceof EvaluatedFixed) {
-            return true;
+            return token.total;
         } else if (token instanceof EvaluatedAttribute) {
-            return this.is_collapsable(token.annex);
+            return this.collapse_token(token.annex);
         } else if (token instanceof EvaluatedPrefix) {
-            return this.is_collapsable(token.rhs);
+            return token.total;
         } else if (token instanceof EvaluatedInfix) {
-            return this.is_collapsable(token.lhs) && this.is_collapsable(token.rhs);
+            const lhs = this.collapse_token(token.lhs);
+            const rhs = this.collapse_token(token.rhs);
+
+            if (lhs !== false && rhs !== false) {
+                return token.total;
+            }
         }
         return false;
     }
 
     render() {
         const token = this.props.annex;
+
+        if (!this.props.advanced_display && this.collapse_token(token)) {
+            return <span className={css.annex_literal_fixed}>{token.total}</span>;
+        }
+
         if (token instanceof EvaluatedAttribute) {
 
             if (this.props.advanced_display || !token.advanced) {
@@ -83,8 +79,9 @@ class EvalSuccessAnnex extends Component<EvalSuccessAnnexProps> {
         }
         else if (token instanceof EvaluatedInfix) {
 
-            if (!this.props.advanced_display && token.collapse_instructions !== null && this.is_collapsable(token.rhs))
-            {
+            const try_collapse_rhs = this.collapse_token(token.rhs);
+            if (!this.props.advanced_display && try_collapse_rhs !== false && token.collapse_instructions) {
+
                 return <span>
                     <EvalSuccessAnnex annex={token.lhs} advanced_display={this.props.advanced_display} />
                     <span className={css.annex_string}>{token.collapse_instructions.new_str}</span>
@@ -99,15 +96,6 @@ class EvalSuccessAnnex extends Component<EvalSuccessAnnexProps> {
             </span>
         }
         else if (token instanceof EvaluatedPrefix) {
-
-            if (!this.props.advanced_display && token.collapse_instructions !== null && this.is_collapsable(token.rhs))
-            {
-                return <span>
-                    <span className={css.annex_string}>{token.collapse_instructions.new_str}</span>
-                    <span className={css.annex_literal_fixed}>{token.collapse_instructions.new_rhs}</span>
-                </span>
-            }
-
             return <span>
                 <span className={css.annex_string}>{token.seperator}</span>
                 <EvalSuccessAnnex annex={token.rhs} advanced_display={this.props.advanced_display} />
@@ -117,7 +105,7 @@ class EvalSuccessAnnex extends Component<EvalSuccessAnnexProps> {
             return <EvalDiceroll results={token.results} />;
         }
         else if (token instanceof EvaluatedFixed) {
-            return <span className={css.annex_literal_fixed}>{token.ToString()}</span>;
+            return <span className={css.annex_literal_fixed}>{token.total}</span>;
         }
     }
 }

@@ -16,8 +16,6 @@ export interface InfixOperation {
 export interface PrefixOperation {
     RunPrefix(right: number): MyResult<number>;
     GetPrefixStr(): string;
-
-    CollapsePrefix?(rhs: number): CollapsePrefixInfo | null;
 }
 
 
@@ -40,20 +38,6 @@ export class AddOperation implements PrefixOperation, InfixOperation {
             return {
                 new_rhs: rhs,
                 new_str: this.GetInfixStr()
-            }
-        }
-    }
-
-    CollapsePrefix(rhs: number): CollapsePrefixInfo | null {
-        if (rhs < 0.0) {
-            return {
-                new_rhs: -rhs,
-                new_str: "-"
-            }
-        } else {
-            return {
-                new_rhs: rhs,
-                new_str: this.GetPrefixStr()
             }
         }
     }
@@ -87,13 +71,6 @@ export class SubtractOperation implements PrefixOperation, InfixOperation {
         return {
             new_rhs: rhs,
             new_str: this.GetInfixStr()
-        }
-    }
-
-    CollapsePrefix(rhs: number): CollapsePrefixInfo | null {
-        return {
-            new_rhs: rhs,
-            new_str: this.GetPrefixStr()
         }
     }
 }
