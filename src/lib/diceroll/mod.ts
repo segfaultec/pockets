@@ -20,9 +20,9 @@ abstract class EvaluatedLiteral {
 export class EvaluatedAttribute extends EvaluatedLiteral {
     name: string;
     annex: EvaluatedExpressionToken;
-    advanced: Boolean;
+    advanced: boolean;
 
-    constructor(total: number, name: string, annex: EvaluatedExpressionToken, advanced: Boolean) {
+    constructor(total: number, name: string, annex: EvaluatedExpressionToken, advanced: boolean) {
         super(total);
         this.name = name;
         this.annex = annex;
@@ -148,7 +148,7 @@ export class EvaluatedExpression {
         return new EvaluatedExpression(eval_result.total, new EvaluatedDiceroll(eval_result));
     }
 
-    static AttributeLiteral(value: number, attribute_name: string, attribute_inner: EvaluatedExpressionToken, advanced: Boolean) {
+    static AttributeLiteral(value: number, attribute_name: string, attribute_inner: EvaluatedExpressionToken, advanced: boolean) {
         return new EvaluatedExpression(value, new EvaluatedAttribute(value, attribute_name, attribute_inner, advanced));
     }
 

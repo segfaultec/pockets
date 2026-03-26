@@ -38,7 +38,7 @@ class PkTabList extends Component<PkTabListProps> {
     }
 }
 
-class PkTabPanel extends Component<{visible: Boolean}> {
+class PkTabPanel extends Component<{visible: boolean}> {
 
     constructor() {
         super();

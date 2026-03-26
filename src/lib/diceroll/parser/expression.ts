@@ -45,9 +45,9 @@ export abstract class AttributeInnerExpr extends Expr {
 
 export class AttributeLiteral extends Literal {
     inner: AttributeInnerExpr
-    advanced: Boolean
+    advanced: boolean
 
-    constructor(inner: AttributeInnerExpr, advanced: Boolean) {
+    constructor(inner: AttributeInnerExpr, advanced: boolean) {
         super();
 
         this.inner = inner;

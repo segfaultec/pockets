@@ -36,7 +36,7 @@ class EvalDiceroll extends Component<EvalSuccessDicerollProps> {
 
 type EvalSuccessAnnexProps = {
     annex: EvaluatedExpressionToken,
-    advanced_display: Boolean
+    advanced_display: boolean
 }
 
 class EvalSuccessAnnex extends Component<EvalSuccessAnnexProps> {
