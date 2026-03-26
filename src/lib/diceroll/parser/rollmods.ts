@@ -3,6 +3,7 @@ import { MyResult } from "lib/errors";
 import { ok } from "true-myth/dist/es/result";
 
 export abstract class RollMod {
+    // Todo - DicerollSet roll mod apply history, to be printed out in advanced view
     abstract ApplyRollMod(diceroll: DicerollSet): MyResult<null>;
 }
 

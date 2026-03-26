@@ -9,6 +9,7 @@ import { Maybe } from "true-myth";
 import { nothing } from "true-myth/dist/es/maybe";
 import Chat, { ChatlogCommand, ChatlogFromEvalResult, ChatlogMessage } from "lib/chat";
 import { err } from "true-myth/dist/es/result";
+import { OverrideContainer } from "lib/override";
 
 export class CharsheetApp {
     
@@ -38,7 +39,11 @@ export class CharsheetApp {
     }
 
     to_charsheet(): Charsheet {
-        return new Charsheet(this.attributes.unpack(), this.text_fields.unpack(), this.skills);
+        return new Charsheet(
+            this.attributes.unpack(),
+            this.text_fields.unpack(),
+            this.skills
+        );
     }
 
     run_command(sender: string, command: ChatlogCommand): ChatlogMessage {

@@ -21,25 +21,17 @@ import PkCheckbox from './library/PkCheckbox';
 function createCharsheet(): Charsheet {
     let attributes = new UnparsedAttrContainer;
 
-    type Override = {
-        key: string
-        value: string
-    }
-
-    type Overrides = [string, Override[]][];
-
     let skills = new CharsheetSkillsBox("Skills");
     for (const skill of data.skills) {        
         skills.ImportSkillFromJson(skill);
     }
 
-    let overrides: Overrides = [];
-    for (const override of data.overrides) {
-        overrides.push([override[0], [{key: override[1], value: override[2]}]]);
-    }
-
     for (const kvp of data.attributes) {
         attributes.add_attribute(kvp[0], kvp[1]);
+    }
+
+    for (const kvp of data.overrides) {
+        attributes.add_override(kvp[0], {override_key: kvp[1], expr: kvp[2]});
     }
 
     let text_fields = new TextFieldContainer;

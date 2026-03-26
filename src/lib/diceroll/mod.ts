@@ -184,20 +184,22 @@ export class EvaluatedExpression {
     }
 }
 
+type AttributeContainer = Readonly<ContainerBase<string, MyResult<ParsedExpression>>>;
+
 export type EvaluationContext = {
-    attributes: ContainerBase<string, MyResult<ParsedExpression>>;
+    attributes: AttributeContainer;
     functioninputstack: EvaluatedExpression[][];
 };
 
 export { Parse, UnparsedExpression, ParsedExpression } from "./parser/mod";
 
-export function Evaluate(expr: ParsedExpression, attributes: ContainerBase<string, MyResult<ParsedExpression>>): MyResult<EvaluatedExpression> {
+export function Evaluate(expr: ParsedExpression, attributes: AttributeContainer): MyResult<EvaluatedExpression> {
     const context: EvaluationContext = { attributes, functioninputstack: [] };
 
     return expr.parsed_expression.evaluate(context);
 }
 
-export function EvaluateFunction(funcexpr: ParsedExpression, inputexpr: EvaluatedExpression, attributes: ContainerBase<string, MyResult<ParsedExpression>>): MyResult<EvaluatedExpression> {
+export function EvaluateFunction(funcexpr: ParsedExpression, inputexpr: EvaluatedExpression, attributes: AttributeContainer): MyResult<EvaluatedExpression> {
 
     const context: EvaluationContext = { attributes, functioninputstack: [[inputexpr]] };
 

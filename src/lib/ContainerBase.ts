@@ -4,6 +4,13 @@ export class ContainerBase<TKey, TValue> {
     protected data: Map<TKey, TValue> = new Map();
     protected order: TKey[] = [];
 
+    protected static newFromData<TKey, TValue>(data: Map<TKey, TValue>, order: TKey[]): ContainerBase<TKey, TValue> {
+        let newThis = new ContainerBase<TKey, TValue>;
+        newThis.data = data;
+        newThis.order = order;
+        return newThis;
+    }
+
     set(key: TKey, value: TValue) {
 
         if (!this.has(key)) {
@@ -70,5 +77,21 @@ export class ContainerBase<TKey, TValue> {
 
     forEachKey(func: (key: TKey) => void): void {
         this.order.forEach(func);
+    }
+
+    forEach(func: (value: TValue, key: TKey) => void): void {
+        this.order.forEach((key) => {
+            func(this.get(key)!, key);
+        });
+    }
+
+    clone(): ContainerBase<TKey, TValue> {
+
+        let clone = new ContainerBase<TKey, TValue>();
+        this.forEach((value, key) => {
+            clone.add(key, value);
+        })
+
+        return clone;
     }
 }

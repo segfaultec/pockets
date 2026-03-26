@@ -1,8 +1,6 @@
 
 import { TextFieldContainer } from "./TextFieldContainer";
 import {AttrContainer, UnparsedAttrContainer} from "./attribute";
-import { EvaluatedExpression } from "./diceroll/mod";
-import { MyResult } from "./errors";
 
 type CharsheetSkillsBoxEntry = {
     key_prof: string,
