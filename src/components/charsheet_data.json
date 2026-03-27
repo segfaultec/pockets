@@ -51,7 +51,8 @@
         ["technology", "Technology", "int", "1"]
     ],
     "overrides": [
-        ["roll", "advantage", "2d20kh1+[input]"]
+        ["roll", "advantage", "2d20kh1+[input]"],
+        ["roll", "disadvantage", "2d20dh1+[input]"]
     ],
     "text_fields": [
         ["name", "Mixolydian"],

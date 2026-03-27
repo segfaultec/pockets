@@ -64,7 +64,7 @@ class AttributeMenuElement_Override extends Component<AttributeMenuElementProps_
             }}/>
             <input type="checkbox" checked={override_enabled} onChange={(event) => {
                 this.props.attributes.mutate((inner) => {
-                    inner.set_override_enabled(attribute_key, override_enabled ? null : override_key);
+                    inner.set_override(attribute_key, override_enabled ? null : override_key);
                 })
             }}></input>
             <button onClick={() => {

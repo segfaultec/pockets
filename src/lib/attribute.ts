@@ -260,7 +260,7 @@ export class AttrContainer {
         this.active_overrides = enabled_overrides ? enabled_overrides : new Map<AttrKey, OverrideKey>;
     }
 
-    set_override_enabled(attrkey: AttrKey, new_override_key: OverrideKey | null, modify: boolean = true) {
+    set_override(attrkey: AttrKey, new_override_key: OverrideKey | null, modify: boolean = true) {
         if (new_override_key !== null) {
             this.active_overrides.set(attrkey, new_override_key);
         } else {
@@ -270,6 +270,12 @@ export class AttrContainer {
         if (modify) {
             this.dirty();
         }
+    }
+
+    get_override(attrkey: AttrKey): OverrideKey | null {
+        const override = this.active_overrides.get(attrkey);
+        if (override === undefined) { return null; }
+        return override;
     }
 
     is_override_enabled(attrkey: AttrKey, override_key: OverrideKey): boolean {

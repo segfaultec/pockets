@@ -1,0 +1,31 @@
+.pkradioswitcher {
+
+    display: block;
+
+    border: 1px solid black;
+    border-radius: 5px;
+
+    > button {
+        padding: 3px 5px;
+        height: 100%;
+        border: 0px;
+
+        &:first-child {
+            border-radius: 5px 0 0 5px;
+        }
+        &:last-child {
+            border-radius: 0 5px 5px 0;
+        }
+
+        &:not(:last-child) {
+            border-right: solid black 1px;
+        }
+
+        display: inline-block;
+        background-color: white;
+
+        &[aria-checked="true"] {
+            background-color: #C7DFF7;
+        }
+    }
+}
