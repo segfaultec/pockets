@@ -4,6 +4,7 @@ import { ParsedExpression } from "./parser/mod";
 import { Diceroll, DicerollResult, DicerollResultSet, DicerollSet } from "lib/diceroll";
 import { ContainerBase } from "lib/ContainerBase";
 import { CollapsePrefixInfo } from "./parser/operation";
+import { AttrKey, OverrideKey, ParsedAttributeContainer } from "lib/attribute";
 
 abstract class EvaluatedLiteral {
 
@@ -184,24 +185,23 @@ export class EvaluatedExpression {
     }
 }
 
-type AttributeContainer = Readonly<ContainerBase<string, MyResult<ParsedExpression>>>;
-
 export type EvaluationContext = {
-    attributes: AttributeContainer;
+    attributes: ParsedAttributeContainer;
     functioninputstack: EvaluatedExpression[][];
+    enabled_overrides: Map<AttrKey, OverrideKey>;
 };
 
 export { Parse, UnparsedExpression, ParsedExpression } from "./parser/mod";
 
-export function Evaluate(expr: ParsedExpression, attributes: AttributeContainer): MyResult<EvaluatedExpression> {
-    const context: EvaluationContext = { attributes, functioninputstack: [] };
+export function Evaluate(expr: ParsedExpression, attributes: ParsedAttributeContainer, enabled_overrides: Map<AttrKey, OverrideKey>): MyResult<EvaluatedExpression> {
+    const context: EvaluationContext = { attributes, functioninputstack: [], enabled_overrides };
 
     return expr.parsed_expression.evaluate(context);
 }
 
-export function EvaluateFunction(funcexpr: ParsedExpression, inputexpr: EvaluatedExpression, attributes: AttributeContainer): MyResult<EvaluatedExpression> {
+export function EvaluateFunction(funcexpr: ParsedExpression, inputexpr: EvaluatedExpression, attributes: ParsedAttributeContainer, enabled_overrides: Map<AttrKey, OverrideKey>): MyResult<EvaluatedExpression> {
 
-    const context: EvaluationContext = { attributes, functioninputstack: [[inputexpr]] };
+    const context: EvaluationContext = { attributes, functioninputstack: [[inputexpr]], enabled_overrides };
 
     return funcexpr.parsed_expression.evaluate(context);
 }

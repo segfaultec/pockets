@@ -65,7 +65,7 @@ export class CharsheetApp {
     run_command_roll(expr: UnparsedExpression): MyResult<EvaluatedExpression> {
         
         const evaluate = (parsed: ParsedExpression) => (
-            this.attributes.get_inner().get_parsed().evaluate_expression(parsed)
+            this.attributes.get_inner().evaluate_expression(parsed)
         );
 
         const parsed = add_context(Parse(expr), "Parsing command");

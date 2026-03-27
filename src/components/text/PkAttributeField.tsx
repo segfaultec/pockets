@@ -66,7 +66,7 @@ export class PkAttributeViewerField extends Component<PkAttributeViewerFieldProp
     render() {
         let { sheet } = useContext(CS);
 
-        const eval_result_display = sheet.attributes.get_inner().get_parsed().evaluate_attribute(this.props.my_key);
+        const eval_result_display = sheet.attributes.get_inner().evaluate_attribute(this.props.my_key, undefined);
 
         const eval_display_result = eval_result_display.andThen((expr) => {
             const total = expr.total;
@@ -92,7 +92,7 @@ export class PkAttributeViewerField extends Component<PkAttributeViewerFieldProp
 
             // Run func = evaluation
             onClick = () => {
-                const eval_result_display = sheet.attributes.get_inner().get_parsed().evaluate_attribute(this.props.my_key, this.props.run_func);
+                const eval_result_display = sheet.attributes.get_inner().evaluate_attribute(this.props.my_key, this.props.run_func);
 
                 sheet.chat.mutate((chat) => {
                     chat.add_message_eval_result("Mix", this.props.run_header, eval_result_display);

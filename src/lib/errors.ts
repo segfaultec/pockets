@@ -1,5 +1,6 @@
 
 import { Result } from 'true-myth';
+import { AttrKey, OverrideKey } from './attribute';
 
 export class ErrorContext {
 
@@ -40,6 +41,21 @@ export class UnknownVariable extends Error {
         return `Unknown Variable \"${this.name}\"`
     }
 };
+
+export class UnknownOverrideKey extends Error {
+    attribute_key: AttrKey;
+    override_key: OverrideKey;
+
+    constructor(attribute_key: AttrKey, override_key: OverrideKey) {
+        super();
+        this.attribute_key = attribute_key;
+        this.override_key = override_key;
+    }
+
+    Display(): string {
+        return `Unknown Override Key "${this.override_key}" for attribute "${this.attribute_key}"`
+    }
+}
 
 export class FunctionInvalidIndex extends Error {
     index: number;

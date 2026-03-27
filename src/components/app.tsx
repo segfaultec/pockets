@@ -31,7 +31,7 @@ function createCharsheet(): Charsheet {
     }
 
     for (const kvp of data.overrides) {
-        attributes.add_override(kvp[0], {override_key: kvp[1], expr: kvp[2]});
+        attributes.add_override(kvp[0], kvp[1], kvp[2]);
     }
 
     let text_fields = new TextFieldContainer;

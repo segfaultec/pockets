@@ -75,7 +75,7 @@ export class FunctionInnerExpr extends AttributeInnerExpr {
     }
 
     evaluate(context: EvaluationContext): MyResult<EvaluatedExpression> {
-        const attr = context.attributes.get(this.key);
+        const attr = context.attributes.get_attribute_expression(this.key, context.enabled_overrides);
         if (attr === undefined)
         {
             return err(new Error.UnknownVariable(this.key));

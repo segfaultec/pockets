@@ -1,7 +1,7 @@
 
 import * as style from "./AttributeMenu.module.css"
 
-import { AttrContainer } from "lib/attribute";
+import { AttrContainer, AttrKey, OverrideKey } from "lib/attribute";
 import { Component } from "preact";
 import { ParsedExpression } from "lib/diceroll/mod";
 import { JSXInternal } from "preact/src/jsx";
@@ -18,7 +18,13 @@ type AttributeMenuElementProps = {
     attributes: SignalWrapper<AttrContainer>
 };
 
-class AttributeMenuElement_Override extends Component<AttributeMenuElementProps, {}> {
+type AttributeMenuElementProps_Override = {
+    attribute_key: AttrKey,
+    override_key: OverrideKey,
+    attributes: SignalWrapper<AttrContainer>
+};
+
+class AttributeMenuElement_Override extends Component<AttributeMenuElementProps_Override, {}> {
     render() {
 
         const { sheet } = useContext(CS);
@@ -28,30 +34,29 @@ class AttributeMenuElement_Override extends Component<AttributeMenuElementProps,
         * but this causes issues with deletion since the state isn't reset.
         */
         //const [ key, setKey ] = useState(this.props.my_key);
-        const key = this.props.my_key;
-
+        const attribute_key = this.props.attribute_key;
+        const override_key = this.props.override_key;
         const unparsed = this.props.attributes.get_inner().get_unparsed(false);
 
-        const override = unparsed.get_override(key);
-        const override_value = override.map((t) => t.expr).unwrapOr("Error!");
-        const override_targetkey = override.map((t) => t.override_key).unwrapOr("Error!");
+        const override = unparsed.get_override(attribute_key, override_key);
+        const override_value = override.unwrapOr("Error!");
 
-        const override_enabled = this.props.attributes.get_inner().is_override_enabled(key);
+        const override_enabled = this.props.attributes.get_inner().is_override_enabled(attribute_key, override_key);
 
         return <div>
-            <input type="text" value={key} onChange={(event)=>{
+            <input type="text" value={attribute_key} onChange={(event)=>{
                 this.props.attributes.mutate((inner) => {
-                    inner.get_unparsed(true).rename_override(key, event.currentTarget.value);
+                    inner.get_unparsed(true).rename_override(attribute_key, override_key, event.currentTarget.value);
                 }, true); // <- rerender parent since we aren't using state
 
                 //setKey(event.currentTarget.value);
             }}/>
-            <input type="text" value={override_targetkey}></input>
+            <input type="text" value={override_key}></input>
             <input type="text" value={override_value} onChange={(event)=>{
                 if (event.currentTarget.value !== override_value) {
 
                     this.props.attributes.mutate((inner) => {
-                        inner.get_unparsed(true).modify_override(key, {expr: event.currentTarget.value, override_key: override_targetkey});
+                        inner.get_unparsed(true).modify_override(attribute_key, override_key, event.currentTarget.value);
                     }, false);
 
                     this.forceUpdate();
@@ -59,12 +64,12 @@ class AttributeMenuElement_Override extends Component<AttributeMenuElementProps,
             }}/>
             <input type="checkbox" checked={override_enabled} onChange={(event) => {
                 this.props.attributes.mutate((inner) => {
-                    inner.set_override_enabled(key, !override_enabled);
+                    inner.set_override_enabled(attribute_key, override_enabled ? null : override_key);
                 })
             }}></input>
             <button onClick={() => {
                 this.props.attributes.mutate((inner) => {
-                    inner.get_unparsed(true).remove_override(key);
+                    inner.get_unparsed(true).remove_override(attribute_key, override_key);
                 });
             }}>Delete</button>
         </div>;
@@ -86,7 +91,7 @@ class AttributeMenuElement_Attribute extends Component<AttributeMenuElementProps
 
         const unparsed = this.props.attributes.get_inner().get_unparsed(false);
 
-        const expr = unparsed.get_attribute(key).unwrapOr("Error!");
+        const expr = unparsed.get_attribute(key).map((t) => t.expr).unwrapOr("Error!");
 
         return <div>
             <input type="text" value={key} onChange={(event)=>{
@@ -108,7 +113,7 @@ class AttributeMenuElement_Attribute extends Component<AttributeMenuElementProps
             }}/>
             <button onClick={() => {
 
-                const this_eval = sheet.attributes.get_inner().get_parsed().evaluate_attribute(key);
+                const this_eval = sheet.attributes.get_inner().evaluate_attribute(key, undefined);
 
                 sheet.chat.mutate((chat) => {
                     chat.add_message_eval_result("Mix", `Attribute "${key}"`, this_eval);
@@ -141,9 +146,9 @@ class AttributeMenu extends Component<AttributeMenuProps> {
         });
 
         const override_elements: JSXInternal.Element[] = [];
-        this.props.attributes.get_inner().get_unparsed(false).forEachOverrideKey((key) => {
+        this.props.attributes.get_inner().get_unparsed(false).forEachOverrideKey((attribute_key, override_key) => {
             override_elements.push(
-                <AttributeMenuElement_Override my_key={key} attributes={this.props.attributes} />
+                <AttributeMenuElement_Override attribute_key={attribute_key} override_key={override_key} attributes={this.props.attributes} />
             )
         });
 

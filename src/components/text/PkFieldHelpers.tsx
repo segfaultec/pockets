@@ -17,7 +17,7 @@ export function get_text_field_value(sheet: CharsheetApp, key: string): MyResult
 
 export function get_attr_value(sheet: CharsheetApp, key: string): MyResult<string> {
     return sheet.attributes.get_inner()
-        .get_unparsed(false).get_attribute(key);
+        .get_unparsed(false).get_attribute(key).map((t) => t.expr);
 }
 
 export function set_attr_value(sheet: CharsheetApp, key: string, new_value: string): void {
