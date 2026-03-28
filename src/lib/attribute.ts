@@ -121,33 +121,28 @@ export class ParsedAttributeContainer {
 
     public get_attribute_expression(attribute_key: AttrKey, active_overrides: Map<AttrKey, OverrideKey>): MyResult<ParsedExpression> {
 
-        let result = (): MyResult<ParsedExpression> => {
-
-            const attr = this.attributes.get(attribute_key);
-            if (attr === undefined) {
-                return err(new Error.UnknownVariable(attribute_key));
-            }
-
-            if (attr.isErr) {
-                return err(attr.error);
-            }
-
-            const override_key = active_overrides.get(attribute_key);
-            if (override_key === undefined) {
-                return ok(attr.value.expr);
-            } else {
-                const override_expr = attr.value.overrides?.get(override_key);
-                if (override_expr === undefined) {
-                    return err(new Error.UnknownOverrideKey(attribute_key, override_key));
-                }
-                if (override_expr.isErr) {
-                    return err(override_expr.error);
-                }
-                return ok(override_expr.value.expr);
-            }
+        const attr = this.attributes.get(attribute_key);
+        if (attr === undefined) {
+            return err(new Error.UnknownVariable(attribute_key));
         }
 
-        return add_context(result(), `Resolving attribute ${attribute_key} in LinkedAttributesDependencies`);
+        if (attr.isErr) {
+            return err(attr.error);
+        }
+
+        const override_key = active_overrides.get(attribute_key);
+        if (override_key === undefined) {
+            return ok(attr.value.expr);
+        } else {
+            const override_expr = attr.value.overrides?.get(override_key);
+            if (override_expr === undefined) {
+                return err(new Error.UnknownOverrideKey(attribute_key, override_key));
+            }
+            if (override_expr.isErr) {
+                return err(override_expr.error);
+            }
+            return ok(override_expr.value.expr);
+        }
     }
 }
 
