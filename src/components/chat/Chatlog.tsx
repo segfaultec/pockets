@@ -1,7 +1,7 @@
 import { Component, createRef, JSX, RefObject } from "preact"
 import { useMemo } from "preact/hooks"
 
-import * as css from "../pk.module.css";
+import * as css from "./chat.module.css";
 import { ChatlogMessage } from "lib/chat";
 import { MakeChatlogEntry } from "./ChatlogEntry";
 

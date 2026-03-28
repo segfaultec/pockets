@@ -1,4 +1,4 @@
-import { CS } from "components/app";
+import { CS } from "components/App";
 import { CharsheetApp } from "components/charsheet_app";
 import PkRadioSwitcher from "./PkRadioSwitcher";
 

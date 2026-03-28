@@ -4,8 +4,8 @@ import { useContext } from "preact/hooks";
 import Chatbox from "./Chatbox";
 import Chatlog from "./Chatlog";
 
-import { CS } from "../app";
-import * as css from "../pk.module.css";
+import { CS } from "../App";
+import * as css from "./chat.module.css";
 
 
 export default class Chat extends Component {

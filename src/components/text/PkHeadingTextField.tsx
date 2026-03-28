@@ -1,6 +1,6 @@
 import { Component } from "preact";
 
-import * as css from "components/pk.module.css";
+import * as css from "./text.module.css";
 import * as Helpers from "components/utils/FieldHelpers";
 import PkTextField from "./PkTextField";
 import PkTextLabel from "./PkTextLabel";

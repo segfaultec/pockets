@@ -1,0 +1,85 @@
+
+.pktextfield {
+    margin: 5;
+    display: inline-block;
+}
+
+.pktextfield_label {
+    font-size: 9px;
+    text-transform: uppercase;
+    font-family: Arial, Helvetica, sans-serif;
+    white-space: pre-line;
+
+    &.clickable:hover {
+        color: blue;
+    }
+}
+
+.pktextfield_heading > .pktextfield_label {
+    margin-left: 5px;
+}
+
+.pktextfield_heading > .pktextfield {
+    width: calc(100% - 10px);
+}
+
+.pktextfield_container {
+    position: relative;
+
+    padding: 0;
+    margin: 0;
+
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: auto;
+
+    width: 100%;
+    min-height: 18px;
+    min-width: 8px;
+
+    font-size: 14px;
+    font-family: "MS Shell Dlg";
+}
+
+.pktextfield_container > * {
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc !important;
+
+    &[aria-hidden="true"] {
+        visibility: hidden;
+    }
+}
+
+.pktextfield_container > input {
+    background-color: rgba(0, 225, 255, 0.3);
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.pktextfield_container > button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    width: 100%;
+    
+
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+    text-align: left;
+    text-shadow: initial;
+}
+
+.pktextfield_container > button:hover {
+    color: blue;
+}

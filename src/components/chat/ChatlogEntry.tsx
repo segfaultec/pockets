@@ -1,12 +1,12 @@
 import { Component, JSX } from "preact";
 import { ChatlogMessage, ChatlogMessage_Base, ChatlogMessage_EvalFailure, ChatlogMessage_EvalSuccess, ChatlogMessage_GenericError, ChatlogMessage_Message, ChatlogMessage_PrintField } from "lib/chat";
 
-import * as css from "../pk.module.css";
+import * as css from "./chat.module.css";
 import { EvalSuccess } from "components/Eval/EvalSuccess";
 import { EvalError } from "components/Eval/EvalError";
 import { ClsCombine } from "components/utils/ClassHelpers";
 import { useContext } from "preact/hooks";
-import { CS } from "components/app";
+import { CS } from "components/App";
 
 abstract class ChatlogEntryBase<T extends ChatlogMessage_Base> extends Component<{message: T}> {}
 

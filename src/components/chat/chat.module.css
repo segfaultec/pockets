@@ -1,0 +1,69 @@
+#chat {
+    height: 100%;
+
+    display: grid;
+    grid-template-rows: min-content 1fr 100px;
+
+    > .chat_header {
+        padding: 5px 0;
+
+        font-family: "MS Shell Dlg";
+        font-size: 24px;
+        font-weight: bold;
+
+        justify-self: stretch;
+        text-align: center;
+    }
+    > :not(:last-child) {
+        border-bottom: 3px solid black;
+    }
+}
+
+#chat_chatlog {
+
+    height: 100%;
+
+    overflow-y: scroll;
+}
+
+#chat_chatbox {
+    padding: 5px;
+
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+}
+
+#chat_chatbox > textarea {
+    width: 100%;
+    flex-grow: 1;
+    resize: none;
+    box-sizing: border-box;
+    margin: 5px 0;
+}
+
+.chat_message_container {
+
+    margin: 5px;
+    padding: 6px 3px 6px 3px;
+    border: 1px solid black;
+
+    font-family: "MS Shell Dlg";
+
+    display: grid;
+
+    grid-auto-rows: auto;
+
+    &.chat_error {
+        background-color: #fdc0c0;
+    }
+
+    .chat_header {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .chat_message {
+        font-size: 14px;
+        font-weight: normal;
+    }
+}

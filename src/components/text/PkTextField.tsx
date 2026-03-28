@@ -1,8 +1,8 @@
 import { Component } from "preact";
 import { useContext } from "preact/hooks";
-import { CS } from "components/app";
+import { CS } from "components/App";
 
-import * as css from "components/pk.module.css";
+import * as css from "./text.module.css";
 import * as Helpers from "components/utils/FieldHelpers";
 
 type PkTextFieldProps = {
@@ -24,14 +24,16 @@ export default class PkTextField extends Component<PkTextFieldProps> {
             && Helpers.is_edit_mode_enabled(sheet);
 
         return <div className={css.pktextfield_container}>
-            <input className={edit_mode ? "" : css.invisible}
+            <input
+                aria-hidden={!edit_mode}
                 value={field_value}
                 type="text"
                 onInput={(event: any) => {
                     Helpers.set_text_field_value(sheet, this.props.my_key, event.target.value);
                 }}
             />
-            <button className={edit_mode ? css.invisible : ""}
+            <button
+                aria-hidden={edit_mode}
                 onClick={ () => {
 
                     // Todo send error on error

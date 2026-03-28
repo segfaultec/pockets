@@ -1,0 +1,30 @@
+.pkswitch {
+
+}
+
+button.tri_inner {
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+    text-align: left;
+    text-shadow: initial;
+}
+
+.tri_inner {
+    margin: 5;
+    padding: 0;
+
+    width: 15px;
+    height: 15px;
+    border: 2px black solid;
+}
+
+.tri_inner.state0 {
+    background-color: white;
+}
+.tri_inner.state1 {
+    background-color: grey;
+}
+.tri_inner.state2 {
+    background-color: orange;
+}

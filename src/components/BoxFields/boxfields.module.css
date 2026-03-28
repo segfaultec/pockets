@@ -1,0 +1,130 @@
+.pkattrline {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+
+    margin: 5px;
+
+    border: 3px solid black;
+
+    .bignumber {
+        width: 40px;
+        height: 40px;
+
+        > button {
+            border-bottom: none !important;
+            > span {
+                display: inline-block;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
+}
+
+.bignumber button, .bignumber input {
+    font-size: 28px;
+}
+
+
+.pkattrbox {
+    width: 75px;
+    height: 75px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+    overflow: hidden;
+    margin: 3;
+
+    border: 3px solid black;
+}
+
+.pkattrbox .pktextfield {
+    margin: 2;
+}
+
+.pkattrbox button, .pkattrbox input {
+    text-align: center !important;
+}
+
+.pkhealthbox {
+    width: 75px;
+    height: 75px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+    overflow: hidden;
+    margin: 3;
+
+    border: 3px solid black;
+}
+
+.pkhealthbox button, .pkhealthbox input {
+    text-align: center !important;
+}
+
+.pkhitdicebox {
+    width: 75px;
+    height: 75px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+    /* overflow: hidden; */
+    margin: 3;
+
+    border: 3px solid black;
+}
+
+.pkhitdicebox_inner {
+    display: grid;
+
+    grid-template-columns: repeat(5, min-content);
+
+    justify-content: center;
+
+    /* justify-content: center; */
+    height: 30px;
+    width: 100%;
+}
+
+.pkhitdicebox_inner * {
+    font-size: 14px;
+}
+
+.pkhitdicebox_inner > button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+    text-align: left;
+    text-shadow: initial;
+}
+
+.pkhitdicebox_inner .pkhitidcebox_divider {
+    margin: 2px;
+}
+
+.pkstatsbox {
+    width: 75px;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    text-align: center;
+    overflow: hidden;
+    margin: 3;
+}
+
+.pkstatsbox .pktextfield {
+    margin: 2;
+}
+
+.pkstatsbox button, .pkstatsbox input {
+    text-align: center !important;
+}

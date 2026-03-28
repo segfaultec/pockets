@@ -2,8 +2,8 @@ import { CharsheetApp } from "components/charsheet_app";
 import { Component, createRef, RefObject, TargetedKeyboardEvent } from "preact";
 import { useContext } from "preact/hooks";
 
-import { CS } from "../app";
-import * as css from "../pk.module.css";
+import { CS } from "../App";
+import * as css from "./chat.module.css";
 
 export default class Chatbox extends Component {
 

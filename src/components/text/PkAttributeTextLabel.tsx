@@ -1,9 +1,9 @@
 
 import { Component } from "preact";
-import * as css from "components/pk.module.css";
+import * as css from "./text.module.css";
 import { zip_classes } from "components/utils/FieldHelpers";
 import { useCallback, useContext } from "preact/hooks";
-import { CS } from "components/app";
+import { CS } from "components/App";
 
 type PkAttributeTextLabelProps = {
     label: string,

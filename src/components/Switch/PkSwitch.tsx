@@ -1,8 +1,8 @@
-import { CS } from "components/app";
+import { CS } from "components/App";
 import { Component } from "preact"
 import { useContext } from "preact/hooks";
 import * as Helpers from "components/utils/FieldHelpers"
-import * as css from "components/pk.module.css"
+import * as css from "./switch.module.css"
 
 export type PkSwitchProps = {
     my_key: string,

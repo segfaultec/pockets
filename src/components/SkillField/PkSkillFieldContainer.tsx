@@ -1,7 +1,7 @@
 
 import { Component } from "preact"
-import * as css from "components/pk.module.css"
-import { CS } from "components/app"
+import * as css from "./skillfield.module.css"
+import { CS } from "components/App"
 import { useContext } from "preact/hooks"
 import PkSkillField from "./PkSkillField";
 import PkTextLabel from "components/Text/PkTextLabel";

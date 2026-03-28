@@ -1,6 +1,6 @@
 
 import { Component } from "preact";
-import * as css from "components/pk.module.css"
+import * as css from "./boxfields.module.css"
 import PkTextLabel from "components/Text/PkTextLabel";
 import PkAttributeEditorField from "components/Text/PkAttributeEditorField";
 

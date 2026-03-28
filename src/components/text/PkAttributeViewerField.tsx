@@ -1,8 +1,9 @@
 import { Component } from "preact";
-import { CS } from "components/app";
+import { CS } from "components/App";
 import { useContext } from "preact/hooks";
-import * as css from "components/pk.module.css"
+import * as css from "./text.module.css";
 import { ok } from "true-myth/dist/es/result";
+import { ClsCombine } from "components/utils/ClassHelpers";
 
 
 type PkAttributeViewerFieldProps = {
@@ -62,12 +63,11 @@ export default class PkAttributeViewerField extends Component<PkAttributeViewerF
             }
         }
 
-        return <div className={this.props.className}>
-            <div className={css.pktextfield_container}>
+        return <div className={ClsCombine(css.pktextfield_container, this.props.className)}>
             <button
                 onClick={onClick}>
                 <span>{eval_display_value.replaceAll(' ', '\u00a0')}</span>
             </button>
-        </div></div>;
+        </div>;
     }
 }

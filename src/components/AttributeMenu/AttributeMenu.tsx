@@ -2,9 +2,9 @@
 import { AttrContainer, AttrKey, OverrideKey } from "lib/attribute";
 import { Component } from "preact";
 import { JSXInternal } from "preact/src/jsx";
-import { useContext, useMemo, useState } from "preact/hooks";
+import { useContext } from "preact/hooks";
 
-import { CS } from "components/app";
+import { CS } from "components/App";
 import SignalWrapper from "components/utils/SignalWrapper";
 import { just } from "true-myth/dist/es/maybe";
 
@@ -129,7 +129,7 @@ type AttributeMenuProps = {
     attributes: SignalWrapper<AttrContainer>;
 }
 
-class AttributeMenu extends Component<AttributeMenuProps> {
+export default class AttributeMenu extends Component<AttributeMenuProps> {
 
     render() {
         const attribute_elements: JSXInternal.Element[] = [];
@@ -176,5 +176,3 @@ class AttributeMenu extends Component<AttributeMenuProps> {
     }
 
 }
-
-export default AttributeMenu;
