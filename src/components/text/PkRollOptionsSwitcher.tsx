@@ -1,5 +1,6 @@
 import { CS } from "components/app";
 import { CharsheetApp } from "components/charsheet_app";
+import PkRadioSwitcher from "components/library/PkRadioSwitcher";
 import { pkradioswitcher } from "components/library/pkradioswitcher.module.css";
 
 import { ClsCombine } from "components/utils/ClassHelpers";
@@ -23,16 +24,11 @@ export default class PkRollOptionsSwitcher extends Component {
 
         const current_option = sheet.attributes.get_inner().get_override("roll");
 
-        return <div role="radiogroup" className={ClsCombine(pkradioswitcher)}>
-            {
-                options.map((option, index) => {
-                    const option_display = options_display[index];
-                    return <button role="radio" tabIndex={index} aria-checked={option === current_option}
-                        onClick={() => this.setOption(sheet, option)}>
-                        {option_display}
-                    </button>
-                })
-            }
-        </div>
+        return <PkRadioSwitcher
+            options={options}
+            option_displays={options_display}
+            selected_option={current_option}
+            onChange={(new_option) => this.setOption(sheet, new_option)} 
+            />
     }
 }
