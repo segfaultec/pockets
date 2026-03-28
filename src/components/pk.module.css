@@ -71,6 +71,13 @@ body {
     margin: 5px 0;
 }
 
+.pklayout { 
+    width: 100%;
+}
+
+#heading_name_fields {
+    margin: 5px;
+}
 
 .chat_message_container {
 
@@ -102,6 +109,7 @@ body {
 .flex {
     display: flex;
     flex-wrap: nowrap;
+    justify-content: space-around;
 }
 
 .flex > * {
@@ -268,8 +276,13 @@ input[type="number"] {
 }
 
 .pkskillfield {
-    overflow-x: hidden;
+    display: grid;
+    grid-auto-columns: auto;
+    grid-auto-flow: column;
+    justify-content: start;
+    align-items: center;
 }
+
 
 .pkskillfield > * {
     display: inline-block;
@@ -285,6 +298,7 @@ input[type="number"] {
 
 .pkskillfield .pktextfield_label {
     margin-left: 2px;
+    white-space: nowrap;
 
     &.clickable:hover {
         color: blue;

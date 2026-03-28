@@ -7,9 +7,9 @@ import { PkSavesFieldContainer, PkSkillFieldContainer } from "./PkSkillField";
 
 export default class PkLayout extends Component {
     render() {
-        return <div>
+        return <div className={css.pklayout}>
 
-            <div className={css.flex}>
+            <div className={css.flex} id={css.heading_name_fields}>
                 <PkHeadingTextField className={css.character_name} my_key="name" label="Character Name" />
 
                 <div className={css.flexchild_grow}>
@@ -37,7 +37,7 @@ export default class PkLayout extends Component {
                     <PkStatsBoxField base_key="wis" mod_key="wis_mod" label="Wisdom" />
                     <PkStatsBoxField base_key="cha" mod_key="cha_mod" label="Charisma" />
                 </div>
-                <div id="col2-skills">
+                <div id="col2-skills" className={css.flexchild_shrink}>
                     <PkAttributeEditorLineField my_key="inspiration" label="Inspiration" />
                     <PkAttributeViewerLineField my_key="pb" label="Proficiency Bonus" run_header="Proficiency Bonus" />
                     <PkSavesFieldContainer/>
@@ -61,8 +61,8 @@ export default class PkLayout extends Component {
                     </div>
                     
                 </div>
-                <div id="col4-feats">
-
+                <div id="col4-feats" className={css.flexchild_grow}>
+                    <p>hi :)</p>
                 </div>
             </div>
         </div>
