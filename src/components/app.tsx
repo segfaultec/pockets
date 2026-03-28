@@ -4,21 +4,19 @@ import { render, createContext, Context, Component } from 'preact';
 import { AttrContainer, UnparsedAttrContainer } from 'lib/attribute';
 import { Charsheet, CharsheetSkillsBox } from 'lib/charsheet';
 
-import AttributeMenu from './AttributeMenu';
-import EvalContainer from "./eval/EvalContainer";
+import AttributeMenu from './AttributeMenu/AttributeMenu';
 
 import { TextFieldContainer } from 'lib/TextFieldContainer';
 import { CharsheetApp } from './charsheet_app';
-import PkLayout from './text/PkLayout';
+import PkLayout from './PkLayout';
 
 import * as css from "./pk.module.css";
-import Chat from './chat/Chat';
-import { PkTab, PkTabs } from './library/PkTabs';
+import Chat from './Chat/Chat';
+import { PkTab, PkTabs } from './Tabs/PkTabs';
 
 import data from "./charsheet_data.json"
-import PkCheckbox from './library/PkCheckbox';
-import PkRadioSwitcher from './library/PkRadioSwitcher';
-import PkRollOptionsSwitcher from './text/PkRollOptionsSwitcher';
+import PkCheckbox from './Checkbox/PkCheckbox';
+import PkRollOptionsSwitcher from './RadioSwitcher/PkRollOptionsSwitcher';
 
 function createCharsheet(): Charsheet {
     let attributes = new UnparsedAttrContainer;

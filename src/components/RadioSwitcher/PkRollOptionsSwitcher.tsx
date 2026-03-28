@@ -1,9 +1,7 @@
 import { CS } from "components/app";
 import { CharsheetApp } from "components/charsheet_app";
-import PkRadioSwitcher from "components/library/PkRadioSwitcher";
-import { pkradioswitcher } from "components/library/pkradioswitcher.module.css";
+import PkRadioSwitcher from "./PkRadioSwitcher";
 
-import { ClsCombine } from "components/utils/ClassHelpers";
 import { Component } from "preact";
 import { useContext } from "preact/hooks";
 

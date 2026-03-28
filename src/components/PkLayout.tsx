@@ -1,9 +1,14 @@
 import { Component } from "preact";
-import { PkHeadingTextField } from "./PkTextField";
 
-import * as css from "../pk.module.css";
-import { PkAttributeEditorLineField, PkAttributeViewerBoxField, PkAttributeViewerLineField, PkHealthViewerBoxField, PkHitDiceBoxField, PkStatsBoxField } from "./PkBoxFields";
-import { PkSavesFieldContainer, PkSkillFieldContainer } from "./PkSkillField";
+import * as css from "./pk.module.css";
+import { PkStatsBoxField } from "./BoxFields/PkStatsBoxField";
+import PkAttributeEditorLineField from "./BoxFields/PkAttributeEditorLineField";
+import { PkAttributeViewerBoxField, PkAttributeViewerLineField } from "./BoxFields/PkAttributeViewerFields";
+import PkHealthViewerBoxField from "./BoxFields/PkHealthViewerBoxField";
+import PkHitDiceBoxField from "./BoxFields/PkHitDiceBoxField";
+import PkSavesFieldContainer from "./SkillField/PkSavesFieldContainer";
+import PkSkillFieldContainer from "./SkillField/PkSkillFieldContainer";
+import PkHeadingTextField from "./Text/PkHeadingTextField";
 
 export default class PkLayout extends Component {
     render() {

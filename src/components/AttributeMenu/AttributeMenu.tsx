@@ -1,17 +1,12 @@
 
-import * as style from "./AttributeMenu.module.css"
-
 import { AttrContainer, AttrKey, OverrideKey } from "lib/attribute";
 import { Component } from "preact";
-import { ParsedExpression } from "lib/diceroll/mod";
 import { JSXInternal } from "preact/src/jsx";
 import { useContext, useMemo, useState } from "preact/hooks";
 
-import { CS } from "./app";
-import SignalWrapper from "./utils/SignalWrapper";
-import { useSignal } from "@preact/signals";
+import { CS } from "components/app";
+import SignalWrapper from "components/utils/SignalWrapper";
 import { just } from "true-myth/dist/es/maybe";
-import PkCheckbox from "./library/PkCheckbox";
 
 type AttributeMenuElementProps = {
     my_key: string,
