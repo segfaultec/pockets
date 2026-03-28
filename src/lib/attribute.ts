@@ -303,7 +303,7 @@ export class AttrContainer {
         return Evaluate(expr, this.get_parsed(), this.active_overrides);
     }
 
-    public evaluate_attribute(attrkey: AttrKey, funckey: AttrKey | undefined): MyResult<EvaluatedExpression> {
+    public evaluate_attribute(attrkey: AttrKey, funckey: AttrKey | undefined = undefined): MyResult<EvaluatedExpression> {
 
         let parsed = this.get_parsed();
 

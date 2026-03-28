@@ -21,7 +21,8 @@ export class PkTextLabel extends Component<PkTextLabelProps> {
 type PkAttributeTextLabelProps = {
     label: string,
     className?: string,
-    attr_on_click?: string
+    attr_on_click?: string,
+    runheader_on_click?: string
 }
 
 export class PkAttributeTextLabel extends Component<PkAttributeTextLabelProps> {
@@ -35,13 +36,14 @@ export class PkAttributeTextLabel extends Component<PkAttributeTextLabelProps> {
 
             const printOnClick = useCallback(() => {
 
-                const eval_result_display = sheet.attributes.get_inner().get_parsed().evaluate_attribute(attr);
-                
+                const eval_result_display = sheet.attributes.get_inner().evaluate_attribute(attr);
+                const header = this.props.runheader_on_click !== undefined ? this.props.runheader_on_click : this.props.label;
+
                 sheet.chat.mutate((chat) => {
-                    chat.add_message_eval_result("Mix", this.props.label, eval_result_display);
+                    chat.add_message_eval_result("Mix", header, eval_result_display);
                 });
                     
-                }, [sheet, attr, this.props.label])
+                }, [sheet, attr, this.props.label, this.props.runheader_on_click])
 
             return <div onClick={printOnClick} className={zip_classes(css.pktextfield_label, this.props.className, css.clickable)}>
                 {this.props.label}
