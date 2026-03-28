@@ -5,19 +5,19 @@ import { CS } from "components/App";
 import * as css from "./text.module.css";
 import * as Helpers from "components/utils/FieldHelpers";
 
-type PkTextFieldProps = {
+type PkLabelFieldProps = {
     my_key: string,
     className?: string,
     run_header: string
 }
 
-export default class PkTextField extends Component<PkTextFieldProps> {
+export default class PkLabelField extends Component<PkLabelFieldProps> {
 
     render_field() {
 
         let { sheet } = useContext(CS);
 
-        const field_result = Helpers.get_text_field_value(sheet, this.props.my_key);
+        const field_result = Helpers.get_label_value(sheet, this.props.my_key);
         const field_value = field_result.unwrapOr("Err!");
 
         const edit_mode = field_result.isOk
@@ -29,7 +29,7 @@ export default class PkTextField extends Component<PkTextFieldProps> {
                 value={field_value}
                 type="text"
                 onInput={(event: any) => {
-                    Helpers.set_text_field_value(sheet, this.props.my_key, event.target.value);
+                    Helpers.set_label_value(sheet, this.props.my_key, event.target.value);
                 }}
             />
             <button

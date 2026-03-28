@@ -2,7 +2,7 @@ import { Component } from "preact";
 
 import * as css from "./text.module.css";
 import * as Helpers from "components/utils/FieldHelpers";
-import PkTextField from "./PkTextField";
+import PkLabelField from "./PkLabelField";
 import PkTextLabel from "./PkTextLabel";
 
 type PkHeadingTextFieldProps = {
@@ -16,7 +16,7 @@ export default class PkHeadingTextField extends Component<PkHeadingTextFieldProp
 
     render() {
         return <div className={Helpers.zip_classes(css.pktextfield_heading, this.props.className)}>
-            <PkTextField my_key={this.props.my_key} run_header={this.props.label} />
+            <PkLabelField my_key={this.props.my_key} run_header={this.props.label} />
             <PkTextLabel label={this.props.label} />
         </div>;
     }

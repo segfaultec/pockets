@@ -4,7 +4,7 @@ import { EvaluatedExpression, Parse, Evaluate, UnparsedExpression, ParsedExpress
 import { add_context, MyResult } from "lib/errors";
 import SignalWrapper from "./utils/SignalWrapper";
 import { Signal } from "@preact/signals";
-import { TextFieldContainer } from "lib/TextFieldContainer";
+import { LabelContainer } from "lib/label";
 import { Maybe } from "true-myth";
 import { nothing } from "true-myth/dist/es/maybe";
 import Chat, { ChatlogCommand, ChatlogFromEvalResult, ChatlogMessage } from "lib/chat";
@@ -14,7 +14,7 @@ import { OverrideContainer } from "lib/override";
 export class CharsheetApp {
     
     attributes: SignalWrapper<AttrContainer>;
-    text_fields: SignalWrapper<TextFieldContainer>;
+    labels: SignalWrapper<LabelContainer>;
 
     edit_mode: Signal<boolean>;
     advanced_display: Signal<boolean>;
@@ -26,7 +26,7 @@ export class CharsheetApp {
 
     constructor(sheet: Charsheet) {
         this.attributes = new SignalWrapper(sheet.attributes);
-        this.text_fields = new SignalWrapper(sheet.text_fields);
+        this.labels = new SignalWrapper(sheet.labels);
         this.edit_mode = new Signal(false);
         this.advanced_display = new Signal(false);
         this.last_ran_expr = new SignalWrapper(nothing());
@@ -41,7 +41,7 @@ export class CharsheetApp {
     to_charsheet(): Charsheet {
         return new Charsheet(
             this.attributes.unpack(),
-            this.text_fields.unpack(),
+            this.labels.unpack(),
             this.skills
         );
     }

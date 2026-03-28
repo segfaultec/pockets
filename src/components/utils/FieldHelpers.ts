@@ -4,14 +4,14 @@ import { MyResult } from "lib/errors";
 import { Maybe } from "true-myth/dist/es/maybe"
 import { fromMaybe } from "true-myth/dist/es/toolbelt";
 
-export function set_text_field_value(sheet: CharsheetApp, key: string, new_value: string) {
-    sheet.text_fields.mutate((inner) => {
+export function set_label_value(sheet: CharsheetApp, key: string, new_value: string) {
+    sheet.labels.mutate((inner) => {
         inner.modify(key, new_value);
     }, false);
 }
 
-export function get_text_field_value(sheet: CharsheetApp, key: string): MyResult<string> {
-    const get = sheet.text_fields.get_inner().get(key);
+export function get_label_value(sheet: CharsheetApp, key: string): MyResult<string> {
+    const get = sheet.labels.get_inner().get(key);
     return fromMaybe(new Error.UnknownVariable(key), Maybe.of(get));
 }
 

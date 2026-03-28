@@ -6,7 +6,7 @@ import { Charsheet, CharsheetSkillsBox } from 'lib/charsheet';
 
 import AttributeMenu from './AttributeMenu/AttributeMenu';
 
-import { TextFieldContainer } from 'lib/TextFieldContainer';
+import { LabelContainer } from 'lib/label';
 import { CharsheetApp } from './charsheet_app';
 import PkLayout from './PkLayout';
 
@@ -38,12 +38,12 @@ function createCharsheet(): Charsheet {
         attributes.add_override(kvp[0], kvp[1], kvp[2]);
     }
 
-    let text_fields = new TextFieldContainer;
+    let labels = new LabelContainer;
     for (const text_field of data.text_fields) {
-        text_fields.set(text_field[0], text_field[1]);
+        labels.set(text_field[0], text_field[1]);
     }
 
-    return new Charsheet(new AttrContainer(attributes), text_fields, skills);
+    return new Charsheet(new AttrContainer(attributes), labels, skills);
 }
 
 export type CharsheetContext = {

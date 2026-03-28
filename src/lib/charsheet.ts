@@ -1,5 +1,5 @@
 
-import { TextFieldContainer } from "./TextFieldContainer";
+import { LabelContainer } from "./label";
 import {AttrContainer, UnparsedAttrContainer} from "./attribute";
 
 type CharsheetSkillsBoxEntry = {
@@ -51,12 +51,12 @@ export class CharsheetSkillsBox {
 
 export class Charsheet {
     public attributes: AttrContainer;
-    public text_fields: TextFieldContainer;
+    public labels: LabelContainer;
     public skills: CharsheetSkillsBox;
 
-    constructor(attributes: AttrContainer, text_fields: TextFieldContainer, skills: CharsheetSkillsBox) {
+    constructor(attributes: AttrContainer, labels: LabelContainer, skills: CharsheetSkillsBox) {
         this.attributes = attributes;
-        this.text_fields = text_fields;
+        this.labels = labels;
         this.skills = skills;
 
         for (const skill of skills.skills) {

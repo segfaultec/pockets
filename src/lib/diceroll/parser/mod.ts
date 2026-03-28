@@ -7,7 +7,6 @@ import grammer, { DicerollSemantics } from "ohm/diceroll.ohm-bundle";
 import { MyResult } from "lib/errors";
 import * as Error from "lib/errors";
 import { ok, err } from "true-myth/dist/es/result";
-import { ohmGrammar } from 'ohm-js';
 
 export type UnparsedExpression = string;
 
@@ -24,7 +23,7 @@ export class ParsedExpression {
     }
 }
 
-const diceroll_semantics: DicerollSemantics = grammer.createSemantics();
+const diceroll_semantics: DicerollSemantics = grammer.Diceroll.createSemantics();
 
 diceroll_semantics.addOperation<rollmod.RollMod>('rollmods(context)', {
     RollMod_KeepHighest(arg0, arg1) {
@@ -137,7 +136,7 @@ diceroll_semantics.addOperation<expression.Expr>('tree(context)', {
 export function Parse(expr: UnparsedExpression): MyResult<ParsedExpression> {
     let matchResult;
     try {
-        matchResult = grammer.match(expr);
+        matchResult = grammer.Diceroll.match(expr);
     } catch (e) {
         return err(new Error.ParsingError((e as Error).message));
     }
