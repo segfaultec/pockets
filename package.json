@@ -30,5 +30,10 @@
     "react-dom": "preact/compat",
     "react-dom/test-utils": "preact/test-utils",
     "react/jsx-runtime": "preact/jsx-runtime"
+  },
+  "@parcel/transformer-css": {
+    "cssModules": {
+      "pattern": "pockets-[name]-[local]"
+    }
   }
 }
