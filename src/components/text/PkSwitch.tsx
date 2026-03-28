@@ -30,8 +30,20 @@ export class PkSwitch extends Component<PkSwitchProps> {
     }
 }
 
-export class PkTriSwitch extends Component<PkSwitchProps> {
+export type PkTriSwitchProps = PkSwitchProps & {
+    field_limit?: number
+}
+
+export class PkTriSwitch extends Component<PkTriSwitchProps> {
     render() {
+
+        let field_limit = 2;
+        if (this.props.field_limit !== undefined
+            && this.props.field_limit < 2
+            && this.props.field_limit >= 0) {
+            field_limit = this.props.field_limit;
+        }
+
         let { sheet } = useContext(CS);
 
         const field_result = Helpers.get_attr_value(sheet, this.props.my_key);
@@ -39,7 +51,7 @@ export class PkTriSwitch extends Component<PkSwitchProps> {
         let field_value = (field_result.map((s) => parseInt(s)).unwrapOr(0)) % 3;
 
         if (field_value < 0) { field_value = 0; }
-        if (field_value > 2) { field_value = 2; }
+        if (field_value > field_limit) { field_value = field_limit; }
 
         const state_classes = [css.state0, css.state1, css.state2];
 
@@ -47,7 +59,7 @@ export class PkTriSwitch extends Component<PkSwitchProps> {
             <button
                 className={Helpers.zip_classes(css.tri_inner, state_classes[field_value])}
                 onClick={() => {
-                    const next_value = (field_value + 1) % 3;
+                    const next_value = (field_value + 1) % (field_limit + 1);
                     Helpers.set_attr_value(sheet, this.props.my_key, next_value.toString());
                 }}/>
         </div>;
