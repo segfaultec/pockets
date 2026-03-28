@@ -210,6 +210,33 @@ input[type="number"] {
     border: 3px solid black;
 }
 
+.pkattrline {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+
+    margin: 5px;
+
+    border: 3px solid black;
+
+    .pktextfield_container {
+        width: 40px;
+        height: 40px;
+
+        > button {
+            border-bottom: none !important;
+            > span {
+                display: inline-block;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        
+    }
+}
+
 .pkattrbox .pktextfield {
     margin: 2;
 }
