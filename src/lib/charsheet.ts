@@ -14,11 +14,10 @@ type Ability = "str" | "dex" | "con" | "int" | "wis" | "cha";
 type Proficiency = "0" | "1" | "2";
 
 export class CharsheetSkillsBox {
-    public title: string;
     public skills: CharsheetSkillsBoxEntry[] = [];
+    public saves: CharsheetSkillsBoxEntry[] = [];
 
-    constructor(title: string) {
-        this.title = title;
+    constructor() {
     }
 
     AddSkill(prefix: string, label: string, ability: Ability, value: Proficiency = "0") {
@@ -31,8 +30,22 @@ export class CharsheetSkillsBox {
         })
     }
 
+    AddSave(label: string, ability: Ability, value: Proficiency = "0") {
+        this.saves.push({
+            key_prof: ability + "_save_prof",
+            key_mod: ability + "_save_mod",
+            ability,
+            label,
+            starting_proficiency: value
+        })
+    }
+
     ImportSkillFromJson(skill: string[]) {
         this.AddSkill(skill[0], skill[1], skill[2] as Ability, skill[3] as Proficiency | undefined);
+    }
+
+    ImportSaveFromJson(save: string[]) {
+        this.AddSave(save[0], save[1] as Ability, save[2] as Proficiency | undefined);
     }
 }
 
@@ -50,6 +63,12 @@ export class Charsheet {
             const attrs = this.attributes.get_unparsed(true);
             attrs.add_attribute(skill.key_prof, skill.starting_proficiency);
             attrs.add_attribute(skill.key_mod, `[${skill.ability}_mod]+[${skill.key_prof}]*[pb]`)
+        }
+
+        for (const save of skills.saves) {
+            const attrs = this.attributes.get_unparsed(true);
+            attrs.add_attribute(save.key_prof, save.starting_proficiency);
+            attrs.add_attribute(save.key_mod, `[${save.ability}_mod]+[${save.key_prof}]*[pb]`);
         }
     }
 }

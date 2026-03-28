@@ -12,7 +12,7 @@
 
         ["gen_stat", "4d6d1"],
         ["roll", "d20+[input]"],
-        ["pb", "3"],
+        ["pb", "([level]+3)//4+1"],
         ["stat_mod", "([input]-10)//2"],
 
         ["str", "8"],
@@ -27,6 +27,14 @@
         ["wis_mod", "[stat_mod([wis])]"],
         ["cha", "20"],
         ["cha_mod", "[stat_mod([cha])]"]
+    ],
+    "saves": [
+        ["Strength", "str"],
+        ["Dexterity", "dex"],
+        ["Constitution", "con", "1"],
+        ["Intellegence", "int"],
+        ["Wisdom", "wis"],
+        ["Charisma", "cha", "1"]
     ],
     "skills": [
         ["acrobatics", "Acrobatics", "dex"],

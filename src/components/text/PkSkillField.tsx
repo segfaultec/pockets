@@ -9,22 +9,21 @@ import { useContext } from "preact/hooks"
 type PkSkillFieldProps = {
     prof_key: string,
     mod_key: string,
-    label: string
+    label: string,
+    run_header: string
 }
 
 export default class PkSkillField extends Component<PkSkillFieldProps> {
     render() {
         return <div className={css.pkskillfield}>
             <PkTriSwitch my_key={this.props.prof_key} />
-            <PkAttributeViewerField my_key={this.props.mod_key} modifier run_func="roll" run_header={`${this.props.label} Check`}/>
+            <PkAttributeViewerField my_key={this.props.mod_key} modifier run_func="roll" run_header={this.props.run_header}/>
             <PkAttributeTextLabel label={this.props.label} attr_on_click={this.props.mod_key} />
             </div>
     }
 }
 
-type PkSkillFieldContainerProps = {}
-
-export class PkSkillFieldContainer extends Component<PkSkillFieldContainerProps> {
+export class PkSkillFieldContainer extends Component {
     render() {
         let { sheet } = useContext(CS);
 
@@ -34,11 +33,33 @@ export class PkSkillFieldContainer extends Component<PkSkillFieldContainerProps>
             elems.push(<PkSkillField
                 prof_key={skill.key_prof}
                 mod_key={skill.key_mod}
-                label={skill.label}/>);
+                label={skill.label}
+                run_header={`${skill.label} Check`}/>);
         }
 
         return <div className={css.pkskillsfieldcontainer}>
-            <PkTextLabel label={sheet.skills.title} />
+            <PkTextLabel label="Skills" />
+            {elems}
+        </div>
+    }
+}
+
+export class PkSavesFieldContainer extends Component {
+    render() {
+        let { sheet } = useContext(CS);
+
+        let elems = [];
+
+        for (const save of sheet.skills.saves) {
+            elems.push(<PkSkillField
+                prof_key={save.key_prof}
+                mod_key={save.key_mod}
+                label={save.label}
+                run_header={`${save.label} Saving Throw`}/>);
+        }
+
+        return <div className={css.pkskillsfieldcontainer}>
+            <PkTextLabel label="Saves" />
             {elems}
         </div>
     }

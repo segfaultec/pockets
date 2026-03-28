@@ -3,7 +3,7 @@ import { PkHeadingTextField } from "./PkTextField";
 
 import * as css from "../pk.module.css";
 import { PkAttributeViewerBoxField, PkAttributeViewerLineField, PkHealthViewerBoxField, PkHitDiceBoxField, PkStatsBoxField } from "./PkBoxFields";
-import { PkSkillFieldContainer } from "./PkSkillField";
+import { PkSavesFieldContainer, PkSkillFieldContainer } from "./PkSkillField";
 
 export default class PkLayout extends Component {
     render() {
@@ -40,6 +40,7 @@ export default class PkLayout extends Component {
                 <div id="col2-skills">
                     <PkAttributeViewerLineField my_key="inspiration" label="Inspiration" run_header="Inspiration" />
                     <PkAttributeViewerLineField my_key="pb" label="Proficiency Bonus" run_header="Proficiency Bonus" />
+                    <PkSavesFieldContainer/>
                     <PkSkillFieldContainer/>
                 </div>
                 <div id="col3-attacks" className={css.flexchild_grow}>

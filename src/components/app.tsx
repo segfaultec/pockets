@@ -23,9 +23,13 @@ import PkRollOptionsSwitcher from './text/PkRollOptionsSwitcher';
 function createCharsheet(): Charsheet {
     let attributes = new UnparsedAttrContainer;
 
-    let skills = new CharsheetSkillsBox("Skills");
+    let skills = new CharsheetSkillsBox();
     for (const skill of data.skills) {        
         skills.ImportSkillFromJson(skill);
+    }
+
+    for (const save of data.saves) {
+        skills.ImportSaveFromJson(save);
     }
 
     for (const kvp of data.attributes) {
