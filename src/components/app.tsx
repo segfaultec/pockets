@@ -18,6 +18,7 @@ import { PkTab, PkTabs } from './library/PkTabs';
 import data from "./charsheet_data.json"
 import PkCheckbox from './library/PkCheckbox';
 import PkRadioSwitcher from './library/PkRadioSwitcher';
+import PkRollOptionsSwitcher from './text/PkRollOptionsSwitcher';
 
 function createCharsheet(): Charsheet {
     let attributes = new UnparsedAttrContainer;
@@ -67,40 +68,6 @@ class App extends Component<{}, AppState> {
 
         const sheet = this.state.sheet;
 
-        // Todo move so this doesn't rerender the whole sheet when updated
-        let roll_options = ["Normal", "Advantage", "Disadvantage"];
-        const roll_override = sheet.attributes.get_inner().get_override("roll");
-        let selected_option = "???";
-        switch (roll_override) {
-            case "advantage":
-                selected_option = "Advantage";
-                break;
-            case "disadvantage":
-                selected_option = "Disadvantage";
-                break;
-            case null:
-                selected_option = "Normal";
-                break;
-        }
-
-        const onRollOptionClicked = (new_option: string) => {
-            let new_override: string | null = null;
-            switch (new_option) {
-                case "Normal":
-                    new_override = null;
-                    break;
-                case "Advantage":
-                    new_override = "advantage"
-                    break;
-                case "Disadvantage":
-                    new_override = "disadvantage"
-                    break;
-            }
-            sheet.attributes.mutate((attrs) => {
-                attrs.set_override("roll", new_override)
-            })
-        }
-
         return <CS.Provider value={{sheet}}>
         <div id={css.main}>
             <div id={css.main_sheet}>
@@ -117,10 +84,7 @@ class App extends Component<{}, AppState> {
                                 signal={sheet.advanced_display}
                                 className={css.pkeditmodetoggle}
                                 />
-                            <PkRadioSwitcher options={roll_options}
-                                selected_option={selected_option}
-                                onChange={onRollOptionClicked}
-                                />
+                            <PkRollOptionsSwitcher />
                         </span>
                         <PkLayout />
                     </PkTab>
