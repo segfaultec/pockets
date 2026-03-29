@@ -53,7 +53,6 @@ function createCharsheet(): Charsheet {
         for (const raw_field of raw_fields) {
             const field_result = TextField.Parse(raw_field[0], raw_field[1]);
             fields.push(field_result);
-            console.log(field_result);
         }
         text_fields.set(category, fields);
     }

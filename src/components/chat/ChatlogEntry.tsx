@@ -1,5 +1,5 @@
 import { Component, JSX } from "preact";
-import { ChatlogMessage, ChatlogMessage_Base, ChatlogMessage_EvalFailure, ChatlogMessage_EvalSuccess, ChatlogMessage_GenericError, ChatlogMessage_Message, ChatlogMessage_PrintField } from "lib/chat";
+import { ChatlogMessage, ChatlogMessage_Base, ChatlogMessage_EvalFailure, ChatlogMessage_EvalSuccess, ChatlogMessage_GenericError, ChatlogMessage_Message, ChatlogMessage_PrintField, ChatlogMessage_TextField } from "lib/chat";
 
 import * as css from "./chat.module.css";
 import { EvalSuccess } from "components/Eval/EvalSuccess";
@@ -7,8 +7,9 @@ import { EvalError } from "components/Eval/EvalError";
 import { ClsCombine } from "components/utils/ClassHelpers";
 import { useContext } from "preact/hooks";
 import { CS } from "components/App";
+import { MakeTextFieldEntry } from "./TextFieldEntry";
 
-abstract class ChatlogEntryBase<T extends ChatlogMessage_Base> extends Component<{message: T}> {}
+export abstract class ChatlogEntryBase<T extends ChatlogMessage_Base> extends Component<{message: T}> {}
 
 export function MakeChatlogEntry(message: ChatlogMessage): JSX.Element {
     switch (message.type) {
@@ -21,7 +22,9 @@ export function MakeChatlogEntry(message: ChatlogMessage): JSX.Element {
         case "genericerror":
             return <ChatlogEntry_GenericError message={message} />;
         case "printfield":
-            return <ChatlogEntry_PrintField message={message} />;
+            return <ChatlogEntry_PrintField message={message} />
+        case "textfield":
+            return <ChatlogEntry_TextField message={message}/>;
     }
 }
 
@@ -93,5 +96,23 @@ class ChatlogEntry_GenericError extends ChatlogEntryBase<ChatlogMessage_GenericE
             header="Error!"
             message={this.props.message.error_message}
             className={css.chat_error} />
+    }
+}
+
+class ChatlogEntry_TextField extends ChatlogEntryBase<ChatlogMessage_TextField> {
+    render() {
+
+        const header1 = this.props.message.sender + ":";
+        const header2 = this.props.message.title;
+
+        return <div className={css.chat_message_container}>
+            <span className={css.chat_header}>{header1}</span>
+            <span className={css.chat_header}>{header2}</span>
+            <div className={css.text_field}>
+            {
+                this.props.message.contents.map((entry) => MakeTextFieldEntry(entry))
+            }
+            </div>
+        </div>
     }
 }

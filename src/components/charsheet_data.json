@@ -73,7 +73,7 @@
     ],
     "text_fields": {
         "racial_traits": [
-            ["Deathless Nature","You have escaped death, a fact represented by the following benefits: (here's a roll lol [2d6+[pb]])\n\n - You have advantage on saving throws against disease and being poisoned, and you have resistance to poison damage.\n - You are immune to bleeding.\n - You have advantage on death saving throws.\n - You don't need to eat, drink, or breathe.\n - You don't need to sleep, and magic can't put you to sleep. You can finish a long rest in 4 hours if you spend those hours in an inactive, motionless state, during which you retain consciousness."]
+            ["Deathless Nature","You have escaped death, a fact represented by the following benefits: (here's a roll lol [2d6+[pb]] here's a broken roll [1+])\n\n - You have advantage on saving throws against disease and being poisoned, and you have resistance to poison damage.\n - You are immune to bleeding.\n - You have advantage on death saving throws.\n - You don't need to eat, drink, or breathe.\n - You don't need to sleep, and magic can't put you to sleep. You can finish a long rest in 4 hours if you spend those hours in an inactive, motionless state, during which you retain consciousness."]
             ,["Knowledge of a Past Life", "You temporarily remember glimpses of the past, perhaps faded memories from ages ago or a previous life. When you make an ability check that uses a skill, you can roll a d6 immediately after seeing the number on the d20 and add the number on the d6 to the check.\n\nYou can use this feature a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest.\n\n[d6]"]
         ],
         "class_feats": [

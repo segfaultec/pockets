@@ -1,6 +1,13 @@
 
 .eval_container {
 
+    display: inline-block;
+    font-size: 16px;
+
+    .total {
+        font-weight: bold;
+    }
+
     .annex_string {
         color: black;     
     }
@@ -8,6 +15,13 @@
     .annex_literal_fixed {
         color: black;
     }
+}
+
+.eval_error_short {
+    display: inline-block;
+    font-size: 16px;
+    color: red;
+    font-weight: bold;
 }
 
 .diceroll_container {

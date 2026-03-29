@@ -112,41 +112,20 @@ class EvalSuccessAnnex extends Component<EvalSuccessAnnexProps> {
 
 type EvalSuccessProps = {
     eval_result: EvaluatedExpression,
-    advanced_display: boolean
+    advanced_display: boolean,
+    short_display?: boolean
 };
 
 export class EvalSuccess extends Component<EvalSuccessProps> {
 
     render() {
-        return <div className={css.eval_container}>
-            <span>{this.props.eval_result.total} = </span><EvalSuccessAnnex annex={this.props.eval_result.annex} advanced_display={this.props.advanced_display} />
-        </div>
-    }
-}
+        if (this.props.short_display) {
+            return <div className={css.eval_container}>{this.props.eval_result.total}</div>
+        } else {
+            return <div className={css.eval_container}>
+                <span className={css.total}>{this.props.eval_result.total}</span> = <EvalSuccessAnnex annex={this.props.eval_result.annex} advanced_display={this.props.advanced_display} />
+            </div>
+        }
 
-class EvalSuccessTreeAnnex extends Component<EvalSuccessAnnexProps> {
-    render() {
-        const token = this.props.annex;
-        if (typeof token === "string") {
-            return <p>{token}</p>;
-        }
-        else if (token instanceof EvaluatedAttribute) {
-            return <details>
-                <summary>{token.name}</summary>
-                <EvalSuccessTreeAnnex annex={token.annex} advanced_display={this.props.advanced_display} />
-            </details>
-        }
-        else {
-            return <p>{token.ToString()}</p>
-        }
-    }
-}
-
-export class EvalSuccessTree extends Component<EvalSuccessProps> {
-    render() {
-        return <details>
-            <summary>Eval Success</summary>
-            <EvalSuccessTreeAnnex annex={this.props.eval_result.annex} advanced_display={this.props.advanced_display}/>
-            </details>;
     }
 }

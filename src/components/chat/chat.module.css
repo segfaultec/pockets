@@ -67,3 +67,22 @@
         font-weight: normal;
     }
 }
+
+.text_field {
+
+    font-family: "MS Shell Dlg";
+    line-height: 12px;
+    font-size: 8pt;
+
+    word-wrap: break-word;
+    white-space: pre-line;
+
+    .eval_success {
+        color: green;
+    }
+
+    .eval_failure {
+        color: red;
+    }
+
+}

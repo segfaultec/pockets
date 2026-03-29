@@ -1,7 +1,9 @@
 import { Result } from "true-myth";
 import { err, ok } from "true-myth/dist/es/result";
-import { EvaluatedExpression } from "./diceroll/mod";
-import { Error, MyResult } from "./errors";
+import { EvaluatedExpression, Parse, ParsedExpression } from "./diceroll/mod";
+import { add_context, Error, MyResult } from "./errors";
+import { TextField } from "./textfield";
+import { AttrContainer } from "./attribute";
 
 export type ChatlogMessage_Base = {
     sender: string
@@ -35,12 +37,36 @@ export type ChatlogMessage_PrintField = ChatlogMessage_Base & {
     contents: string
 }
 
+export type TextFieldPart_EvalSuccess = {
+    type: "evalsuccess",
+    expr: EvaluatedExpression
+}
+
+export type TextFieldPart_EvalFailure = {
+    type: "evalfailure",
+    error: Error
+}
+
+export type TextFieldPart_String = {
+    type: "string",
+    contents: string
+}
+
+export type TextFieldPart = TextFieldPart_String | TextFieldPart_EvalFailure | TextFieldPart_EvalSuccess;
+
+export type ChatlogMessage_TextField = ChatlogMessage_Base & {
+    type: "textfield",
+    title: string,
+    contents: TextFieldPart[]
+}
+
 export type ChatlogMessage = 
     ChatlogMessage_Message 
     | ChatlogMessage_EvalFailure 
     | ChatlogMessage_EvalSuccess
     | ChatlogMessage_GenericError
-    | ChatlogMessage_PrintField;
+    | ChatlogMessage_PrintField
+    | ChatlogMessage_TextField;
 
 type ChatlogCommandType = "Roll";
 
@@ -133,6 +159,44 @@ export default class Chat {
         } else {
             return err(`Unknown command: "${command}"`);
         }
+    }
+
+    run_text_field(attributes: Readonly<AttrContainer>, sender: string, text_field: TextField) {
+
+        let out_parts: TextFieldPart[] = [];
+
+        for (const in_part of text_field.contents) {
+            if (in_part.is_expr) {
+                const evaluate = (parsed: ParsedExpression) => (
+                    attributes.evaluate_expression(parsed)
+                );
+                const parsed = Parse(in_part.value);
+                const evaluated = parsed.andThen(evaluate);
+                if (evaluated.isOk) {
+                    out_parts.push({
+                        type: "evalsuccess",
+                        expr: evaluated.value
+                    })
+                } else {
+                    out_parts.push({
+                        type: "evalfailure",
+                        error: evaluated.error
+                    })
+                }
+            } else {
+                out_parts.push({
+                    type: "string",
+                    contents: in_part.value
+                })
+            }
+        }
+
+        this.messages.push({
+            type: "textfield",
+            sender,
+            title: text_field.title,
+            contents: out_parts
+        })
     }
 
     add_message(sender: string, message: string) {

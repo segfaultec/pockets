@@ -39,7 +39,7 @@ Diceroll {
         | SortAcending --SortAcending
         | SortDecending --SortDecending
 
-    DicerollToken = caseInsensitive<"d">
+    DicerollToken (d) = caseInsensitive<"d">
 
     ExprSumInfix
         = ExprSumInfix "+" ExprProductInfix --Add
@@ -67,7 +67,7 @@ Diceroll {
         | "-" ExprPriority --NegPrefix
         | Literal
 
-    AttributeInner
+    AttributeInner (an attribute or function)
         = "input" digit --Input
         | "input" --InputSingle
         | variable_ident "(" ListOf<Expr,","> ")" --NamedFunction // todo multiple function inputs
@@ -78,13 +78,13 @@ Diceroll {
         | "[" AttributeInner "]" --AttributeBasic
         | number --number
 
-    variable_ident
+    variable_ident (a name)
         = letter variable_ident_char*
 
     variable_ident_char
         = alnum | "_" | "-"
 
-    number
+    number (a number)
         = digit* "." digit+ --fract
         | digit+ --whole
 }

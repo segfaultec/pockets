@@ -26,11 +26,15 @@ class PkTextFieldToken extends Component<PkTextFieldTokenProps> {
 
 type PkTextFieldProps = {
     text_field: TextField;
+    onClick?: () => void;
 }
 
 class PkTextField extends Component<PkTextFieldProps> {
     render() {
-        return <div className={css.textfield}>
+        return <div 
+                className={ClsCombine(css.textfield, this.props.onClick ? css.clickable : undefined)}
+                onClick={this.props.onClick}
+            >
             <p className={css.title}>{this.props.text_field.title}</p>
             { this.props.text_field.contents.map(t => <PkTextFieldToken token={t}/>) }
         </div>
@@ -46,10 +50,20 @@ export default class PkTextFieldCategory extends Component<PkTextFieldCategoryPr
     render() {
 
         let { sheet } = useContext(CS);
+        let attributes = sheet.attributes.get_inner();
 
         const category = sheet.text_fields.get_inner().get(this.props.category);
         const fields = category !== undefined
-            ? category.map((f) => <PkTextField text_field={f} />) : [];
+            ? category.map((f) => {
+
+                const onClick = () => {
+                    sheet.chat.mutate((chat) => {
+                        chat.run_text_field(attributes, "Mix", f);
+                    });
+                };
+
+                return <PkTextField text_field={f} onClick={onClick}/>;
+            }) : [];
 
         return <div className={css.textfieldcategory}>
             <PkTextLabel {...this.props} centered className={css.label}/>
