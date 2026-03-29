@@ -32,13 +32,13 @@ export default class PkAttributeTextLabel extends Component<PkAttributeTextLabel
                     
                 }, [sheet, attr, this.props.label, this.props.runheader_on_click])
 
-            return <div onClick={printOnClick} className={zip_classes(css.pktextfield_label, this.props.className, css.clickable)}>
+            return <div onClick={printOnClick} className={zip_classes(css.labelfield_label, this.props.className, css.clickable)}>
                 {this.props.label}
             </div>;
         }
         else
         {
-            return <div className={zip_classes(css.pktextfield_label, this.props.className)}>
+            return <div className={zip_classes(css.labelfield_label, this.props.className)}>
                 {this.props.label}
             </div>;
         }

@@ -63,7 +63,7 @@ export default class PkAttributeViewerField extends Component<PkAttributeViewerF
             }
         }
 
-        return <div className={ClsCombine(css.pktextfield_container, this.props.className)}>
+        return <div className={ClsCombine(css.labelfield_container, this.props.className)}>
             <button
                 onClick={onClick}>
                 <span>{eval_display_value.replaceAll(' ', '\u00a0')}</span>

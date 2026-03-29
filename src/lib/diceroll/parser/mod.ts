@@ -23,7 +23,7 @@ export class ParsedExpression {
     }
 }
 
-const diceroll_semantics: DicerollSemantics = grammer.Diceroll.createSemantics();
+const diceroll_semantics: DicerollSemantics = grammer.createSemantics();
 
 diceroll_semantics.addOperation<rollmod.RollMod>('rollmods(context)', {
     RollMod_KeepHighest(arg0, arg1) {
@@ -136,7 +136,7 @@ diceroll_semantics.addOperation<expression.Expr>('tree(context)', {
 export function Parse(expr: UnparsedExpression): MyResult<ParsedExpression> {
     let matchResult;
     try {
-        matchResult = grammer.Diceroll.match(expr);
+        matchResult = grammer.match(expr);
     } catch (e) {
         return err(new Error.ParsingError((e as Error).message));
     }

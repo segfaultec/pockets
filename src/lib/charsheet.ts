@@ -1,6 +1,7 @@
 
 import { LabelContainer } from "./label";
 import {AttrContainer, UnparsedAttrContainer} from "./attribute";
+import { TextFieldContainer } from "./textfield";
 
 type CharsheetSkillsBoxEntry = {
     key_prof: string,
@@ -53,11 +54,13 @@ export class Charsheet {
     public attributes: AttrContainer;
     public labels: LabelContainer;
     public skills: CharsheetSkillsBox;
+    public text_fields: TextFieldContainer;
 
-    constructor(attributes: AttrContainer, labels: LabelContainer, skills: CharsheetSkillsBox) {
+    constructor(attributes: AttrContainer, labels: LabelContainer, skills: CharsheetSkillsBox, text_fields: TextFieldContainer) {
         this.attributes = attributes;
         this.labels = labels;
         this.skills = skills;
+        this.text_fields = text_fields;
 
         for (const skill of skills.skills) {
             const attrs = this.attributes.get_unparsed(true);

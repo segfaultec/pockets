@@ -15,7 +15,7 @@ type PkHeadingTextFieldProps = {
 export default class PkHeadingTextField extends Component<PkHeadingTextFieldProps> {
 
     render() {
-        return <div className={Helpers.zip_classes(css.pktextfield_heading, this.props.className)}>
+        return <div className={Helpers.zip_classes(css.labelfield_heading, this.props.className)}>
             <PkLabelField my_key={this.props.my_key} run_header={this.props.label} />
             <PkTextLabel label={this.props.label} />
         </div>;

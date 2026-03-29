@@ -53,6 +53,11 @@ body {
     flex-grow: 3;
 }
 
+.layout_fixedcol {
+    width: 300px;
+    min-width: 300px;
+}
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;

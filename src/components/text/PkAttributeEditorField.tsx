@@ -23,7 +23,7 @@ export default class PkAttributeEditorField extends Component<PkAttributeEditorF
         const edit_mode = field_result.isOk
             && (this.props.always_edit || Helpers.is_edit_mode_enabled(sheet));
 
-            return <div className={Helpers.zip_classes(css.pktextfield_container, this.props.className)}>
+            return <div className={Helpers.zip_classes(css.labelfield_container, this.props.className)}>
             <input
                 aria-hidden={!edit_mode}
                 value={field_value}

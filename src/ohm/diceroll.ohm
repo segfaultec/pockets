@@ -88,11 +88,3 @@ Diceroll {
         = digit* "." digit+ --fract
         | digit+ --whole
 }
-
-TextField {
-    FieldEntry
-        = "[" any* "]" --Expr
-        | any+ --String
-
-    Field = FieldEntry*
-}

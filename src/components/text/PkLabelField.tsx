@@ -23,7 +23,7 @@ export default class PkLabelField extends Component<PkLabelFieldProps> {
         const edit_mode = field_result.isOk
             && Helpers.is_edit_mode_enabled(sheet);
 
-        return <div className={css.pktextfield_container}>
+        return <div className={css.labelfield_container}>
             <input
                 aria-hidden={!edit_mode}
                 value={field_value}
@@ -47,7 +47,7 @@ export default class PkLabelField extends Component<PkLabelFieldProps> {
     }
 
     render() {
-        return <div className={Helpers.zip_classes(css.pktextfield, this.props.className)}>
+        return <div className={Helpers.zip_classes(css.labelfield, this.props.className)}>
             {this.render_field()}
             </div>
     }

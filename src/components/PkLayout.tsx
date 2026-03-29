@@ -9,6 +9,7 @@ import PkHitDiceBoxField from "./BoxFields/PkHitDiceBoxField";
 import PkSavesFieldContainer from "./SkillField/PkSavesFieldContainer";
 import PkSkillFieldContainer from "./SkillField/PkSkillFieldContainer";
 import PkHeadingTextField from "./Text/PkHeadingTextField";
+import PkTextFieldCategory from "./Text/PkTextFieldCategory";
 
 export default class PkLayout extends Component {
     render() {
@@ -48,7 +49,7 @@ export default class PkLayout extends Component {
                     <PkSavesFieldContainer/>
                     <PkSkillFieldContainer/>
                 </div>
-                <div id="col3-attacks" className={css.flexchild_grow}>
+                <div id="col3-attacks" className={css.flexchild_grow + " " + css.layout_fixedcol}>
                     <div className={css.pkattrbox_container}>
                     <div className={css.flex}>
                     <PkAttributeViewerBoxField my_key="ac" label={"Armour\nClass"} run_header="Armour Class"/>
@@ -66,8 +67,9 @@ export default class PkLayout extends Component {
                     </div>
                     
                 </div>
-                <div id="col4-feats" className={css.flexchild_grow}>
-                    <p>hi :)</p>
+                <div className={css.flexchild_grow + " " + css.layout_fixedcol}>
+                    <PkTextFieldCategory category="racial_traits" label="Racial Traits" />
+                    <PkTextFieldCategory category="class_feats" label="Class Features" />
                 </div>
             </div>
         </div>

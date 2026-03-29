@@ -17,6 +17,8 @@ import { PkTab, PkTabs } from './Tabs/PkTabs';
 import data from "./charsheet_data.json"
 import PkCheckbox from './Checkbox/PkCheckbox';
 import PkRollOptionsSwitcher from './RadioSwitcher/PkRollOptionsSwitcher';
+import { TextField, TextFieldContainer } from 'lib/textfield';
+import { ContainerBase } from 'lib/ContainerBase';
 
 function createCharsheet(): Charsheet {
     let attributes = new UnparsedAttrContainer;
@@ -39,11 +41,25 @@ function createCharsheet(): Charsheet {
     }
 
     let labels = new LabelContainer;
-    for (const text_field of data.text_fields) {
-        labels.set(text_field[0], text_field[1]);
+    for (const label of data.labels) {
+        labels.set(label[0], label[1]);
     }
 
-    return new Charsheet(new AttrContainer(attributes), labels, skills);
+    let text_fields: TextFieldContainer = new ContainerBase;
+    for (const category in data.text_fields) {
+        const raw_fields: string[][] = (data.text_fields as any)[category];
+
+        let fields: TextField[] = [];
+        for (const raw_field of raw_fields) {
+            const field_result = TextField.Parse(raw_field[0], raw_field[1]);
+            fields.push(field_result);
+            console.log(field_result);
+        }
+        text_fields.set(category, fields);
+    }
+
+
+    return new Charsheet(new AttrContainer(attributes), labels, skills, text_fields);
 }
 
 export type CharsheetContext = {

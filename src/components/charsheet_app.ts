@@ -10,11 +10,13 @@ import { nothing } from "true-myth/dist/es/maybe";
 import Chat, { ChatlogCommand, ChatlogFromEvalResult, ChatlogMessage } from "lib/chat";
 import { err } from "true-myth/dist/es/result";
 import { OverrideContainer } from "lib/override";
+import { TextFieldContainer } from "lib/textfield";
 
 export class CharsheetApp {
     
     attributes: SignalWrapper<AttrContainer>;
     labels: SignalWrapper<LabelContainer>;
+    text_fields: SignalWrapper<TextFieldContainer>;
 
     edit_mode: Signal<boolean>;
     advanced_display: Signal<boolean>;
@@ -31,6 +33,7 @@ export class CharsheetApp {
         this.advanced_display = new Signal(false);
         this.last_ran_expr = new SignalWrapper(nothing());
         this.skills = sheet.skills;
+        this.text_fields = new SignalWrapper(sheet.text_fields);
 
         let chat = new Chat(this.run_command.bind(this));
         chat.add_message_with_commands("debug", "/roll 2d20kh1+[str_mod]");
@@ -42,7 +45,8 @@ export class CharsheetApp {
         return new Charsheet(
             this.attributes.unpack(),
             this.labels.unpack(),
-            this.skills
+            this.skills,
+            this.text_fields.unpack()
         );
     }
 

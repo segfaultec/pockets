@@ -1,35 +1,11 @@
-import { TextFieldSemantics } from "ohm/diceroll.ohm-bundle";
-import { ParsedExpression, UnparsedExpression } from "./diceroll/mod";
-import grammer, { DicerollSemantics } from "ohm/diceroll.ohm-bundle";
-import { MyResult } from "./errors";
-import { err, ok } from "true-myth/dist/es/result";
-import * as Error from "lib/errors";
+import { ContainerBase } from "./ContainerBase";
 
-type TextFieldToken = {
+export type TextFieldToken = {
     value: string,
     is_expr: boolean;
 }
 
-const textfield_semantics: TextFieldSemantics = grammer.TextField.createSemantics();
-
-textfield_semantics.addOperation<TextFieldToken>('tokens(context)', {
-    FieldEntry_Expr(arg0, arg1, arg2) {
-        return {value: arg0.sourceString, is_expr: true};
-    },
-    FieldEntry_String(arg0) {
-        return {value: arg0.sourceString, is_expr: false};
-    }
-})
-
-textfield_semantics.addOperation<TextFieldToken[]>('tree(context)', {
-    Field(arg0) {
-        return arg0.asIteration().children.map(
-            c => c.tokens(this.args.context)
-        )
-    }
-})
-
-export class TextFieldEntry {
+export class TextField {
     title: string;
     contents: TextFieldToken[];
 
@@ -38,25 +14,51 @@ export class TextFieldEntry {
         this.contents = contents;
     }
 
-    static Parse(title: string, raw_text_field: string): MyResult<TextFieldEntry> {
-        let matchResult;
-        try {
-            matchResult = grammer.TextField.match(raw_text_field);
-        } catch (e) {
-            return err(new Error.ParsingError((e as Error).message));
+    static Parse(title: string, raw_text_field: string): TextField {
+
+        let tokens: TextFieldToken[] = [];
+
+        let current_token = "";
+        let expr_stack = 0;
+
+        const flush = (is_expr: boolean) => {
+            if (current_token.length > 0)
+            {
+                tokens.push({value: current_token, is_expr});
+            }
+            current_token = ""
         }
 
-        if (matchResult.failed()) {
-            return err(new Error.ParsingError(matchResult.shortMessage));
+        for (const char of raw_text_field) {
+            if (char === "[") {
+                if (expr_stack == 0) {
+                    flush(false);
+                } else {
+                    current_token += char;
+                }
+
+                expr_stack++;
+            }
+            else if (char === "]") {
+                if (expr_stack == 1) {
+                    flush(true);
+                } else {
+                    current_token += char;
+                }
+
+                if (expr_stack > 0) {
+                    expr_stack--;
+                }
+            } else {
+                current_token += char;
+            }
         }
 
-        let tokens: TextFieldToken[];
-        try {
-            tokens = textfield_semantics(matchResult).tree();
-        } catch (e) {
-            return err(new Error.ParsingError((e as Error).message));
-        }
+        flush(false);
 
-        return ok(new TextFieldEntry(title, tokens));
+        return new TextField(title, tokens);
     }
 }
+
+type TextFieldCategoryKey = string;
+export type TextFieldContainer = ContainerBase<TextFieldCategoryKey, TextField[]>;

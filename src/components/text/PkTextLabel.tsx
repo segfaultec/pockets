@@ -6,11 +6,18 @@ type PkTextLabelProps = {
     label: string,
     className?: string,
     onClick?: () => void;
+    centered?: boolean
 }
 
 export default class PkTextLabel extends Component<PkTextLabelProps> {
     render() {
-        return <div onClick={this.props.onClick} className={zip_classes(css.pktextfield_label, this.props.className, this.props.onClick ? css.clickable : null)}>
+        return <div onClick={this.props.onClick} className={
+            zip_classes(
+                css.labelfield_label,
+                this.props.className,
+                this.props.onClick ? css.clickable : null,
+                this.props.centered ? css.centered : null
+                )}>
             {this.props.label}
         </div>;
     }

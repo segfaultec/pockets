@@ -63,12 +63,22 @@
         ["roll", "advantage", "2d20kh1+[input]"],
         ["roll", "disadvantage", "2d20dh1+[input]"]
     ],
-    "text_fields": [
+    "labels": [
         ["name", "Mixolydian"],
         ["class", "Sorcerer 11"],
         ["race", "Reborn"],
         ["background", "Hermit"],
         ["size", "Medium"],
         ["alignment", "Lawful Good"]
-    ]
+    ],
+    "text_fields": {
+        "racial_traits": [
+            ["Deathless Nature","You have escaped death, a fact represented by the following benefits: (here's a roll lol [2d6+[pb]])\n\n - You have advantage on saving throws against disease and being poisoned, and you have resistance to poison damage.\n - You are immune to bleeding.\n - You have advantage on death saving throws.\n - You don't need to eat, drink, or breathe.\n - You don't need to sleep, and magic can't put you to sleep. You can finish a long rest in 4 hours if you spend those hours in an inactive, motionless state, during which you retain consciousness."]
+            ,["Knowledge of a Past Life", "You temporarily remember glimpses of the past, perhaps faded memories from ages ago or a previous life. When you make an ability check that uses a skill, you can roll a d6 immediately after seeing the number on the d20 and add the number on the d6 to the check.\n\nYou can use this feature a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest.\n\n[d6]"]
+        ],
+        "class_feats": [
+            ["Sorcery Points", "You can use your sorcery points to gain additional spell slots, or sacrifice spell slots to gain additional sorcery points."]
+            ,["Flexible Casting", "Creating Spell Slots - Bonus Action\n1st: 2, 2nd: 3, 3rd: 5, 4th: 6, 5th: 7.\nConverting a Spell Slot to Sorcery Points - Bonus Action\nX slot: X sorcery points."]
+        ]
+    }
 }
