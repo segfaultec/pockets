@@ -2,6 +2,7 @@
 import * as operation from './operation';
 import * as expression from './expression';
 import * as rollmod from './rollmods';
+import * as comparison from "./comparison"
 import grammer, { DicerollSemantics } from "ohm/diceroll.ohm-bundle";
 
 import { MyResult } from "lib/errors";
@@ -25,6 +26,47 @@ export class ParsedExpression {
 
 const diceroll_semantics: DicerollSemantics = grammer.createSemantics();
 
+diceroll_semantics.addOperation<comparison.ComparisonOperator>('comparison(context)', {
+    ComparisonOperator_LessThan(arg0) {
+        return new comparison.LessThanComparison;
+    },
+    ComparisonOperator_LessThanOrEqual(arg0) {
+        return new comparison.LessThanOrEqualComparison;
+    },
+    ComparisonOperator_GreaterThan(arg0) {
+        return new comparison.GreaterThanComparison;
+    },
+    ComparisonOperator_GreaterThanOrEqual(arg0) {
+        return new comparison.GreaterThanOrEqualComparison;
+    },
+    ComparisonOperator_Equal(arg0) {
+        return new comparison.EqualComparison;
+    }
+});
+
+type RollModArgComparison = {
+    operation: comparison.ComparisonOperator;
+    value: number;
+}
+
+type RollModArgClear = {
+    operation: "clear"
+}
+
+type RollModArg = RollModArgComparison | RollModArgClear;
+
+diceroll_semantics.addOperation<RollModArg>('rollmodarg(context)', {
+    RollModArg_None(arg0) {
+        return { operation: "clear" }
+    },
+    RollModArg_Comparison(arg0, arg1) {
+        return { operation: arg0.comparison(this.args.context), value: parseInt(arg1.sourceString)}
+    },
+    RollModArg_SingleNumber(arg0) {
+        return { operation: new comparison.EqualComparison, value: parseInt(arg0.sourceString)}
+    },
+})
+
 diceroll_semantics.addOperation<rollmod.RollMod>('rollmods(context)', {
     RollMod_KeepHighest(arg0, arg1) {
         return new rollmod.FilterRollMod("keep", "higher", parseInt(arg1.sourceString));
@@ -37,6 +79,23 @@ diceroll_semantics.addOperation<rollmod.RollMod>('rollmods(context)', {
     },
     RollMod_DropLowest(arg0, arg1) {
         return new rollmod.FilterRollMod("drop", "lower", parseInt(arg1.sourceString));
+    },
+    RollMod_CritSuccess(arg0, arg1) {
+        let arg: RollModArg = arg1.rollmodarg(this.args.context);
+        if (arg.operation === 'clear') {
+            return rollmod.CritBoundsRollMod.MakeClear("critsuccess");
+        } else {
+            return rollmod.CritBoundsRollMod.MakeUnion("critsuccess", arg.operation, arg.value);
+        }
+
+    },
+    RollMod_CritFail(arg0, arg1) {
+        let arg: RollModArg = arg1.rollmodarg(this.args.context);
+        if (arg.operation === 'clear') {
+            return rollmod.CritBoundsRollMod.MakeClear("critfail");
+        } else {
+            return rollmod.CritBoundsRollMod.MakeUnion("critfail", arg.operation, arg.value);
+        }
     },
 });
 

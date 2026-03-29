@@ -1,10 +1,50 @@
-import { DicerollSet } from "lib/diceroll";
+import { CritRange, CritRangeUnion, DicerollSet } from "lib/diceroll";
 import { MyResult } from "lib/errors";
 import { ok } from "true-myth/dist/es/result";
+import { ComparisonOperator } from "./comparison";
 
 export abstract class RollMod {
     // Todo - DicerollSet roll mod apply history, to be printed out in advanced view
     abstract ApplyRollMod(diceroll: DicerollSet): MyResult<null>;
+}
+
+export class CritBoundsRollMod extends RollMod {
+    bound: "critsuccess" | "critfail";
+    range: CritRange | "clear"
+
+    constructor(bound: "critsuccess" | "critfail", range: CritRange | "clear") {
+        super()
+        this.bound = bound;
+        this.range = range;
+    }
+
+    static MakeUnion(bound: "critsuccess" | "critfail", op: ComparisonOperator, value: number): CritBoundsRollMod {
+        return new CritBoundsRollMod(bound, new CritRange(value, op));
+    }
+
+    static MakeClear(bound: "critsuccess" | "critfail"): CritBoundsRollMod {
+        return new CritBoundsRollMod(bound, "clear");
+    }
+
+    ApplyRollMod(diceroll: DicerollSet): MyResult<null> {
+        let union: CritRangeUnion;
+        switch (this.bound) {
+            case "critsuccess":
+                union = diceroll.crit_success_range;
+                break;
+            case "critfail":
+                union = diceroll.crit_fail_range;
+                break;
+        }
+
+        if (this.range === "clear") {
+            union.Clear();
+        } else {
+            union.Extend(this.range);
+        }
+
+        return ok(null);
+    }
 }
 
 export class FilterRollMod extends RollMod {

@@ -2,17 +2,17 @@ Diceroll {
 
     Expr = ExprSumInfix
 
-    DropLowestToken = caseInsensitive<"dl"> | caseInsensitive<"d">
-    DropHighestToken = caseInsensitive<"dh">
-    KeepHighestToken = caseInsensitive<"kh"> | caseInsensitive<"k">
-    KeepLowestToken = caseInsensitive<"kl">
-    CritSuccessToken = caseInsensitive<"cs">
-    CritFailToken = caseInsensitive<"cf">
-    RerollToken = caseInsensitive<"r">
-    SetWhereToken = caseInsensitive<"w">
-    ExplodeToken = "!"
-    SortAcending = caseInsensitive<"sa">
-    SortDecending = caseInsensitive<"sd">
+    DropLowestToken (dl) = caseInsensitive<"dl"> | caseInsensitive<"d">
+    DropHighestToken (dh) = caseInsensitive<"dh">
+    KeepHighestToken (kh) = caseInsensitive<"kh"> | caseInsensitive<"k">
+    KeepLowestToken (kl) = caseInsensitive<"kl">
+    CritSuccessToken (cs) = caseInsensitive<"cs">
+    CritFailToken (cf) = caseInsensitive<"cf">
+    RerollToken (r) = caseInsensitive<"r">
+    SetWhereToken (w) = caseInsensitive<"w">
+    ExplodeToken (!) = "!"
+    SortAcending (sa) = caseInsensitive<"sa">
+    SortDecending (sd) = caseInsensitive<"sd">
 
     ComparisonOperator
         = "<" --LessThan
@@ -21,8 +21,10 @@ Diceroll {
         | ">=" --GreaterThanOrEqual
         | "=" --Equal
 
+    RollModArgNone (n) = caseInsensitive<"n">
+
     RollModArg
-        = caseInsensitive<"n"> --None
+        = RollModArgNone --None
         | ComparisonOperator NonemptyListOf<digit+,","> --Comparison
         | NonemptyListOf<digit+,","> --SingleNumber
 
@@ -57,12 +59,12 @@ Diceroll {
         | ExprRollInfix
 
     ExprRollInfix
-        = ExprRollInfix DicerollToken ExprPriority ListOf<RollMod, ","> --Dice
+        = ExprRollInfix DicerollToken ExprPriority ListOf<RollMod, ","?> --Dice
         | ExprPriority
 
     ExprPriority
         = "(" Expr ")" --Paren
-        | DicerollToken ExprPriority ListOf<RollMod, ","> --RollPrefix
+        | DicerollToken ExprPriority ListOf<RollMod, ","?> --RollPrefix
         | "+" ExprPriority --PosPrefix
         | "-" ExprPriority --NegPrefix
         | Literal
@@ -70,7 +72,7 @@ Diceroll {
     AttributeInner (an attribute or function)
         = "input" digit --Input
         | "input" --InputSingle
-        | variable_ident "(" ListOf<Expr,","> ")" --NamedFunction // todo multiple function inputs
+        | variable_ident "(" ListOf<Expr,","> ")" --NamedFunction
         | variable_ident --NamedAttribute
     
     Literal
