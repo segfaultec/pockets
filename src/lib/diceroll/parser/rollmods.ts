@@ -8,39 +8,31 @@ export abstract class RollMod {
     abstract ApplyRollMod(diceroll: DicerollSet): MyResult<null>;
 }
 
+type CritRangeUnionType = "critsuccess" | "critfail";
+
 export class CritBoundsRollMod extends RollMod {
-    bound: "critsuccess" | "critfail";
+    bound: CritRangeUnionType;
     range: CritRange | "clear"
 
-    constructor(bound: "critsuccess" | "critfail", range: CritRange | "clear") {
+    constructor(bound: CritRangeUnionType, range: CritRange | "clear") {
         super()
         this.bound = bound;
         this.range = range;
     }
 
-    static MakeUnion(bound: "critsuccess" | "critfail", op: ComparisonOperator, value: number): CritBoundsRollMod {
+    static MakeUnion(bound: CritRangeUnionType, op: ComparisonOperator, value: number): CritBoundsRollMod {
         return new CritBoundsRollMod(bound, new CritRange(value, op));
     }
 
-    static MakeClear(bound: "critsuccess" | "critfail"): CritBoundsRollMod {
+    static MakeClear(bound: CritRangeUnionType): CritBoundsRollMod {
         return new CritBoundsRollMod(bound, "clear");
     }
 
     ApplyRollMod(diceroll: DicerollSet): MyResult<null> {
-        let union: CritRangeUnion;
-        switch (this.bound) {
-            case "critsuccess":
-                union = diceroll.crit_success_range;
-                break;
-            case "critfail":
-                union = diceroll.crit_fail_range;
-                break;
-        }
-
         if (this.range === "clear") {
-            union.Clear();
+            diceroll.crit_range.SetToNone(this.bound);
         } else {
-            union.Extend(this.range);
+            diceroll.crit_range.Extend(this.bound, this.range);
         }
 
         return ok(null);

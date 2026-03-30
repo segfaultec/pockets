@@ -14,12 +14,15 @@ Diceroll {
     SortAcending (sa) = caseInsensitive<"sa">
     SortDecending (sd) = caseInsensitive<"sd">
 
+    LessThanOrEqualToken (<=) = "<=" | "=<"
+    GreaterThanOrEqualToken (>=) = ">=" | "=>"
+
     ComparisonOperator
-        = "<" --LessThan
-        | "<=" --LessThanOrEqual
+        = LessThanOrEqualToken --LessThanOrEqual
+        | GreaterThanOrEqualToken --GreaterThanOrEqual
+        | "<" --LessThan
         | ">" --GreaterThan
-        | ">=" --GreaterThanOrEqual
-        | "=" --Equal
+        | "=" --Equal 
 
     RollModArgNone (n) = caseInsensitive<"n">
 
