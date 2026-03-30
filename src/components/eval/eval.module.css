@@ -6,6 +6,18 @@
 
     .total {
         font-weight: bold;
+
+        &.crit_success {
+            color: green;
+        }
+
+        &.crit_failure {
+            color: red;
+        }
+
+        &.crit_mixed {
+            color: blue;
+        }
     }
 
     .annex_string {

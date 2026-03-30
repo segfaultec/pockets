@@ -5,7 +5,7 @@ import { EvaluatedExpression, EvaluatedExpressionToken, EvaluatedAttribute, Eval
 
 import * as css from "./eval.module.css"
 import { DicerollResult } from "lib/diceroll";
-import { ClsCombine } from "components/utils/ClassHelpers";
+import { zip_classes } from "components/utils/FieldHelpers";
 
 type EvalSuccessDicerollProps = {
     results: DicerollResult[]
@@ -20,10 +20,10 @@ class EvalDiceroll extends Component<EvalSuccessDicerollProps> {
                     if (result.ignored) {
                         classes += " " + css.ignored
                     }
-                    if (result.crit_success) {
+                    else if (result.crit_success) {
                         classes += " " + css.crit_success
                     }
-                    if (result.crit_fail) {
+                    else if (result.crit_fail) {
                         classes += " " + css.crit_failure
                     }
 
@@ -119,11 +119,26 @@ type EvalSuccessProps = {
 export class EvalSuccess extends Component<EvalSuccessProps> {
 
     render() {
+
+        const crit_success = this.props.eval_result.ContainsCritSuccess();
+        const crit_fail = this.props.eval_result.ContainsCritFail();
+
+        let crit_class = null;
+        if (crit_success && crit_fail) {
+            crit_class = css.crit_mixed;
+        } else if (crit_success) {
+            crit_class = css.crit_success;
+        } else if (crit_fail) {
+            crit_class = css.crit_failure;
+        }
+
+        let total_class = zip_classes(css.total, crit_class);
+
         if (this.props.short_display) {
-            return <div className={css.eval_container}>{this.props.eval_result.total}</div>
+            return <div className={css.eval_container}><span className={total_class}>{this.props.eval_result.total}</span></div>
         } else {
             return <div className={css.eval_container}>
-                <span className={css.total}>{this.props.eval_result.total}</span> = <EvalSuccessAnnex annex={this.props.eval_result.annex} advanced_display={this.props.advanced_display} />
+                <span className={total_class}>{this.props.eval_result.total}</span> = <EvalSuccessAnnex annex={this.props.eval_result.annex} advanced_display={this.props.advanced_display} />
             </div>
         }
 

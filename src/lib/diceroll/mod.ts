@@ -10,10 +10,15 @@ abstract class EvaluatedLiteral {
 
     total: number;
 
+    contains_crit_success: boolean = false;
+    contains_crit_fail: boolean = false;
+
     abstract ToString(): string;
 
-    constructor(total: number) {
+    constructor(total: number, crit_success: boolean, crit_fail: boolean) {
         this.total = total;
+        this.contains_crit_success = crit_success;
+        this.contains_crit_fail = crit_fail;
     }
 
 }
@@ -24,7 +29,7 @@ export class EvaluatedAttribute extends EvaluatedLiteral {
     advanced: boolean;
 
     constructor(total: number, name: string, annex: EvaluatedExpressionToken, advanced: boolean) {
-        super(total);
+        super(total, annex.contains_crit_success, annex.contains_crit_fail);
         this.name = name;
         this.annex = annex;
         this.advanced = advanced;
@@ -38,7 +43,7 @@ export class EvaluatedAttribute extends EvaluatedLiteral {
 export class EvaluatedFixed extends EvaluatedLiteral {
 
     constructor(value: number) {
-        super(value);
+        super(value, false, false);
     }
 
     ToString(): string {
@@ -53,7 +58,7 @@ export class EvaluatedPrefix extends EvaluatedLiteral {
     rhs_total: number;
 
     constructor(total: number, rhs_total: number, seperator: string, rhs: EvaluatedExpressionToken) {
-        super(total);
+        super(total, rhs.contains_crit_success, rhs.contains_crit_fail);
 
         this.rhs = rhs;
         this.seperator = seperator;
@@ -77,7 +82,7 @@ export class EvaluatedInfix extends EvaluatedLiteral {
 
     constructor(total: number, lhs_total: number, rhs_total: number, lhs: EvaluatedExpressionToken, sep: string, rhs: EvaluatedExpressionToken, collapse_instructions: CollapsePrefixInfo | null)
     {
-        super(total);
+        super(total, lhs.contains_crit_success || rhs.contains_crit_success, rhs.contains_crit_fail || rhs.contains_crit_fail);
 
         this.total = total;
         this.lhs = lhs;
@@ -104,7 +109,17 @@ export class EvaluatedDiceroll extends EvaluatedLiteral {
     results: DicerollResult[];
 
     constructor(results: DicerollResultSet) {
-        super(results.total);
+
+        // Crit statuses of the LHS and RHS of this expression are ignored (probably better anyway)
+
+        let crit_success = false;
+        let crit_fail = false;
+        for (const roll of results.rolls) {
+            crit_success ||= (roll.crit_success && !roll.ignored);
+            crit_fail ||= (roll.crit_fail && !roll.ignored);
+        }
+
+        super(results.total, crit_success, crit_fail);
         this.results = results.rolls;
     }
 
@@ -136,6 +151,14 @@ export class EvaluatedExpression {
     private constructor(total: number, annex: EvaluatedExpressionToken) {
         this.total = total;
         this.annex = annex;
+    }
+
+    ContainsCritSuccess(): boolean {
+        return this.annex.contains_crit_success;
+    }
+
+    ContainsCritFail(): boolean {
+        return this.annex.contains_crit_fail;
     }
 
     static FixedLiteral(value: number) {

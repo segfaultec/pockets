@@ -34,7 +34,10 @@ export function zip_classes(...classes: (string | undefined | null)[]): string {
     let out = "";
     for (const cls of classes) {
         if (typeof cls === "string") {
-            out += " " + cls;
+            if (out.length > 0) {
+                out += " ";
+            }
+            out += cls;
         }
     }
     return out;
